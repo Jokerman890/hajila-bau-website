@@ -81,9 +81,70 @@
             background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
             backdrop-filter: blur(10px);
         }
+        
+        /* Sticky Navigation */
+        .sticky-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .sticky-nav.visible {
+            transform: translateY(0);
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--blue-start), var(--gold));
+            z-index: 101;
+            transition: width 0.3s ease;
+        }
+        
+        /* Parallax Effect */
+        .parallax-bg {
+            transform: translateZ(0);
+            will-change: transform;
+        }
+        
+        /* Counter Animation */
+        .counter {
+            font-variant-numeric: tabular-nums;
+        }
     </style>
 </head>
 <body class="bg-gradient-to-b from-gray-900 to-blue-950 text-white min-h-screen">
+    <!-- Progress Bar -->
+    <div class="progress-bar" style="width: 0%"></div>
+    
+    <!-- Sticky Navigation -->
+    <div class="sticky-nav bg-black/30 backdrop-blur-md border-b border-white/10">
+        <div class="mx-auto max-w-7xl px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <img src="https://hajila-bau.de/logo_2d.png" alt="Hajila Bau Logo" class="h-8 w-auto object-contain" />
+                    <span class="text-lg font-bold gradient-text">Hajila Bau</span>
+                </div>
+                <nav class="hidden lg:flex space-x-6">
+                    <a href="#services" class="text-white/80 hover:text-white transition-colors text-sm">Leistungen</a>
+                    <a href="#references" class="text-white/80 hover:text-white transition-colors text-sm">Referenzen</a>
+                    <a href="#about" class="text-white/80 hover:text-white transition-colors text-sm">Über uns</a>
+                    <a href="#contact" class="text-white/80 hover:text-white transition-colors text-sm">Kontakt</a>
+                </nav>
+                <a href="#contact" class="px-4 py-2 gradient-bg text-white rounded-lg font-medium text-sm hover-scale">
+                    Angebot
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <header class="relative z-50 w-full border-b border-white/10 bg-black/20 backdrop-blur-md">
         <div class="mx-auto max-w-7xl px-6 py-4">
@@ -587,6 +648,40 @@
 
         // Start typewriter effect after a short delay
         setTimeout(typeWriter, 1000);
+
+        // Sticky Navigation and Progress Bar
+        const stickyNav = document.querySelector('.sticky-nav');
+        const progressBar = document.querySelector('.progress-bar');
+        const header = document.querySelector('header');
+        
+        let lastScrollY = window.scrollY;
+        
+        function updateScrollProgress() {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            
+            progressBar.style.width = scrollPercent + '%';
+            
+            // Show sticky nav after scrolling past header
+            if (scrollTop > header.offsetHeight) {
+                stickyNav.classList.add('visible');
+            } else {
+                stickyNav.classList.remove('visible');
+            }
+        }
+        
+        window.addEventListener('scroll', updateScrollProgress);
+        
+        // Parallax effect for 3D logo
+        const parallaxLogo = document.querySelector('.parallax-bg');
+        if (parallaxLogo) {
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const rate = scrolled * -0.5;
+                parallaxLogo.style.transform = `translateY(${rate}px)`;
+            });
+        }
     </script>
 </body>
 </html>

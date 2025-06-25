@@ -6,6 +6,14 @@
     <title>Hajila Bau GmbH - Premium Bauunternehmen</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        :root {
+            --blue-start: #00C3E3;
+            --blue-end: #005B9F;
+            --gold: #D4AF37;
+            --gold-hover: #B8962F;
+            --dark: #0A1E33;
+        }
+        
         body {
             margin: 0;
             padding: 0;
@@ -13,14 +21,14 @@
         }
         
         .gradient-text {
-            background: linear-gradient(135deg, #00C3E3, #005B9F);
+            background: linear-gradient(135deg, var(--blue-start), var(--blue-end));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         
         .gradient-bg {
-            background: linear-gradient(135deg, #00C3E3, #005B9F);
+            background: linear-gradient(135deg, var(--blue-start), var(--blue-end));
         }
         
         .glass-effect {
@@ -30,11 +38,12 @@
         }
         
         .hover-scale {
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
         .hover-scale:hover {
             transform: scale(1.05);
+            box-shadow: 0 20px 25px -5px rgba(0, 195, 227, 0.1), 0 10px 10px -5px rgba(0, 195, 227, 0.04);
         }
         
         .fade-in {
@@ -46,32 +55,44 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        .typewriter {
-            overflow: hidden;
-            border-right: 2px solid #D4AF37;
-            white-space: nowrap;
-            animation: typing 3s steps(20, end), blink-caret 0.75s step-end infinite;
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease;
         }
         
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
+        .tilt-card:hover {
+            transform: perspective(1000px) rotateX(5deg) rotateY(5deg);
         }
         
-        @keyframes blink-caret {
-            from, to { border-color: transparent; }
-            50% { border-color: #D4AF37; }
+        .glass-card {
+            background: linear-gradient(135deg, rgba(0, 195, 227, 0.9), rgba(0, 91, 159, 0.8));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform-style: preserve-3d;
+        }
+        
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            border-radius: 28px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            border-left: 1px solid rgba(255, 255, 255, 0.3);
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(10px);
         }
     </style>
 </head>
 <body class="bg-gradient-to-b from-gray-900 to-blue-950 text-white min-h-screen">
     <!-- Navigation -->
-    <header class="relative z-50 w-full border-b border-white/10 glass-effect">
+    <header class="relative z-50 w-full border-b border-white/10 bg-black/20 backdrop-blur-md">
         <div class="mx-auto max-w-7xl px-6 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                    <div class="h-8 w-8 bg-yellow-500 rounded-lg flex items-center justify-center">
-                        <span class="text-white font-bold text-sm">🏗️</span>
+                    <div class="h-8 w-8 text-yellow-500">
+                        <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full">
+                            <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+                        </svg>
                     </div>
                     <span class="text-xl font-bold gradient-text">
                         Hajila Bau GmbH
@@ -109,7 +130,7 @@
                         </div>
 
                         <h1 class="text-5xl lg:text-7xl font-bold leading-tight">
-                            <span class="gradient-text">
+                            <span class="bg-gradient-to-r from-cyan-400 via-blue-600 to-cyan-400 bg-clip-text text-transparent">
                                 Bauen mit Präzision
                             </span>
                             <br />
@@ -148,11 +169,10 @@
                     </div>
                 </div>
 
-                <!-- Glass Card -->
+                <!-- Enhanced Glass Card -->
                 <div class="flex justify-center lg:justify-end">
                     <div class="group h-80 w-72 perspective-1000">
-                        <div class="relative h-full rounded-3xl gradient-bg shadow-2xl transition-all duration-500 ease-in-out glass-effect hover:shadow-cyan-400/30 hover:shadow-2xl">
-                            <div class="absolute inset-2 rounded-2xl border-b border-l border-white/30 bg-gradient-to-b from-white/20 to-white/5 backdrop-blur-sm"></div>
+                        <div class="relative h-full rounded-3xl glass-card shadow-2xl transition-all duration-500 ease-in-out hover:shadow-cyan-400/30 hover:shadow-2xl tilt-card">
                             
                             <div class="absolute p-6 z-10">
                                 <div class="pt-16">
@@ -206,7 +226,7 @@
         <div class="mx-auto max-w-7xl">
             <div class="text-center mb-16 fade-in">
                 <h2 class="text-4xl lg:text-5xl font-bold mb-6">
-                    <span class="gradient-text">
+                    <span class="bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent">
                         Unsere Leistungen
                     </span>
                 </h2>
@@ -215,8 +235,8 @@
                 </p>
             </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <div class="h-full p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="h-full p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale tilt-card">
                     <div class="mb-4">
                         <span class="text-4xl">🧱</span>
                     </div>
@@ -228,7 +248,43 @@
                     </p>
                 </div>
 
-                <div class="h-full p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale">
+                <div class="h-full p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale tilt-card">
+                    <div class="mb-4">
+                        <span class="text-4xl">🏗️</span>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-3 text-white">
+                        Bauausführung im Rohbau
+                    </h3>
+                    <p class="text-gray-300 leading-relaxed text-sm">
+                        Termintreue Rohbauleistungen vom Fundament bis zum Dachstuhl.
+                    </p>
+                </div>
+
+                <div class="h-full p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale tilt-card">
+                    <div class="mb-4">
+                        <span class="text-4xl">🏠</span>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-3 text-white">
+                        Wärmedämmverbundsysteme
+                    </h3>
+                    <p class="text-gray-300 leading-relaxed text-sm">
+                        Energieeffiziente WDVS-Lösungen für Neu- und Bestandsgebäude.
+                    </p>
+                </div>
+
+                <div class="h-full p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale tilt-card">
+                    <div class="mb-4">
+                        <span class="text-4xl">🌿</span>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-3 text-white">
+                        Garten- & Landschaftsbau mit Klinker
+                    </h3>
+                    <p class="text-gray-300 leading-relaxed text-sm">
+                        Stilvolle Klinkermauern, Wege und Außenanlagen – alles aus einer Hand.
+                    </p>
+                </div>
+
+                <div class="h-full p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale tilt-card">
                     <div class="mb-4">
                         <span class="text-4xl">🏛️</span>
                     </div>
@@ -240,19 +296,7 @@
                     </p>
                 </div>
 
-                <div class="h-full p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale">
-                    <div class="mb-4">
-                        <span class="text-4xl">🏠</span>
-                    </div>
-                    <h3 class="text-lg font-semibold mb-3 text-white">
-                        Wärmedämmverbundsysteme
-                    </h3>
-                    <p class="text-gray-300 leading-relaxed text-sm">
-                        Energieeffiziente WDVS-Lösungen mit Klinkeroptik für Neu- und Bestandsgebäude.
-                    </p>
-                </div>
-
-                <div class="h-full p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale">
+                <div class="h-full p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale tilt-card">
                     <div class="mb-4">
                         <span class="text-4xl">🔥</span>
                     </div>
@@ -264,7 +308,7 @@
                     </p>
                 </div>
 
-                <div class="h-full p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale">
+                <div class="h-full p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale tilt-card">
                     <div class="mb-4">
                         <span class="text-4xl">🏗️</span>
                     </div>
@@ -276,7 +320,7 @@
                     </p>
                 </div>
 
-                <div class="h-full p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale">
+                <div class="h-full p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale tilt-card">
                     <div class="mb-4">
                         <span class="text-4xl">⚙️</span>
                     </div>
@@ -285,18 +329,6 @@
                     </h3>
                     <p class="text-gray-300 leading-relaxed text-sm">
                         Professionelles Bewehrung binden für stabile Konstruktionen.
-                    </p>
-                </div>
-
-                <div class="h-full p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale">
-                    <div class="mb-4">
-                        <span class="text-4xl">🔨</span>
-                    </div>
-                    <h3 class="text-lg font-semibold mb-3 text-white">
-                        Bauausführung im Rohbau
-                    </h3>
-                    <p class="text-gray-300 leading-relaxed text-sm">
-                        Komplette Rohbauten vom Fundament bis zum Dachstuhl.
                     </p>
                 </div>
             </div>
@@ -318,15 +350,15 @@
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale">
+                <div class="p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale tilt-card">
                     <h3 class="text-xl font-semibold text-white mb-2">Wohnpark Osnabrück</h3>
                     <p class="text-gray-300">2024 · Osnabrück</p>
                 </div>
-                <div class="p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale">
+                <div class="p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale tilt-card">
                     <h3 class="text-xl font-semibold text-white mb-2">Logistikhalle Wallenhorst</h3>
                     <p class="text-gray-300">2023 · Wallenhorst</p>
                 </div>
-                <div class="p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale">
+                <div class="p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale tilt-card">
                     <h3 class="text-xl font-semibold text-white mb-2">EFH Klinkervilla</h3>
                     <p class="text-gray-300">2022 · Belm</p>
                 </div>
@@ -349,7 +381,7 @@
             </div>
 
             <div class="grid lg:grid-cols-2 gap-12">
-                <div class="p-8 rounded-2xl glass-effect fade-in">
+                <div class="p-8 rounded-2xl glass-effect fade-in hover-scale tilt-card">
                     <h3 class="text-2xl font-bold mb-4 text-white">Unsere Mission</h3>
                     <ul class="space-y-3 text-gray-300">
                         <li class="flex items-start gap-2">
@@ -367,7 +399,7 @@
                     </ul>
                 </div>
 
-                <div class="p-8 rounded-2xl glass-effect fade-in">
+                <div class="p-8 rounded-2xl glass-effect fade-in hover-scale tilt-card">
                     <h3 class="text-2xl font-bold mb-4 text-white">Unternehmensprofil</h3>
                     <ul class="space-y-3 text-gray-300">
                         <li class="flex items-center gap-2">
@@ -394,6 +426,10 @@
                             <span class="text-orange-500">🏛️</span>
                             Kammer: Handwerkskammer Osnabrück-Emsland-Grafschaft Bentheim
                         </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-cyan-400">⏰</span>
+                            Öffnungszeiten: Montag – Samstag 06:00 – 18:00 Uhr
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -403,7 +439,7 @@
     <!-- Contact Section -->
     <section id="contact" class="relative z-10 py-20 px-6">
         <div class="mx-auto max-w-4xl text-center">
-            <div class="p-12 rounded-3xl glass-effect fade-in">
+            <div class="p-12 rounded-3xl glass-effect fade-in hover-scale">
                 <h2 class="text-4xl lg:text-5xl font-bold mb-6">
                     <span class="bg-gradient-to-r from-cyan-400 to-yellow-500 bg-clip-text text-transparent">
                         Kontaktieren Sie uns
@@ -439,7 +475,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="relative z-10 py-12 px-6 border-t border-white/10 glass-effect">
+    <footer class="relative z-10 py-12 px-6 border-t border-white/10 bg-black/20 backdrop-blur-md">
         <div class="mx-auto max-w-7xl text-center text-sm text-gray-400">
             <p class="mb-2">Hajila Bau GmbH · Geschäftsführerin E. Omerovic · HRB 210702, Amtsgericht Osnabrück</p>
             <p class="mb-4">(USt-ID wird nachgereicht.)</p>
@@ -500,7 +536,7 @@
         document.querySelector('section').style.opacity = '1';
         document.querySelector('section').style.transform = 'translateY(0)';
 
-        // Typewriter effect
+        // Enhanced Typewriter effect
         const typewriterElement = document.getElementById('typewriter');
         const texts = ['& Vertrauen', 'Hochbau', 'Klinkerarbeiten', 'WDVS'];
         let currentTextIndex = 0;

@@ -5,10 +5,14 @@ Eine moderne, responsive Webseite für die Hajila Bau GmbH - Ihr Partner für Ho
 ## 🏗️ Über das Unternehmen
 
 **Hajila Bau GmbH** ist seit 2016 Ihr zuverlässiger Partner für:
+
 - Klinkerarbeiten & Verblendmauerwerk
-- Bauausführung im Rohbau
-- Wärmedämmverbundsysteme (WDVS)
-- Garten- & Landschaftsbau mit Klinker
+- Klinker-Detailarbeiten (z. B. Bögen, Gesimse, Pfeiler)
+- Wärmedämmverbundsysteme mit Klinkeroptik
+- Schornstein- und Kaminverkleidungen
+- Betonbau (Fundamente, Bodenplatten etc.)
+- Eisenflechterarbeiten (Bewehrung binden)
+- Bauausführung im Rohbau (komplette Rohbauten)
 
 ## 🚀 Technologie-Stack
 
@@ -75,11 +79,11 @@ hajila-bau-website/
 
 ## 📞 Kontakt
 
-**Hajila Bau GmbH**
-- 📍 Wildeshauser Straße 3, 49088 Osnabrück
-- ☎️ Büro: 0541 44026213
-- 📱 Mobil: 0152 23000800
-- ✉️ E-Mail: info@hajila-bau.de
+**Hajila Bau GmbH**  
+- 📍 Wildeshauser Straße 3, 49088 Osnabrück  
+- ☎️ Büro: 0541 44026213  
+- 📱 Mobil: 0152 23000800  
+- ✉️ E-Mail: info@hajila-bau.de  
 
 **Geschäftsführerin:** S. Omerovic  
 **Handelsregister:** HRB 210702 (AG Osnabrück)  

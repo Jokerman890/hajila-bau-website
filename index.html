@@ -123,6 +123,18 @@
         .bg-gradient-radial {
             background: radial-gradient(circle, var(--tw-gradient-stops));
         }
+        
+        /* Typewriter Cursor */
+        .typewriter-cursor {
+            animation: blink 1s infinite;
+            color: var(--gold);
+            font-weight: bold;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
     </style>
 </head>
 <body class="bg-gradient-to-b from-gray-900 to-blue-950 text-white min-h-screen">
@@ -214,7 +226,7 @@
                             </span>
                             <br />
                             <span class="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                                & <span id="typewriter">Vertrauen</span>
+                                & <span id="typewriter">Vertrauen</span><span id="cursor" class="typewriter-cursor">_</span>
                             </span>
                         </h1>
 

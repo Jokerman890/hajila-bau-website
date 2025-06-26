@@ -1,36 +1,145 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Hajila Bau GmbH - Premium Website
 
-## Getting Started
+Eine moderne, professionelle Website für Hajila Bau GmbH - Ihr Partner für Hochbau & Klinkerarbeiten in Osnabrück.
 
-First, run the development server:
+## 🏗️ Über Hajila Bau GmbH
 
+Hajila Bau GmbH ist ein etabliertes Bauunternehmen in Osnabrück, spezialisiert auf:
+- Klinkerarbeiten & Verblendmauerwerk
+- Hochbau & Betonbau
+- WDVS (Wärmedämm-Verbundsysteme)
+- Professionelle Baudienstleistungen
+
+## ✨ Website Features
+
+### Design & UX
+- **Premium Glassmorphism-Design** mit 3D-Effekten
+- **Responsive Design** für alle Bildschirmgrößen
+- **Dark/Light Mode Toggle** mit vollständiger Theme-Unterstützung
+- **Typewriter-Effekt** im Hero-Bereich
+- **3D-Logo-Animation** mit interaktiven Elementen
+- **Particle Wave Background** für moderne Optik
+
+### Technische Features
+- **Next.js 15** mit TypeScript
+- **Tailwind CSS** für modernes Styling
+- **Framer Motion** für flüssige Animationen
+- **Three.js** für 3D-Effekte
+- **SEO-optimiert** mit Meta-Tags
+- **DSGVO-konform** mit rechtlichen Seiten
+
+### Rechtliche Compliance
+- ✅ **Impressum** (/impressum) - TMG/DL-InfoV-konform
+- ✅ **Datenschutzerklärung** (/datenschutz) - DSGVO-konform
+- ✅ **Cookie-Hinweis** (/cookies) - Detaillierte Cookie-Informationen
+- ✅ **Cookie-Banner** mit Akzeptieren-Funktion
+
+## 🚀 Installation & Setup
+
+### Voraussetzungen
+- Node.js 18+ 
+- npm oder yarn
+
+### Installation
 ```bash
+# Repository klonen
+git clone https://github.com/[username]/hajila-bau-website.git
+cd hajila-bau-website
+
+# Dependencies installieren
+npm install
+
+# Development Server starten
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Die Website ist dann unter `http://localhost:3000` erreichbar.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build für Produktion
+```bash
+# Production Build erstellen
+npm run build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Production Server starten
+npm start
+```
 
-## Learn More
+## 📁 Projektstruktur
 
-To learn more about Next.js, take a look at the following resources:
+```
+hajila-website/
+├── public/                 # Statische Assets
+│   ├── favicon.ico        # Favicon (Hajila Logo)
+│   ├── favicon-16x16.png  # Favicon 16x16
+│   ├── favicon-32x32.png  # Favicon 32x32
+│   └── apple-touch-icon.png # Apple Touch Icon
+├── src/
+│   ├── app/               # Next.js App Router
+│   │   ├── impressum/     # Impressum-Seite
+│   │   ├── datenschutz/   # Datenschutz-Seite
+│   │   ├── cookies/       # Cookie-Hinweis-Seite
+│   │   ├── layout.tsx     # Root Layout
+│   │   ├── page.tsx       # Homepage
+│   │   └── globals.css    # Globale Styles
+│   ├── components/        # React Components
+│   │   └── ui/           # UI Components
+│   │       ├── premium-website.tsx # Haupt-Website-Component
+│   │       └── glass-card.tsx      # Glassmorphism Card Component
+│   └── lib/              # Utilities
+│       └── utils.ts      # Helper Functions
+├── components.json        # shadcn/ui Konfiguration
+├── tailwind.config.ts     # Tailwind CSS Konfiguration
+├── next.config.mjs        # Next.js Konfiguration
+└── package.json          # Dependencies
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🎨 Design System
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Farben
+- **Primary**: Cyan/Türkis (#00bcd4)
+- **Secondary**: Gold/Gelb (#ffd700)
+- **Background**: Dunkle Gradienten
+- **Glass Effects**: Transparente Overlays mit Blur
 
-## Deploy on Vercel
+### Typografie
+- **Headlines**: Merriweather (Serif)
+- **Body Text**: Open Sans (Sans-serif)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Animationen
+- **Framer Motion** für Seitenübergänge
+- **CSS Animations** für Hover-Effekte
+- **Three.js** für 3D-Logo-Animation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📱 Responsive Design
+
+Die Website ist vollständig responsive und optimiert für:
+- 📱 Mobile (320px+)
+- 📱 Tablet (768px+)
+- 💻 Desktop (1024px+)
+- 🖥️ Large Desktop (1440px+)
+
+## 🔧 Technologie-Stack
+
+- **Framework**: Next.js 15
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Animations**: Framer Motion
+- **3D Graphics**: Three.js
+- **Icons**: Lucide React
+- **Fonts**: Google Fonts (Merriweather, Open Sans)
+
+## 📞 Kontakt
+
+**Hajila Bau GmbH**
+- 📍 Wildeshauser Straße 3, 49088 Osnabrück
+- 📞 Büro: 0541 44026213
+- 📱 Mobil: 0152 23000800
+- 📧 E-Mail: info@hajila-bau.de
+
+## 📄 Lizenz
+
+© 2025 Hajila Bau GmbH. Alle Rechte vorbehalten.
+
+---
+
+*Entwickelt mit ❤️ für professionelle Baudienstleistungen in Osnabrück*

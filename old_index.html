@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hajila Bau GmbH - Premium Bauunternehmen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --blue-start: #00C3E3;
+            --blue-end: #005B9F;
+            --gold: #D4AF37;
+            --gold-hover: #B8962F;
+            --dark: #0A1E33;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, var(--blue-start), var(--blue-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--blue-start), var(--blue-end));
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .hover-scale {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-scale:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 25px -5px rgba(0, 195, 227, 0.1), 0 10px 10px -5px rgba(0, 195, 227, 0.04);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease;
+        }
+        
+        .tilt-card:hover {
+            transform: perspective(1000px) rotateX(5deg) rotateY(5deg);
+        }
+        
+        .glass-card {
+            background: linear-gradient(135deg, rgba(0, 195, 227, 0.9), rgba(0, 91, 159, 0.8));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform-style: preserve-3d;
+        }
+        
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            border-radius: 28px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            border-left: 1px solid rgba(255, 255, 255, 0.3);
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Sticky Navigation */
+        .sticky-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .sticky-nav.visible {
+            transform: translateY(0);
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--blue-start), var(--gold));
+            z-index: 101;
+            transition: width 0.3s ease;
+        }
+        
+        /* Parallax Effect */
+        .parallax-bg {
+            transform: translateZ(0);
+            will-change: transform;
+        }
+        
+        /* Counter Animation */
+        .counter {
+            font-variant-numeric: tabular-nums;
+        }
+        
+        /* Radial Gradient */
+        .bg-gradient-radial {
+            background: radial-gradient(circle, var(--tw-gradient-stops));
+        }
+        
+        /* Typewriter Cursor */
+        .typewriter-cursor {
+            animation: blink 1s infinite;
+            color: var(--gold);
+            font-weight: bold;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-b from-gray-900 to-blue-950 text-white min-h-screen">
+    <!-- Progress Bar -->
+    <div class="progress-bar" style="width: 0%"></div>
+    
+    <!-- Sticky Navigation -->
+    <div class="sticky-nav bg-black/30 backdrop-blur-md border-b border-white/10">
+        <div class="mx-auto max-w-7xl px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <img src="https://hajila-bau.de/logo_2d.png" alt="Hajila Bau Logo" class="h-8 w-auto object-contain" />
+                    <span class="text-lg font-bold gradient-text">Hajila Bau</span>
+                </div>
+                <nav class="hidden lg:flex space-x-6">
+                    <a href="#services" class="text-white/80 hover:text-white transition-colors text-sm">Leistungen</a>
+                    <a href="#references" class="text-white/80 hover:text-white transition-colors text-sm">Referenzen</a>
+                    <a href="#about" class="text-white/80 hover:text-white transition-colors text-sm">Über uns</a>
+                    <a href="#contact" class="text-white/80 hover:text-white transition-colors text-sm">Kontakt</a>
+                </nav>
+                <a href="#contact" class="px-4 py-2 gradient-bg text-white rounded-lg font-medium text-sm hover-scale">
+                    Angebot
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <header class="relative z-50 w-full border-b border-white/10 bg-black/20 backdrop-blur-md">
+        <div class="mx-auto max-w-7xl px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="relative">
+                        <img src="https://hajila-bau.de/logo_2d.png" alt="Hajila Bau Logo" class="h-12 w-auto object-contain hover:scale-105 transition-transform duration-300" />
+                        <div class="absolute -top-1 -right-1 w-3 h-3 bg-cyan-400 rounded-full animate-pulse"></div>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold gradient-text block leading-tight">
+                            Hajila Bau GmbH
+                        </span>
+                        <span class="text-xs text-gray-400 font-medium">
+                            Premium Bauunternehmen
+                        </span>
+                    </div>
+                </div>
+
+                <nav class="hidden lg:flex space-x-8">
+                    <a href="#services" class="text-white/80 hover:text-white transition-colors">Leistungen</a>
+                    <a href="#references" class="text-white/80 hover:text-white transition-colors">Referenzen</a>
+                    <a href="#about" class="text-white/80 hover:text-white transition-colors">Über uns</a>
+                    <a href="#contact" class="text-white/80 hover:text-white transition-colors">Kontakt</a>
+                </nav>
+
+                <div class="flex items-center gap-4">
+                    <button class="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors">
+                        🌞
+                    </button>
+                    <a href="#contact" class="px-4 py-2 gradient-bg text-white rounded-lg font-medium transition-colors hover-scale">
+                        Jetzt Angebot anfragen
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative z-10 pt-32 pb-20 px-6 overflow-hidden">
+        <!-- 3D Background Logo -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+            <div class="w-[600px] h-[600px] opacity-8 transform scale-110 animate-pulse">
+                <img src="https://hajila-bau.de/Hajila_Bau_Logo3d.png" alt="Hajila Bau 3D Logo" class="w-full h-full object-contain filter brightness-110 contrast-125" />
+            </div>
+            <!-- Zusätzlicher Glow-Effekt -->
+            <div class="absolute inset-0 bg-gradient-radial from-cyan-400/5 via-transparent to-transparent"></div>
+        </div>
+        
+        <div class="mx-auto max-w-7xl relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8 fade-in">
+                    <div class="space-y-4">
+                        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-400/10 border border-cyan-400/20 text-cyan-400 text-sm font-medium">
+                            <span>🏗️</span>
+                            Ihr Partner für Bauprojekte
+                        </div>
+
+                        <h1 class="text-4xl lg:text-6xl font-bold leading-tight">
+                            <span class="bg-gradient-to-r from-cyan-400 via-blue-600 to-cyan-400 bg-clip-text text-transparent">
+                                Bauen mit Präzision
+                            </span>
+                            <br />
+                            <span class="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                                & <span id="typewriter">Vertrauen</span><span id="cursor" class="typewriter-cursor">_</span>
+                            </span>
+                        </h1>
+
+                        <p class="text-xl text-gray-300 leading-relaxed max-w-2xl">
+                            Ihr Partner für Hochbau & Klinkerarbeiten in Osnabrück. Seit 2016 setzen wir auf Qualität, Termintreue und persönliche Betreuung.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#contact" class="px-8 py-4 gradient-bg text-white rounded-xl font-semibold shadow-lg shadow-cyan-400/25 transition-all duration-300 text-center hover-scale">
+                            Jetzt Angebot anfragen
+                        </a>
+                        <a href="#services" class="px-8 py-4 border border-white/20 hover:bg-white/10 rounded-xl font-semibold transition-all duration-300 text-center hover-scale">
+                            Unsere Leistungen
+                        </a>
+                    </div>
+
+                    <!-- Quality Indicators -->
+                    <div class="flex items-center gap-6 pt-4">
+                        <div class="flex items-center gap-2 px-3 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20">
+                            <span class="text-yellow-500">⭐</span>
+                            <span class="text-sm font-medium text-yellow-500">Premium Qualität</span>
+                        </div>
+                        <div class="flex items-center gap-2 px-3 py-2 rounded-full bg-cyan-400/10 border border-cyan-400/20">
+                            <span class="text-cyan-400">🚀</span>
+                            <span class="text-sm font-medium text-cyan-400">Seit 2016</span>
+                        </div>
+                        <div class="flex items-center gap-2 px-3 py-2 rounded-full bg-blue-600/10 border border-blue-600/20">
+                            <span class="text-blue-600">📍</span>
+                            <span class="text-sm font-medium text-blue-600">Osnabrück</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Glass Card -->
+                <div class="flex justify-center lg:justify-end">
+                    <div class="group h-80 w-72 perspective-1000">
+                        <div class="relative h-full rounded-3xl glass-card shadow-2xl transition-all duration-500 ease-in-out hover:shadow-cyan-400/30 hover:shadow-2xl tilt-card">
+                            
+                            <div class="absolute p-6 z-10">
+                                <div class="pt-16">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <span class="text-2xl">🏗️</span>
+                                        <span class="block text-xl font-black text-white">
+                                            Hajila Bau GmbH
+                                        </span>
+                                    </div>
+                                    <span class="mt-4 block text-sm text-white/90 leading-relaxed">
+                                        Ihr Partner für Hochbau & Klinkerarbeiten in Osnabrück.
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="absolute bottom-6 left-6 right-6 flex items-center justify-between z-10">
+                                <div class="flex gap-2">
+                                    <button class="h-8 w-8 bg-yellow-500 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110">
+                                        <span class="text-white text-xs">🔨</span>
+                                    </button>
+                                    <button class="h-8 w-8 bg-cyan-400 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110">
+                                        <span class="text-white text-xs">🏗️</span>
+                                    </button>
+                                    <button class="h-8 w-8 bg-blue-600 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110">
+                                        <span class="text-white text-xs">🏠</span>
+                                    </button>
+                                </div>
+
+                                <div class="flex items-center gap-1 cursor-pointer transition-all duration-200">
+                                    <button class="text-xs font-semibold text-white/90 hover:text-white">
+                                        Mehr erfahren
+                                    </button>
+                                    <span class="text-white">⬇️</span>
+                                </div>
+                            </div>
+
+                            <div class="absolute top-4 right-4 z-10">
+                                <div class="w-12 h-12 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center shadow-lg">
+                                    <span class="text-white text-lg">🔨</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="relative z-10 py-20 px-6">
+        <div class="mx-auto max-w-7xl">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+                    <span class="bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent">
+                        Unsere Leistungen
+                    </span>
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Qualität und Präzision für Ihr Bauvorhaben
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Klinkerarbeiten Button -->
+                <button class="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 p-8 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-cyan-400/20 hover:border-cyan-400/40">
+                    <div class="absolute inset-0 bg-gradient-to-br from-cyan-400/10 to-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="relative z-10 text-center">
+                        <div class="mb-6 transform group-hover:scale-110 transition-transform duration-300">
+                            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                <span class="text-2xl">🧱</span>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">
+                            Klinkerarbeiten
+                        </h3>
+                        <p class="text-sm text-gray-300 leading-relaxed group-hover:text-white transition-colors">
+                            Hochwertige Klinkerfassaden & Verblendmauerwerk
+                        </p>
+                    </div>
+                </button>
+
+                <!-- Rohbau Button -->
+                <button class="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 p-8 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-400/20 hover:border-blue-400/40">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-400/10 to-indigo-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="relative z-10 text-center">
+                        <div class="mb-6 transform group-hover:scale-110 transition-transform duration-300">
+                            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                <span class="text-2xl">🏗️</span>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
+                            Rohbau
+                        </h3>
+                        <p class="text-sm text-gray-300 leading-relaxed group-hover:text-white transition-colors">
+                            Termintreue Bauausführung vom Fundament bis Dachstuhl
+                        </p>
+                    </div>
+                </button>
+
+                <!-- WDVS Button -->
+                <button class="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 p-8 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-green-400/20 hover:border-green-400/40">
+                    <div class="absolute inset-0 bg-gradient-to-br from-green-400/10 to-emerald-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="relative z-10 text-center">
+                        <div class="mb-6 transform group-hover:scale-110 transition-transform duration-300">
+                            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                <span class="text-2xl">🏠</span>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-3 group-hover:text-green-400 transition-colors">
+                            WDVS
+                        </h3>
+                        <p class="text-sm text-gray-300 leading-relaxed group-hover:text-white transition-colors">
+                            Energieeffiziente Wärmedämmverbundsysteme
+                        </p>
+                    </div>
+                </button>
+
+                <!-- Klinker-Details Button -->
+                <button class="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 p-8 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-400/20 hover:border-yellow-400/40">
+                    <div class="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-amber-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="relative z-10 text-center">
+                        <div class="mb-6 transform group-hover:scale-110 transition-transform duration-300">
+                            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-yellow-500 to-amber-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                <span class="text-2xl">🏛️</span>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-3 group-hover:text-yellow-400 transition-colors">
+                            Klinker-Details
+                        </h3>
+                        <p class="text-sm text-gray-300 leading-relaxed group-hover:text-white transition-colors">
+                            Präzise Bögen, Gesimse & architektonische Details
+                        </p>
+                    </div>
+                </button>
+
+                <!-- Schornstein Button -->
+                <button class="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 p-8 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-red-400/20 hover:border-red-400/40">
+                    <div class="absolute inset-0 bg-gradient-to-br from-red-400/10 to-rose-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="relative z-10 text-center">
+                        <div class="mb-6 transform group-hover:scale-110 transition-transform duration-300">
+                            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-red-500 to-rose-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                <span class="text-2xl">🔥</span>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-3 group-hover:text-red-400 transition-colors">
+                            Schornsteine
+                        </h3>
+                        <p class="text-sm text-gray-300 leading-relaxed group-hover:text-white transition-colors">
+                            Professionelle Schornstein- & Kaminverkleidungen
+                        </p>
+                    </div>
+                </button>
+
+                <!-- Betonbau Button -->
+                <button class="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 p-8 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-gray-400/20 hover:border-gray-400/40">
+                    <div class="absolute inset-0 bg-gradient-to-br from-gray-400/10 to-slate-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="relative z-10 text-center">
+                        <div class="mb-6 transform group-hover:scale-110 transition-transform duration-300">
+                            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-gray-500 to-slate-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                <span class="text-2xl">🏗️</span>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-3 group-hover:text-gray-400 transition-colors">
+                            Betonbau
+                        </h3>
+                        <p class="text-sm text-gray-300 leading-relaxed group-hover:text-white transition-colors">
+                            Fundamente, Bodenplatten & Betonarbeiten
+                        </p>
+                    </div>
+                </button>
+
+                <!-- Eisenflechter Button -->
+                <button class="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 p-8 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-purple-400/20 hover:border-purple-400/40">
+                    <div class="absolute inset-0 bg-gradient-to-br from-purple-400/10 to-violet-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="relative z-10 text-center">
+                        <div class="mb-6 transform group-hover:scale-110 transition-transform duration-300">
+                            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-purple-500 to-violet-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                <span class="text-2xl">⚙️</span>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-3 group-hover:text-purple-400 transition-colors">
+                            Eisenflechter
+                        </h3>
+                        <p class="text-sm text-gray-300 leading-relaxed group-hover:text-white transition-colors">
+                            Professionelle Bewehrungsarbeiten
+                        </p>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- References Section -->
+    <section id="references" class="relative z-10 py-20 px-6">
+        <div class="mx-auto max-w-7xl">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+                    <span class="bg-gradient-to-r from-yellow-500 to-blue-600 bg-clip-text text-transparent">
+                        Unsere Referenzen
+                    </span>
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Erfolgreich abgeschlossene Projekte
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale tilt-card">
+                    <h3 class="text-xl font-semibold text-white mb-2">Wohnpark Osnabrück</h3>
+                    <p class="text-gray-300">2024 · Osnabrück</p>
+                </div>
+                <div class="p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale tilt-card">
+                    <h3 class="text-xl font-semibold text-white mb-2">Logistikhalle Wallenhorst</h3>
+                    <p class="text-gray-300">2023 · Wallenhorst</p>
+                </div>
+                <div class="p-6 rounded-2xl glass-effect hover:bg-white/10 transition-all duration-300 hover-scale tilt-card">
+                    <h3 class="text-xl font-semibold text-white mb-2">EFH Klinkervilla</h3>
+                    <p class="text-gray-300">2022 · Belm</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="relative z-10 py-20 px-6">
+        <div class="mx-auto max-w-7xl">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+                    <span class="bg-gradient-to-r from-blue-600 to-yellow-500 bg-clip-text text-transparent">
+                        Über uns
+                    </span>
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Ihre Zufriedenheit ist unser Antrieb
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="p-8 rounded-2xl glass-effect fade-in hover-scale tilt-card">
+                    <h3 class="text-2xl font-bold mb-4 text-white">Unsere Mission</h3>
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-start gap-2">
+                            <span class="text-yellow-500">✨</span>
+                            Qualität ohne Kompromisse
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-400">⏰</span>
+                            Strikte Termintreue
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-blue-600">👤</span>
+                            Persönliche Betreuung vom ersten Gespräch bis zur Schlüsselübergabe
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="p-8 rounded-2xl glass-effect fade-in hover-scale tilt-card">
+                    <h3 class="text-2xl font-bold mb-4 text-white">Unternehmensprofil</h3>
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-center gap-2">
+                            <span class="text-yellow-500">📅</span>
+                            Gegründet: 03.08.2016
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-cyan-400">🏛️</span>
+                            Handelsregister: HRB 210702 (AG Osnabrück)
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-blue-600">👤</span>
+                            Geschäftsführerin: <strong class="text-white">E. Omerovic</strong>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-green-500">🆔</span>
+                            USt-ID: DE401804294
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-purple-500">🛡️</span>
+                            Versicherung: R+V
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-orange-500">🏛️</span>
+                            Kammer: Handwerkskammer Osnabrück-Emsland-Grafschaft Bentheim
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-cyan-400">⏰</span>
+                            Öffnungszeiten: Montag – Samstag 06:00 – 18:00 Uhr
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="relative z-10 py-20 px-6">
+        <div class="mx-auto max-w-4xl text-center">
+            <div class="p-12 rounded-3xl glass-effect fade-in hover-scale">
+                <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+                    <span class="bg-gradient-to-r from-cyan-400 to-yellow-500 bg-clip-text text-transparent">
+                        Kontaktieren Sie uns
+                    </span>
+                </h2>
+                <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                    Wir freuen uns auf Ihre Anfrage und beraten Sie gerne persönlich.
+                </p>
+                <div class="space-y-4 mb-8 text-white">
+                    <p class="flex items-center justify-center gap-2">
+                        <span class="text-yellow-500">📍</span>
+                        Wildeshauser Straße 3, 49088 Osnabrück
+                    </p>
+                    <p class="flex items-center justify-center gap-2">
+                        <span class="text-cyan-400">📞</span>
+                        Büro 0541 44026213 · Mobil 0152 23000800
+                    </p>
+                    <p class="flex items-center justify-center gap-2">
+                        <span class="text-blue-600">✉️</span>
+                        E-Mail info@hajila-bau.de
+                    </p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="mailto:info@hajila-bau.de" class="px-8 py-4 gradient-bg text-white rounded-xl font-semibold shadow-lg shadow-cyan-400/25 transition-all duration-300 text-center hover-scale">
+                        E-Mail senden
+                    </a>
+                    <a href="tel:+4915223000800" class="px-8 py-4 border border-white/20 hover:bg-white/10 rounded-xl font-semibold transition-all duration-300 text-center hover-scale">
+                        Jetzt anrufen
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative z-10 py-12 px-6 border-t border-white/10 bg-black/20 backdrop-blur-md">
+        <div class="mx-auto max-w-7xl text-center text-sm text-gray-400">
+            <p class="mb-2">Hajila Bau GmbH · Geschäftsführerin E. Omerovic · HRB 210702, Amtsgericht Osnabrück</p>
+            <p class="mb-4">(USt-ID wird nachgereicht.)</p>
+            <p class="mb-4">© 2025 Hajila Bau GmbH – Alle Rechte vorbehalten.</p>
+            <div class="flex justify-center gap-x-6">
+                <a href="/impressum" class="hover:text-white transition-colors flex items-center gap-1">
+                    <span>📄</span> Impressum
+                </a>
+                <a href="/datenschutz" class="hover:text-white transition-colors flex items-center gap-1">
+                    <span>🔒</span> Datenschutz
+                </a>
+                <a href="/barrierefreiheit" class="hover:text-white transition-colors flex items-center gap-1">
+                    <span>♿</span> Barrierefreiheit
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections for animation
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            observer.observe(section);
+        });
+
+        // Initialize first section as visible
+        document.querySelector('section').style.opacity = '1';
+        document.querySelector('section').style.transform = 'translateY(0)';
+
+        // Enhanced Typewriter effect
+        const typewriterElement = document.getElementById('typewriter');
+        const texts = ['Vertrauen', 'Hochbau', 'Klinkerarbeiten', 'WDVS'];
+        let currentTextIndex = 0;
+        let currentCharIndex = 0;
+        let isDeleting = false;
+        let typeSpeed = 80;
+        let deleteSpeed = 50;
+        let pauseTime = 2000;
+
+        function typeWriter() {
+            const currentText = texts[currentTextIndex];
+            
+            if (isDeleting) {
+                typewriterElement.textContent = currentText.substring(0, currentCharIndex - 1);
+                currentCharIndex--;
+                
+                if (currentCharIndex === 0) {
+                    isDeleting = false;
+                    currentTextIndex = (currentTextIndex + 1) % texts.length;
+                    setTimeout(typeWriter, 500);
+                    return;
+                }
+                setTimeout(typeWriter, deleteSpeed);
+            } else {
+                typewriterElement.textContent = currentText.substring(0, currentCharIndex + 1);
+                currentCharIndex++;
+                
+                if (currentCharIndex === currentText.length) {
+                    isDeleting = true;
+                    setTimeout(typeWriter, pauseTime);
+                    return;
+                }
+                setTimeout(typeWriter, typeSpeed);
+            }
+        }
+
+        // Start typewriter effect after a short delay
+        setTimeout(typeWriter, 1000);
+
+        // Sticky Navigation and Progress Bar
+        const stickyNav = document.querySelector('.sticky-nav');
+        const progressBar = document.querySelector('.progress-bar');
+        const header = document.querySelector('header');
+        
+        let lastScrollY = window.scrollY;
+        
+        function updateScrollProgress() {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            
+            progressBar.style.width = scrollPercent + '%';
+            
+            // Show sticky nav after scrolling past header
+            if (scrollTop > header.offsetHeight) {
+                stickyNav.classList.add('visible');
+            } else {
+                stickyNav.classList.remove('visible');
+            }
+        }
+        
+        window.addEventListener('scroll', updateScrollProgress);
+        
+        // Parallax effect for 3D logo
+        const parallaxLogo = document.querySelector('.parallax-bg');
+        if (parallaxLogo) {
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const rate = scrolled * -0.5;
+                parallaxLogo.style.transform = `translateY(${rate}px)`;
+            });
+        }
+    </script>
+</body>
+</html>

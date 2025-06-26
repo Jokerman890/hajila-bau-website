@@ -78,22 +78,29 @@ export default function ModernHero({ onContactClick, onServicesClick }: ModernHe
 
       {/* Floating Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(6)].map((_, i) => (
+        {[
+          { left: 15, top: 20 },
+          { left: 85, top: 30 },
+          { left: 25, top: 70 },
+          { left: 70, top: 15 },
+          { left: 45, top: 85 },
+          { left: 10, top: 60 }
+        ].map((pos, i) => (
           <motion.div
             key={i}
             className="absolute w-2 h-2 bg-orange-400/20 rounded-full"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
+              left: `${pos.left}%`,
+              top: `${pos.top}%`,
             }}
             animate={{
               y: [-20, 20, -20],
               opacity: [0.2, 0.8, 0.2],
             }}
             transition={{
-              duration: 3 + Math.random() * 2,
+              duration: 3 + (i * 0.3),
               repeat: Infinity,
-              delay: Math.random() * 2,
+              delay: i * 0.4,
             }}
           />
         ))}

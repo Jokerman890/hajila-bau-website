@@ -88,8 +88,7 @@ hajila-website/
 │   └── lib/              # Utilities
 │       └── utils.ts      # Helper Functions
 ├── components.json        # shadcn/ui Konfiguration
-├── tailwind.config.ts     # Tailwind CSS Konfiguration
-├── next.config.mjs        # Next.js Konfiguration
+├── next.config.ts         # Next.js Konfiguration
 └── package.json          # Dependencies
 ```
 

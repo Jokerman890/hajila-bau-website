@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Merriweather, Open_Sans } from "next/font/google";
 import "./globals.css";
+import { TwentyFirstToolbar } from "@21st-extension/toolbar-next";
+import { ReactPlugin } from "@21st-extension/react";
 
 const merriweather = Merriweather({
   variable: "--font-merriweather",
@@ -57,6 +59,7 @@ export default function RootLayout({
       <body
         className={`${merriweather.variable} ${openSans.variable} antialiased`}
       >
+        <TwentyFirstToolbar config={{ plugins: [ReactPlugin] }} />
         {children}
       </body>
     </html>

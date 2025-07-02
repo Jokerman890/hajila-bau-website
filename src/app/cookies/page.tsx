@@ -21,7 +21,7 @@ export default function CookiesPage() {
               <div className="bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-lg p-6">
                 <p className="text-gray-200 text-lg leading-relaxed">
                   Unsere Website nutzt Cookies und ähnliche Technologien, einschließlich Drittanbieter wie 
-                  <span className="text-cyan-400 font-semibold"> Google Maps, Google Analytics, Google Ads</span> sowie 
+                  <span className="text-cyan-400 font-semibold">Google Analytics</span> sowie 
                   Hostingdienste durch <span className="text-cyan-400 font-semibold">Hostinger</span>. 
                   Diese Cookies helfen uns, unsere Website nutzerfreundlich, effektiv und sicher zu betreiben.
                 </p>
@@ -49,34 +49,10 @@ export default function CookiesPage() {
                   </div>
                   
                   <div className="flex items-start space-x-3">
-                    <span className="text-cyan-400 text-xl">⚙️</span>
-                    <div>
-                      <p className="font-semibold">Präferenz-Cookies:</p>
-                      <p className="text-gray-300">Speicherung individueller Einstellungen</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-3">
                     <span className="text-cyan-400 text-xl">📊</span>
                     <div>
                       <p className="font-semibold">Statistik-Cookies:</p>
                       <p className="text-gray-300">Analyse durch Google Analytics</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-3">
-                    <span className="text-cyan-400 text-xl">🎯</span>
-                    <div>
-                      <p className="font-semibold">Marketing-Cookies:</p>
-                      <p className="text-gray-300">Werbung durch Google Ads</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-3">
-                    <span className="text-cyan-400 text-xl">🗺️</span>
-                    <div>
-                      <p className="font-semibold">Interaktive Inhalte:</p>
-                      <p className="text-gray-300">Kartenanzeige durch Google Maps</p>
                     </div>
                   </div>
                 </div>
@@ -89,7 +65,7 @@ export default function CookiesPage() {
                     <p><strong>Notwendige Cookies:</strong> Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse)</p>
                   </div>
                   <div className="bg-slate-800/50 rounded-lg p-4">
-                    <p><strong>Analyse-/Marketing-Cookies:</strong> Art. 6 Abs. 1 lit. a DSGVO (Einwilligung)</p>
+                    <p><strong>Analyse-Cookies:</strong> Art. 6 Abs. 1 lit. a DSGVO (Einwilligung)</p>
                   </div>
                 </div>
               </div>

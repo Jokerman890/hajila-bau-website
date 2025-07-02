@@ -6,6 +6,9 @@ import * as THREE from 'three';
 import { ChevronDown, Sparkles, Zap, Cpu, Palette, Code, Globe, Layers, Building2, Hammer, LeafyGreen, Phone, Mail, MapPin, Clock, Scale, CalendarDays, Landmark, User, Accessibility, FileText, Lock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { GlassCard, Tilt } from './glass-card';
+import GlowingServiceGrid from './glowing-service-grid';
+import BilderKarussel from './bilder-karussel';
+import { HeroSplineBackground } from './construction-hero-section';
 
 // Particle Wave Background Component
 interface ParticleWaveProps {
@@ -665,27 +668,45 @@ const PremiumWebsite: React.FC = () => {
       items: [
         {
           icon: <Building2 className="h-4 w-4" />,
-          text: "Klinkerarbeiten",
-          description: "Hochwertige Fassaden",
-          to: "/klinkerarbeiten"
+          text: "Klinkerarbeiten & Verblendmauerwerk",
+          description: "Hochwertige Klinkerfassaden",
+          to: "/leistungen/klinkerarbeiten"
         },
         {
           icon: <Hammer className="h-4 w-4" />,
-          text: "Rohbau",
-          description: "Fundament bis Dachstuhl",
-          to: "/rohbau"
+          text: "Klinker-Detailarbeiten",
+          description: "Bögen, Gesimse, Pfeiler",
+          to: "/leistungen/klinker-detailarbeiten"
         },
         {
           icon: <Layers className="h-4 w-4" />,
-          text: "WDVS",
-          description: "Energieeffiziente Dämmung",
-          to: "/wdvs"
+          text: "Wärmedämmverbundsysteme",
+          description: "WDVS mit Klinkeroptik",
+          to: "/leistungen/wdvs"
         },
         {
-          icon: <LeafyGreen className="h-4 w-4" />,
-          text: "Garten- & Landschaftsbau",
-          description: "Außenanlagen mit Klinker",
-          to: "/gartenbau"
+          icon: <Zap className="h-4 w-4" />,
+          text: "Schornstein- & Kaminverkleidungen",
+          description: "Verkleidungen mit Klinker",
+          to: "/leistungen/schornstein-kamin"
+        },
+        {
+          icon: <Cpu className="h-4 w-4" />,
+          text: "Betonbau",
+          description: "Fundamente, Bodenplatten",
+          to: "/leistungen/betonbau"
+        },
+        {
+          icon: <Code className="h-4 w-4" />,
+          text: "Eisenflechterarbeiten",
+          description: "Bewehrung binden",
+          to: "/leistungen/eisenflechterarbeiten"
+        },
+        {
+          icon: <Hammer className="h-4 w-4" />,
+          text: "Bauausführung im Rohbau",
+          description: "Komplette Rohbauten",
+          to: "/leistungen/rohbau"
         }
       ]
     },
@@ -696,19 +717,19 @@ const PremiumWebsite: React.FC = () => {
           icon: <Building2 className="h-4 w-4" />,
           text: "Wohnpark Osnabrück",
           description: "2024 · Osnabrück",
-          to: "/referenzen/wohnpark"
+          to: "/referenzen/wohnpark-osnabrueck"
         },
         {
           icon: <Building2 className="h-4 w-4" />,
           text: "Logistikhalle Wallenhorst",
           description: "2023 · Wallenhorst",
-          to: "/referenzen/logistikhalle"
+          to: "/referenzen/logistikhalle-wallenhorst"
         },
         {
           icon: <Building2 className="h-4 w-4" />,
-          text: "EFH Klinkervilla",
+          text: "EFH Klinkervilla Belm",
           description: "2022 · Belm",
-          to: "/referenzen/klinkervilla"
+          to: "/referenzen/klinkervilla-belm"
         }
       ]
     },
@@ -826,8 +847,9 @@ const PremiumWebsite: React.FC = () => {
           background-color: ${currentTheme === 'dark' ? '#0A1E33' : '#F8FAFC'} !important;
         }
       `}</style>
-      <ParticleWave />
-      <BlueprintGrid />
+      <div className="fixed inset-0 z-0">
+        <HeroSplineBackground />
+      </div>
 
       {/* Cookie Banner */}
       <AnimatePresence>
@@ -946,20 +968,7 @@ const PremiumWebsite: React.FC = () => {
                 </motion.a>
               </div>
 
-              <div className="flex items-center gap-8 pt-4">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-[var(--blue-start)] font-['Merriweather']">2016</div>
-                  <div className="text-sm text-muted-foreground font-['Open_Sans']">Gegründet</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-[var(--gold)]">HRB 210702</div>
-                  <div className="text-sm text-muted-foreground font-['Open_Sans']">Handelsregister</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-[var(--blue-end)]">Osnabrück</div>
-                  <div className="text-sm text-muted-foreground font-['Open_Sans']">Standort</div>
-                </div>
-              </div>
+              {/* Unternehmensinformationen entfernt */}
             </motion.div>
 
             <motion.div
@@ -974,7 +983,7 @@ const PremiumWebsite: React.FC = () => {
         </div>
       </section>
 
-      {/* Services Section (Features) */}
+      {/* Services Section (Features) - Integrated with GlowingServiceGrid */}
       <section id="services" className="relative z-10 py-20 px-6">
         <div className="mx-auto max-w-7xl">
           <motion.div
@@ -993,32 +1002,7 @@ const PremiumWebsite: React.FC = () => {
               Qualität und Präzision für Ihr Bauvorhaben
             </p>
           </motion.div>
-
-          <AnimatedGroup
-            preset="blur-slide"
-            className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-          >
-            {features.map((feature, index) => (
-              <Tilt
-                key={index}
-                rotationFactor={5}
-                springOptions={{ stiffness: 300, damping: 20 }}
-                className="group"
-              >
-                <div className="h-full p-6 rounded-2xl bg-card/50 border border-border/50 backdrop-blur-sm hover:bg-card/80 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-[var(--blue-start)]/10">
-                  <div className="mb-4">
-                    {feature.icon}
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3 text-foreground font-['Merriweather']">
-                    {feature.title}
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed font-['Open_Sans']">
-                    {feature.description}
-                  </p>
-                </div>
-              </Tilt>
-            ))}
-          </AnimatedGroup>
+          <GlowingServiceGrid />
         </div>
       </section>
 
@@ -1033,7 +1017,7 @@ const PremiumWebsite: React.FC = () => {
             className="text-center mb-16"
           >
             <h2 className="text-4xl lg:text-5xl font-bold mb-6 font-['Merriweather']">
-              <span className="bg-gradient-to-r from-[var(--gold)] to-[var(--blue-end)] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[var(--blue-end)] to-[var(--gold)] bg-clip-text text-transparent">
                 Unsere Referenzen
               </span>
             </h2>
@@ -1041,18 +1025,7 @@ const PremiumWebsite: React.FC = () => {
               Erfolgreich abgeschlossene Projekte
             </p>
           </motion.div>
-
-          <AnimatedGroup
-            preset="slide"
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {references.map((ref, index) => (
-              <div key={index} className="p-6 rounded-2xl bg-card/50 border border-border/50 backdrop-blur-sm">
-                <h3 className="text-xl font-semibold text-foreground mb-2 font-['Merriweather']">{ref.name}</h3>
-                <p className="text-muted-foreground font-['Open_Sans']">{ref.year} · {ref.location}</p>
-              </div>
-            ))}
-          </AnimatedGroup>
+          <BilderKarussel />
         </div>
       </section>
 
@@ -1103,8 +1076,8 @@ const PremiumWebsite: React.FC = () => {
               <ul className="space-y-3 text-muted-foreground font-['Open_Sans']">
                 <li className="flex items-center gap-2"><CalendarDays className="h-5 w-5 text-[var(--gold)] shrink-0" /> Gegründet: 03.08.2016</li>
                 <li className="flex items-center gap-2"><Landmark className="h-5 w-5 text-[var(--blue-start)] shrink-0" /> Handelsregister: HRB 210702 (AG Osnabrück)</li>
-                <li className="flex items-center gap-2"><User className="h-5 w-5 text-[var(--blue-end)] shrink-0" /> Geschäftsführerin: <strong className="text-foreground">S. Omerovic</strong></li>
-                <li className="flex items-center gap-2"><Scale className="h-5 w-5 text-[var(--gold)] shrink-0" /> Letzte Bilanz: 01.03.2024 (GJ 2022)</li>
+                <li className="flex items-center gap-2"><User className="h-5 w-5 text-[var(--blue-end)] shrink-0" /> Geschäftsführerin: <strong className="text-foreground">Samia Omerovic</strong></li>
+                <li className="flex items-center gap-2"><Scale className="h-5 w-5 text-[var(--gold)] shrink-0" /> USt-ID: DE401804294</li>
                 <li className="flex items-center gap-2"><Clock className="h-5 w-5 text-[var(--blue-start)] shrink-0" /> Öffnungszeiten: Montag – Samstag 06:00 – 18:00 Uhr</li>
               </ul>
             </motion.div>
@@ -1132,8 +1105,8 @@ const PremiumWebsite: React.FC = () => {
             </p>
             <div className="space-y-4 mb-8 text-foreground font-['Open_Sans']">
               <p className="flex items-center justify-center gap-2"><MapPin className="h-5 w-5 text-[var(--gold)]" /> Wildeshauser Straße 3, 49088 Osnabrück</p>
-              <p className="flex items-center justify-center gap-2"><Phone className="h-5 w-5 text-[var(--blue-start)]" /> Büro 0541 44026213 · Mobil 0152 23000800</p>
-              <p className="flex items-center justify-center gap-2"><Mail className="h-5 w-5 text-[var(--blue-end)]" /> E-Mail info@hajjila-bau.de</p>
+              <p className="flex items-center justify-center gap-2"><Phone className="h-5 w-5 text-[var(--blue-start)]" /> Büro 0541 44026213 · Mobil 0152 23000800 · Fax 0541 44097451</p>
+              <p className="flex items-center justify-center gap-2"><Mail className="h-5 w-5 text-[var(--blue-end)]" /> E-Mail info@hajila-bau.de</p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.a
@@ -1160,8 +1133,14 @@ const PremiumWebsite: React.FC = () => {
       {/* Footer */}
       <footer className="relative z-10 py-12 px-6 border-t border-border/50 bg-background/80 backdrop-blur-md">
         <div className="mx-auto max-w-7xl text-center text-sm text-muted-foreground font-['Open_Sans']">
-          <p className="mb-2">Hajila Bau GmbH · Geschäftsführerin S. Omerovic · HRB 210702, Amtsgericht Osnabrück</p>
-          <p className="mb-4">(USt-ID wird nachgereicht.)</p>
+          <div className="flex justify-center items-center mb-4">
+            <img src="https://hajila-bau.de/logo_2d.png" alt="Hajila Bau Logo" className="h-8 w-8 object-contain mr-2" />
+            <span className="text-xl font-bold bg-gradient-to-r from-[var(--blue-start)] to-[var(--blue-end)] bg-clip-text text-transparent font-['Merriweather']">
+              Hajila Bau GmbH
+            </span>
+          </div>
+          <p className="mb-2">Hajila Bau GmbH · Geschäftsführerin Samia Omerovic · HRB 210702, Amtsgericht Osnabrück</p>
+          <p className="mb-4">USt-ID: DE401804294</p>
           <p className="mb-4">© 2025 Hajila Bau GmbH – Alle Rechte vorbehalten.</p>
           <div className="flex justify-center gap-x-6">
             <a href="/impressum" className="hover:text-foreground transition-colors flex items-center gap-1"><FileText className="h-4 w-4" /> Impressum</a>

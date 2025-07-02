@@ -6,9 +6,14 @@ Eine moderne, professionelle Website für Hajila Bau GmbH - Ihr Partner für Hoc
 
 Hajila Bau GmbH ist ein etabliertes Bauunternehmen in Osnabrück, spezialisiert auf:
 - Klinkerarbeiten & Verblendmauerwerk
-- Hochbau & Betonbau
-- WDVS (Wärmedämm-Verbundsysteme)
-- Professionelle Baudienstleistungen
+- Klinker-Detailarbeiten (z. B. Bögen, Gesimse, Pfeiler)
+- Wärmedämmverbundsysteme mit Klinkeroptik
+- Schornstein- und Kaminverkleidungen
+- Betonbau (Fundamente, Bodenplatten etc.)
+- Eisenflechterarbeiten (Bewehrung binden)
+- Bauausführung im Rohbau (komplette Rohbauten)
+
+Seit 2016 steht die Hajila Bau GmbH für zuverlässige Bauleistungen im Raum Osnabrück. Als spezialisierter Handwerksbetrieb für Klinkerarbeiten und Rohbau setzen wir auf Qualität, Termintreue und persönliche Betreuung. Unsere Kunden profitieren von langjähriger Erfahrung und sauberer handwerklicher Ausführung. Wir freuen uns auf Ihr Bauprojekt!
 
 ## ✨ Website Features
 
@@ -127,6 +132,20 @@ Die Website ist vollständig responsive und optimiert für:
 - **3D Graphics**: Three.js
 - **Icons**: Lucide React
 - **Fonts**: Google Fonts (Merriweather, Open Sans)
+
+## 🛠️ Entwicklungsrichtlinien
+
+- **Branching-Strategie**: Für jede neue Funktion, die für die Seite generiert wird, soll ein extra Branch erstellt werden. Dies ermöglicht eine isolierte Entwicklung und Überprüfung neuer Features vor der Integration in den Haupt-Branch.
+
+## 📜 Changelog
+
+### Version 1.0.0 (02.07.2025)
+- Initiale Erstellung der Website für Hajila Bau GmbH.
+- Implementierung von Premium Glassmorphism-Design mit 3D-Effekten.
+- Hinzufügung von responsivem Design für alle Bildschirmgrößen.
+- Integration von Dark/Light Mode Toggle.
+- Erstellung von rechtlichen Seiten (Impressum, Datenschutz, Cookies) für DSGVO-Konformität.
+- Einrichtung der Speicherbank für Cline, angepasst an die Hajila Bau Webseite.
 
 ## 📞 Kontakt
 

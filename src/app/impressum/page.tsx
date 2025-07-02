@@ -37,15 +37,15 @@ export default function ImpressumPage() {
                 <p className="text-gray-200">Geschäftsführerin: Samiha Omerovic</p>
               </div>
 
-              <div>
-                <h3 className="text-xl font-semibold text-cyan-400 mb-3">📞 Kontakt:</h3>
-                <div className="text-gray-200 space-y-1">
-                  <p>Telefon Büro: <a href="tel:054144026213" className="text-cyan-400 hover:text-cyan-300">0541 44026213</a></p>
-                  <p>Mobil: <a href="tel:015223000800" className="text-cyan-400 hover:text-cyan-300">0152 23000800</a></p>
-                  <p>Fax: 0541 44097451</p>
-                  <p>E-Mail: <a href="mailto:hajila.bau@icloud.com" className="text-cyan-400 hover:text-cyan-300">hajila.bau@icloud.com</a></p>
+                <div>
+                  <h3 className="text-xl font-semibold text-cyan-400 mb-3">📞 Kontakt:</h3>
+                  <div className="text-gray-200 space-y-1">
+                    <p>Telefon Büro: <a href="tel:054144026213" className="text-cyan-400 hover:text-cyan-300">0541 44026213</a></p>
+                    <p>Mobil: <a href="tel:015223000800" className="text-cyan-400 hover:text-cyan-300">0152 23000800</a></p>
+                    <p>Fax: 0541 44097451</p>
+                    <p>E-Mail: <a href="mailto:info@hajila-bau.de" className="text-cyan-400 hover:text-cyan-300">info@hajila-bau.de</a></p>
+                  </div>
                 </div>
-              </div>
 
               <div>
                 <h3 className="text-xl font-semibold text-cyan-400 mb-3">📋 Registereintrag:</h3>
@@ -57,14 +57,14 @@ export default function ImpressumPage() {
 
               <div>
                 <h3 className="text-xl font-semibold text-cyan-400 mb-3">💶 Umsatzsteuer-ID:</h3>
-                <p className="text-gray-200">DE123456789 (Beispiel – bitte tatsächliche USt-ID einsetzen)</p>
+                <p className="text-gray-200">DE401804294</p>
               </div>
 
               <div>
                 <h3 className="text-xl font-semibold text-cyan-400 mb-3">🛡️ Berufshaftpflichtversicherung:</h3>
                 <div className="text-gray-200">
-                  <p>Versicherungsträger: [Name der Versicherung einfügen]</p>
-                  <p>Anschrift: [Adresse des Versicherers einfügen]</p>
+                  <p>Versicherungsträger: R+V</p>
+                  <p>Anschrift: [Adresse des Versicherers nicht verfügbar]</p>
                   <p>Geltungsbereich: Deutschland / EU (je nach Police)</p>
                 </div>
               </div>

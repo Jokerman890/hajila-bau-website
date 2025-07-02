@@ -245,11 +245,7 @@ const FloatingElements = () => {
   );
 };
 
-interface HeroSplineBackgroundProps {
-  // Props can be added if needed
-}
-
-export function HeroSplineBackground({}: HeroSplineBackgroundProps) {
+export function HeroSplineBackground() {
   const [isClient, setIsClient] = React.useState(false);
   const mouseRef = React.useRef<THREE.Vector2>(new THREE.Vector2(-10, -10));
 
@@ -275,12 +271,7 @@ export function HeroSplineBackground({}: HeroSplineBackgroundProps) {
   );
 }
 
-interface ScreenshotSectionProps {
-  screenshotRef: React.RefObject<HTMLDivElement | null>;
-  // Additional props can be added if needed
-}
-
-function ScreenshotSection({ screenshotRef }: ScreenshotSectionProps) {
+function ScreenshotSection({ screenshotRef }: { screenshotRef: React.RefObject<HTMLDivElement | null> }) {
   return (
     <section className="relative z-10 container mx-auto px-4 md:px-6 lg:px-8 mt-11 md:mt-12">
       <motion.div 
@@ -304,11 +295,8 @@ function ScreenshotSection({ screenshotRef }: ScreenshotSectionProps) {
   );
 }
 
-interface HeroContentProps {
-  // Props can be added if needed
-}
 
-function HeroContent({}: HeroContentProps) {
+function HeroContent() {
   return (
     <div className="text-white px-4 max-w-screen-xl mx-auto w-full flex flex-col lg:flex-row justify-between items-start lg:items-center py-16 relative z-40">
       <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center pointer-events-none z-50">
@@ -397,11 +385,7 @@ function HeroContent({}: HeroContentProps) {
   );
 }
 
-interface NavbarProps {
-  // Props can be added if needed
-}
-
-function Navbar({}: NavbarProps) {
+function Navbar() {
   return (
     <motion.nav 
       className="fixed top-0 left-0 right-0 z-50 bg-slate-900/30 backdrop-blur-md border-b border-slate-700/20 rounded-b-xl"
@@ -461,11 +445,7 @@ function Navbar({}: NavbarProps) {
   );
 }
 
-interface ConstructionHeroSectionProps {
-  // Props can be added if needed
-}
-
-const ConstructionHeroSection: React.FC<ConstructionHeroSectionProps> = ({}) => {
+const ConstructionHeroSection: React.FC<Record<string, never>> = ({}) => {
   const screenshotRef = useRef<HTMLDivElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
 

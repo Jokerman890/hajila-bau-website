@@ -1,337 +1,14 @@
 "use client";
 
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
-import * as THREE from 'three';
 import { ChevronDown, Sparkles, Zap, Cpu, Code, Layers, Building2, Hammer, Phone, Mail, MapPin, Clock, Scale, CalendarDays, Landmark, User, FileText, Lock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { GlassCard } from './glass-card';
 import GlowingServiceGrid from './glowing-service-grid';
 import BilderKarussel from './bilder-karussel';
 import { HeroSplineBackground } from './construction-hero-section';
-
-// Particle Wave Background Component
-interface ParticleWaveProps {
-  className?: string;
-}
-
-const ParticleWave: React.FC<ParticleWaveProps> = ({ className = '' }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const sceneRef = useRef<{
-    scene: THREE.Scene;
-    camera: THREE.PerspectiveCamera;
-    renderer: THREE.WebGLRenderer;
-    particles: THREE.Points;
-    particleMaterial: THREE.ShaderMaterial;
-    animationId: number | null;
-    mouse: THREE.Vector2;
-  } | null>(null);
-
-  const getCurrentTheme = () => {
-    return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-  };
-
-  const getBackgroundColor = (theme: string) => {
-    return theme === 'dark'
-      ? new THREE.Color(0x0A1E33) // Dark blue from brand tokens
-      : new THREE.Color(0xF8FAFC);
-  };
-
-  const getParticleColor = (theme: string) => {
-    return theme === 'dark'
-      ? new THREE.Vector3(0.0, 0.76, 0.89) // Blue from brand tokens
-      : new THREE.Vector3(0.2, 0.2, 0.8);
-  };
-
-  const particleVertex = `
-    attribute float scale;
-    uniform float uTime;
-    uniform vec2 uMouse;
-    void main() {
-      vec3 p = position;
-      float s = scale;
-      
-      // Wave animation
-      p.y += (sin(p.x * 0.5 + uTime) * 0.3) + (cos(p.z * 0.3 + uTime) * 0.2);
-      p.x += sin(p.z * 0.2 + uTime) * 0.1;
-      
-      // Mouse interaction
-      float mouseDistance = distance(vec2(p.x, p.z), uMouse * 10.0);
-      p.y += max(0.0, 2.0 - mouseDistance) * 0.5;
-      
-      s += (sin(p.x + uTime) * 0.3) + (cos(p.z + uTime) * 0.2);
-      
-      vec4 mvPosition = modelViewMatrix * vec4(p, 1.0);
-      gl_PointSize = s * 8.0 * (1.0 / -mvPosition.z);
-      gl_Position = projectionMatrix * mvPosition;
-    }
-  `;
-
-  const particleFragment = `
-    uniform vec3 uColor;
-    uniform float uTime;
-    void main() {
-      float alpha = 0.6 + sin(uTime * 2.0) * 0.2;
-      gl_FragColor = vec4(uColor, alpha);
-    }
-  `;
-
-  const initScene = () => {
-    if (!canvasRef.current) return;
-
-    const canvas = canvasRef.current;
-    const winWidth = window.innerWidth;
-    const winHeight = window.innerHeight;
-    const aspectRatio = winWidth / winHeight;
-
-    const camera = new THREE.PerspectiveCamera(75, aspectRatio, 0.01, 1000);
-    camera.position.set(0, 8, 8);
-
-    const scene = new THREE.Scene();
-    
-    // Set scene background
-    const currentTheme = getCurrentTheme();
-    scene.background = getBackgroundColor(currentTheme);
-
-    const renderer = new THREE.WebGLRenderer({
-      canvas,
-      antialias: true,
-      alpha: false, // Set to false for solid background
-    });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(winWidth, winHeight);
-
-    // Create particles
-    const gap = 0.4;
-    const amountX = 120;
-    const amountY = 120;
-    const particleNum = amountX * amountY;
-    const particlePositions = new Float32Array(particleNum * 3);
-    const particleScales = new Float32Array(particleNum);
-
-    let i = 0;
-    let j = 0;
-    for (let ix = 0; ix < amountX; ix++) {
-      for (let iy = 0; iy < amountY; iy++) {
-        particlePositions[i] = ix * gap - ((amountX * gap) / 2);
-        particlePositions[i + 1] = 0;
-        particlePositions[i + 2] = iy * gap - ((amountY * gap) / 2);
-        particleScales[j] = Math.random() * 2 + 0.5;
-        i += 3;
-        j++;
-      }
-    }
-
-    const particleGeometry = new THREE.BufferGeometry();
-    particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
-    particleGeometry.setAttribute('scale', new THREE.BufferAttribute(particleScales, 1));
-
-    const particleMaterial = new THREE.ShaderMaterial({
-      transparent: true,
-      vertexShader: particleVertex,
-      fragmentShader: particleFragment,
-      uniforms: {
-        uTime: { value: 0 },
-        uColor: { value: getParticleColor(getCurrentTheme()) },
-        uMouse: { value: new THREE.Vector2(-10, -10) }
-      }
-    });
-
-    const particles = new THREE.Points(particleGeometry, particleMaterial);
-    scene.add(particles);
-
-    const mouse = new THREE.Vector2(-10, -10);
-
-    sceneRef.current = {
-      scene,
-      camera,
-      renderer,
-      particles,
-      particleMaterial,
-      animationId: null,
-      mouse
-    };
-  };
-
-  const animate = () => {
-    if (!sceneRef.current) return;
-
-    const { scene, camera, renderer, particleMaterial, mouse } = sceneRef.current;
-
-    particleMaterial.uniforms.uTime.value += 0.02;
-    particleMaterial.uniforms.uMouse.value = mouse;
-
-    const currentTheme = getCurrentTheme();
-    particleMaterial.uniforms.uColor.value = getParticleColor(currentTheme);
-    renderer.setClearColor(getBackgroundColor(currentTheme));
-
-    camera.lookAt(scene.position);
-    renderer.render(scene, camera);
-
-    sceneRef.current.animationId = requestAnimationFrame(animate);
-  };
-
-  const handleResize = () => {
-    if (!sceneRef.current) return;
-
-    const { camera, renderer } = sceneRef.current;
-    const winWidth = window.innerWidth;
-    const winHeight = window.innerHeight;
-
-    camera.aspect = winWidth / winHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(winWidth, winHeight);
-  };
-
-  const handleMouseMove = (e: MouseEvent) => {
-    if (!sceneRef.current) return;
-
-    sceneRef.current.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-    sceneRef.current.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-  };
-
-    useEffect(() => {
-    initScene();
-    animate();
-
-    const handleResizeEvent = () => handleResize();
-    const handleMouseMoveEvent = (e: MouseEvent) => handleMouseMove(e);
-
-    window.addEventListener('resize', handleResizeEvent);
-    window.addEventListener('mousemove', handleMouseMoveEvent);
-
-    return () => {
-      if (sceneRef.current?.animationId) {
-        cancelAnimationFrame(sceneRef.current.animationId);
-      }
-      window.removeEventListener('resize', handleResizeEvent);
-      window.removeEventListener('mousemove', handleMouseMoveEvent);
-
-      if (sceneRef.current) {
-        const { scene, renderer, particles } = sceneRef.current;
-        scene.remove(particles);
-        if (particles.geometry) particles.geometry.dispose();
-        if (particles.material) {
-          if (Array.isArray(particles.material)) {
-            particles.material.forEach((material: THREE.Material) => material.dispose());
-          } else {
-            (particles.material as THREE.Material).dispose();
-          }
-        }
-        renderer.dispose();
-      }
-    };
-  }, []);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className={`fixed inset-0 pointer-events-none ${className}`}
-      style={{
-        width: '100vw',
-        height: '100vh',
-        zIndex: -1
-      }}
-    />
-  );
-};
-
-// Blueprint Grid Background Component
-interface BlueprintGridProps {
-  className?: string;
-  gridColor?: string;
-  dotColor?: string;
-  gridSize?: number; // Size of each grid square in pixels
-  dotSize?: number; // Size of the dots in pixels
-}
-
-const BlueprintGrid: React.FC<BlueprintGridProps> = ({
-  className,
-  gridColor = 'rgba(0, 195, 227, 0.1)', // Blue from brand tokens, very subtle
-  dotColor = 'rgba(0, 195, 227, 0.2)', // Blue from brand tokens, slightly more visible
-  gridSize = 40,
-  dotSize = 2
-}) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationFrameId = useRef<number | null>(null);
-
-  const drawGrid = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const dpr = window.devicePixelRatio || 1;
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
-    canvas.style.width = `${width}px`;
-    canvas.style.height = `${height}px`;
-
-    ctx.scale(dpr, dpr);
-
-    ctx.clearRect(0, 0, width, height);
-
-    // Draw grid lines
-    ctx.strokeStyle = gridColor;
-    ctx.lineWidth = 0.5;
-
-    for (let x = 0; x <= width; x += gridSize) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, height);
-      ctx.stroke();
-    }
-
-    for (let y = 0; y <= height; y += gridSize) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(width, y);
-      ctx.stroke();
-    }
-
-    // Draw dots at grid intersections
-    ctx.fillStyle = dotColor;
-    for (let x = 0; x <= width; x += gridSize) {
-      for (let y = 0; y <= height; y += gridSize) {
-        ctx.beginPath();
-        ctx.arc(x, y, dotSize / 2, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-  }, [gridColor, dotColor, gridSize, dotSize]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (animationFrameId.current) {
-        cancelAnimationFrame(animationFrameId.current);
-      }
-      animationFrameId.current = requestAnimationFrame(drawGrid);
-    };
-
-    handleResize(); // Initial draw
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      if (animationFrameId.current) {
-        cancelAnimationFrame(animationFrameId.current);
-      }
-    };
-  }, [drawGrid]);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className={cn("fixed inset-0 pointer-events-none z-[-2]", className)}
-    />
-  );
-};
-
+import Image from 'next/image';
 
 // Typewriter Component
 interface TypewriterProps {
@@ -352,7 +29,7 @@ interface TypewriterProps {
   cursorClassName?: string
 }
 
-const Typewriter = ({
+const Typewriter: React.FC<TypewriterProps> = ({
   text,
   speed = 50,
   initialDelay = 0,
@@ -376,13 +53,13 @@ const Typewriter = ({
       },
     },
   },
-}: TypewriterProps) => {
+}) => {
   const [displayText, setDisplayText] = useState("")
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isDeleting, setIsDeleting] = useState(false)
   const [currentTextIndex, setCurrentTextIndex] = useState(0)
 
-  const texts = Array.isArray(text) ? text : [text]
+  const texts = useMemo(() => Array.isArray(text) ? text : [text], [text]);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout
@@ -460,141 +137,6 @@ const Typewriter = ({
     </div>
   )
 }
-
-
-// Animated Group Component
-interface AnimatedGroupProps {
-  children: React.ReactNode;
-  className?: string;
-  variants?: {
-    container?: Variants;
-    item?: Variants;
-  };
-  preset?: 'fade' | 'slide' | 'scale' | 'blur' | 'blur-slide';
-}
-
-const AnimatedGroup: React.FC<AnimatedGroupProps> = ({
-  children,
-  className,
-  variants,
-  preset = 'slide',
-}) => {
-  const defaultContainerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const presetVariants = {
-    fade: {
-      container: defaultContainerVariants,
-      item: {
-        hidden: { opacity: 0 },
-        visible: { opacity: 1 },
-      },
-    },
-    slide: {
-      container: defaultContainerVariants,
-      item: {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0 },
-      },
-    },
-    scale: {
-      container: defaultContainerVariants,
-      item: {
-        hidden: { opacity: 0, scale: 0.8 },
-        visible: { opacity: 1, scale: 1 },
-      },
-    },
-    blur: {
-      container: defaultContainerVariants,
-      item: {
-        hidden: { opacity: 0, filter: 'blur(4px)' },
-        visible: { opacity: 1, filter: 'blur(0px)' },
-      },
-    },
-    'blur-slide': {
-      container: defaultContainerVariants,
-      item: {
-        hidden: { opacity: 0, filter: 'blur(4px)', y: 20 },
-        visible: { opacity: 1, filter: 'blur(0px)', y: 0 },
-      },
-    },
-  };
-
-  const selectedVariants = preset ? presetVariants[preset] : { container: defaultContainerVariants, item: { hidden: { opacity: 0 }, visible: { opacity: 1 } } };
-  const containerVariants = variants?.container || selectedVariants.container;
-  const itemVariants = variants?.item || selectedVariants.item;
-
-  return (
-    <motion.div
-      initial='hidden'
-      animate='visible'
-      variants={containerVariants}
-      className={cn(className)}
-    >
-      {React.Children.map(children, (child, index) => (
-        <motion.div key={index} variants={itemVariants}>
-          {child}
-        </motion.div>
-      ))}
-    </motion.div>
-  );
-};
-
-// 3D Logo Component
-const Logo3D: React.FC = () => {
-  const logoRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const logo = logoRef.current;
-    if (!logo) return;
-
-    const animate = () => {
-      const time = Date.now() * 0.001;
-      logo.style.transform = `
-        rotateY(${Math.sin(time * 0.5) * 10}deg) 
-        rotateX(${Math.cos(time * 0.3) * 5}deg)
-        translateZ(${Math.sin(time * 0.7) * 5}px)
-      `;
-      requestAnimationFrame(animate);
-    };
-    animate();
-  }, []);
-
-  return (
-    <div 
-      ref={logoRef}
-      className="relative w-16 h-16 [transform-style:preserve-3d] transition-transform duration-300"
-    >
-      {/* H Letter - Front Face */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37] to-[#B8962F] rounded-lg shadow-lg [transform:translateZ(8px)]">
-        <div className="flex items-center justify-center h-full">
-          <span className="text-2xl font-bold text-white font-['Merriweather']">H</span>
-        </div>
-      </div>
-      
-      {/* H Letter - Back Face */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#00C3E3] to-[#005B9F] rounded-lg shadow-lg [transform:translateZ(-8px)_rotateY(180deg)]">
-        <div className="flex items-center justify-center h-full">
-          <span className="text-2xl font-bold text-white font-['Merriweather']">B</span>
-        </div>
-      </div>
-      
-      {/* Side Faces */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37]/80 to-[#00C3E3]/80 rounded-lg [transform:rotateY(90deg)_translateZ(8px)] w-4"></div>
-      <div className="absolute inset-0 bg-gradient-to-r from-[#00C3E3]/80 to-[#D4AF37]/80 rounded-lg [transform:rotateY(-90deg)_translateZ(8px)] w-4"></div>
-      <div className="absolute inset-0 bg-gradient-to-b from-[#D4AF37]/60 to-[#00C3E3]/60 rounded-lg [transform:rotateX(90deg)_translateZ(8px)] h-4"></div>
-      <div className="absolute inset-0 bg-gradient-to-b from-[#00C3E3]/60 to-[#D4AF37]/60 rounded-lg [transform:rotateX(-90deg)_translateZ(8px)] h-4"></div>
-    </div>
-  );
-};
-
 
 // Navigation Component
 interface NavItem {
@@ -721,45 +263,6 @@ const PremiumWebsite: React.FC = () => {
     { text: "Kontakt" }
   ];
 
-  const features = [
-    {
-      icon: <Layers className="h-8 w-8 text-[#005B9F]" />,
-      title: "WDVS mit Klinkeroptik",
-      description: "Energieeffiziente WDVS-Lösungen mit authentischer Klinkeroptik für moderne Gebäude."
-    },
-    {
-      icon: <Sparkles className="h-8 w-8 text-[#00C3E3]" />,
-      title: "Klinker-Detailarbeiten",
-      description: "Präzise Detailarbeiten wie Bögen, Gesimse und Pfeiler für architektonische Akzente."
-    },
-    {
-      icon: <Zap className="h-8 w-8 text-[#D4AF37]" />,
-      title: "Schornstein- und Kaminverkleidungen",
-      description: "Hochwertige Verkleidungen für Schornsteine und Kamine mit Klinkermaterialien."
-    },
-    {
-      icon: <Cpu className="h-8 w-8 text-[#00C3E3]" />,
-      title: "Betonbau",
-      description: "Fundamente, Bodenplatten und weitere Betonarbeiten als solide Basis für Ihr Bauvorhaben."
-    },
-    {
-      icon: <Code className="h-8 w-8 text-[#005B9F]" />,
-      title: "Eisenflechterarbeiten",
-      description: "Professionelle Bewehrungsarbeiten - Bewehrung binden für stabile Konstruktionen."
-    },
-    {
-      icon: <Hammer className="h-8 w-8 text-[#D4AF37]" />,
-      title: "Bauausführung im Rohbau",
-      description: "Komplette Rohbauten vom Fundament bis zum Dachstuhl - Ihr Partner für den gesamten Rohbau."
-    }
-  ];
-
-  const references = [
-    { name: "Wohnpark Osnabrück", year: "2024", location: "Osnabrück" },
-    { name: "Logistikhalle Wallenhorst", year: "2023", location: "Wallenhorst" },
-    { name: "EFH Klinkervilla", year: "2022", location: "Belm" },
-  ];
-
   return (
     <div className={`min-h-screen overflow-hidden relative font-['Open_Sans'] ${currentTheme === 'dark' ? 'dark' : 'light'}`} style={{
       backgroundColor: currentTheme === 'dark' ? '#0A1E33' : '#F8FAFC',
@@ -858,7 +361,7 @@ const PremiumWebsite: React.FC = () => {
         <div className="mx-auto max-w-7xl px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <img src="https://hajila-bau.de/logo_2d.png" alt="Hajila Bau Logo" className="h-8 w-8 object-contain" />
+              <Image src="https://hajila-bau.de/logo_2d.png" alt="Hajila Bau Logo" className="h-8 w-8 object-contain" width={32} height={32} priority />
               <span className="text-xl font-bold bg-gradient-to-r from-[var(--blue-start)] to-[var(--blue-end)] bg-clip-text text-transparent font-['Merriweather']">
                 Hajila Bau GmbH
               </span>
@@ -1113,7 +616,7 @@ const PremiumWebsite: React.FC = () => {
       <footer className="relative z-10 py-12 px-6 border-t border-border/50 bg-background/80 backdrop-blur-md">
         <div className="mx-auto max-w-7xl text-center text-sm text-muted-foreground font-['Open_Sans']">
           <div className="flex justify-center items-center mb-4">
-            <img src="https://hajila-bau.de/logo_2d.png" alt="Hajila Bau Logo" className="h-8 w-8 object-contain mr-2" />
+            <Image src="https://hajila-bau.de/logo_2d.png" alt="Hajila Bau Logo" className="h-8 w-8 object-contain mr-2" width={32} height={32} priority />
             <span className="text-xl font-bold bg-gradient-to-r from-[var(--blue-start)] to-[var(--blue-end)] bg-clip-text text-transparent font-['Merriweather']">
               Hajila Bau GmbH
             </span>

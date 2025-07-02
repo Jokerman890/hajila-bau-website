@@ -81,8 +81,6 @@ const projectTitles = [
   "Wohnturm Stuttgart"
 ]
 
-const duration = 0.15
-const transition = { duration }
 const transitionOverlay = { duration: 0.5 }
 
 interface CarouselProps {

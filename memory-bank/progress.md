@@ -1,22 +1,20 @@
 # Progress - Hajila Bau Webseite
 
 ## Was funktioniert
-- Die grundlegende Struktur der Speicherbank wurde erstellt.
-- Alle Kern-Dateien sind vorhanden und enthalten grundlegende Informationen zur Hajila Bau Webseite.
-- Linter-Fehler in den Dateien `premium-website.tsx` und `reference-website.tsx` wurden behoben.
-- Die Webseite wird nun erfolgreich unter `localhost:3000/hajila-bau-website` geladen.
+- Die grundlegende Struktur der Speicherbank wurde erstellt und aktualisiert.
+- Alle Kern-Dateien sind vorhanden und enthalten spezifische Informationen zur Hajila Bau Webseite.
+- Die Webseite wurde erfolgreich im Browser getestet, nachdem Konfigurationsprobleme behoben wurden.
+- Anpassungen für GitHub Pages Deployment wurden in `next.config.ts` und `package.json` vorgenommen.
 
 ## Was noch zu bauen ist
-- Anpassung der Inhalte an spezifische Projektanforderungen der Hajila Bau Webseite.
-- Hinzufügen von zusätzlichen Kontextdateien für komplexe Aspekte des Projekts.
-- Durchführung weiterer Tests, um sicherzustellen, dass alle Funktionen der Webseite korrekt arbeiten.
-- Vorbereitung der Webseite für das Deployment (Build-Prozess, Hosting).
-- Aktualisierung der Versionsnummer in `version-info.tsx`.
-- Erstellung eines GitHub-Commits für alle Änderungen.
+- Behebung der verbleibenden Linter-Fehler in `premium-website.tsx` und `logo-3d.tsx`, um einen erfolgreichen Build sicherzustellen.
+- Generierung der statischen Dateien durch den Build-Prozess für das Deployment auf GitHub Pages.
+- Einrichtung eines GitHub-Repositories und Deployment der Webseite auf GitHub Pages.
 
 ## Aktueller Status
-Die Speicherbank ist eingerichtet, und die Webseite wurde erfolgreich im Browser getestet. Die grundlegenden Dateien sind aktualisiert, aber es sind noch Anpassungen und Erweiterungen erforderlich. Es wird an der Vorbereitung für das Deployment sowie an der Einrichtung von Regeln für Versionsaktualisierungen und GitHub-Commits gearbeitet.
+Die Speicherbank ist aktualisiert und spiegelt den aktuellen Stand des Projekts wider. Die Webseite ist in der Vorbereitungsphase für das Deployment auf GitHub Pages. Es gibt noch einige Linter-Fehler, die behoben werden müssen, um den Build-Prozess erfolgreich abzuschließen.
 
 ## Bekannte Probleme
-- Keine Cloud-Synchronisation oder Backup-Funktion integriert.
-- Die Inhalte sind noch teilweise generisch und müssen vollständig auf die Hajila Bau Webseite zugeschnitten werden.
+- Linter-Fehler in `premium-website.tsx` und `logo-3d.tsx`, die den Build-Prozess verhindern.
+- Keine Cloud-Synchronisation oder Backup-Funktion für die Speicherbank integriert.
+- Die Inhalte der Webseite müssen möglicherweise weiter angepasst werden, um die Benutzererfahrung auf GitHub Pages zu optimieren.

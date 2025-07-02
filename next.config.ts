@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  output: 'export',
   basePath: '/hajila-bau-website',
   assetPrefix: '/hajila-bau-website/',
 };

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from 'react';
+import Image from 'next/image';
 
 interface Logo3DProps {
   text?: string;
@@ -66,11 +67,14 @@ const Logo3D: React.FC<Logo3DProps> = ({
           }}
         >
           {imageUrl ? (
-            <img 
+            <Image 
               src={imageUrl} 
               alt="Logo" 
               className="w-full h-full object-contain"
               style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}
+              fill
+              sizes="100vw"
+              priority
             />
           ) : (
             text
@@ -86,11 +90,14 @@ const Logo3D: React.FC<Logo3DProps> = ({
           }}
         >
           {imageUrl ? (
-            <img 
+            <Image 
               src={imageUrl} 
               alt="Logo" 
               className="w-full h-full object-contain"
               style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}
+              fill
+              sizes="100vw"
+              priority
             />
           ) : (
             text

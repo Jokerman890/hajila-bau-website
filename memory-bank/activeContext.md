@@ -1,22 +1,19 @@
 # Active Context - Hajila Bau Webseite
 
 ## Aktueller Arbeitsfokus
-Derzeit wird an der Vorbereitung für das Deployment der Hajila Bau Webseite gearbeitet sowie an der Einrichtung von Regeln für Versionsaktualisierungen und GitHub-Commits.
+Derzeit wird an der Vorbereitung der Webseite für das Deployment auf GitHub Pages gearbeitet. Dies umfasst die Anpassung der Konfigurationen in `next.config.ts` und das Hinzufügen eines Export-Skripts in `package.json`.
 
 ## Kürzliche Änderungen
-- Behebung aller gemeldeten Linter-Fehler in den Dateien `premium-website.tsx` und `reference-website.tsx`.
-- Identifikation und Lösung des 404-Fehlers durch Überprüfung der `next.config.ts` Datei, die einen `basePath` von `/hajila-bau-website` definiert.
-- Erfolgreiches Laden der Webseite unter `localhost:3000/hajila-bau-website`.
-- Aktualisierung der Memory Bank Dateien, um den aktuellen Status zu dokumentieren.
+- Anpassung von `next.config.ts`, um `output: export`, `basePath` und `assetPrefix` für GitHub Pages zu setzen.
+- Hinzufügen eines `export`-Skripts zu `package.json`, um statische Dateien zu generieren.
+- Behebung von Linter-Fehlern in `construction-hero-section.tsx`, um den Build-Prozess erfolgreich abzuschließen.
 
 ## Nächste Schritte
-- Vorbereitung der Webseite für das Deployment, einschließlich der Überprüfung von Build-Prozessen und Hosting-Optionen.
-- Implementierung einer Versionsaktualisierung in der `version-info.tsx` Datei.
-- Erstellung eines GitHub-Commits für alle Änderungen.
-- Festlegung einer Regel, die sicherstellt, dass bei zukünftigen Aufgaben Versionsaktualisierungen und GitHub-Commits durchgeführt werden.
+- Behebung der verbleibenden Linter-Fehler in `premium-website.tsx` und `logo-3d.tsx`, um einen erfolgreichen Build sicherzustellen.
+- Durchführung des Build-Prozesses mit `npm run build`, um die statischen Dateien für GitHub Pages zu generieren.
+- Anleitung zur Einrichtung eines GitHub-Repositories und zum Deployment der Webseite auf GitHub Pages.
 
 ## Aktive Entscheidungen und Überlegungen
-- Welche Schritte sind für ein erfolgreiches Deployment erforderlich (z.B. Build-Optimierung, Hosting-Auswahl)?
-- Wie kann die Versionsnummer in `version-info.tsx` sinnvoll aktualisiert werden, um Änderungen nachzuverfolgen?
-- Welche GitHub-Commit-Nachrichtenstruktur soll verwendet werden, um Änderungen klar zu dokumentieren?
-- Wie kann eine Regel in der Memory Bank integriert werden, um sicherzustellen, dass Versionsaktualisierungen und Commits nicht vergessen werden?
+- Wie können die verbleibenden Linter-Fehler effizient behoben werden, um den Build-Prozess abzuschließen?
+- Welche weiteren Schritte sind notwendig, um die Webseite erfolgreich auf GitHub Pages zu deployen?
+- Sollten zusätzliche Anpassungen an der Webseite vorgenommen werden, um die Benutzererfahrung auf GitHub Pages zu optimieren?

@@ -119,55 +119,51 @@ const Carousel = memo(({
         willChange: "transform",
       }}
     >
-      <motion.div
-        drag={isCarouselActive ? "x" : false}
-        className="relative flex h-full origin-center cursor-grab justify-center active:cursor-grabbing"
-        style={{
-          transform,
-          rotateY: rotation,
-          width: cylinderWidth,
-          transformStyle: "preserve-3d",
-        }}
-        onDrag={(_, info) =>
-          isCarouselActive &&
-          rotation.set(rotation.get() + info.offset.x * 0.05)
-        }
-        onDragEnd={(_, info) =>
-          isCarouselActive &&
-          controls.start({
-            rotateY: rotation.get() + info.velocity.x * 0.05,
-            transition: {
-              type: "spring",
-              stiffness: 100,
-              damping: 30,
-              mass: 0.1,
-            },
-          })
-        }
-        animate={controls}
-      >
-        {cards.map((imgUrl, i) => (
-          <motion.div
-            key={`key-${imgUrl}-${i}`}
-            className="absolute flex h-full origin-center items-center justify-center rounded-xl bg-card border border-border p-2 shadow-lg"
-            style={{
-              width: `${faceWidth}px`,
-              transform: `rotateY(${
-                i * (360 / faceCount)
-              }deg) translateZ(${radius}px)`,
-            }}
-            onClick={() => handleClick(imgUrl, i)}
-          >
+        <motion.div
+          drag={isCarouselActive ? "x" : false}
+          className="relative flex h-full origin-center cursor-grab justify-center active:cursor-grabbing"
+          style={{
+            transform,
+            rotateY: rotation,
+            width: cylinderWidth,
+            transformStyle: "preserve-3d",
+          }}
+          onDrag={(_, info) =>
+            isCarouselActive &&
+            rotation.set(rotation.get() + info.offset.x * 0.05)
+          }
+          onDragEnd={(_, info) =>
+            isCarouselActive &&
+            controls.start({
+              rotateY: rotation.get() + info.velocity.x * 0.05,
+              transition: {
+                type: "spring",
+                stiffness: 100,
+                damping: 30,
+                mass: 0.1,
+              },
+            })
+          }
+          animate={controls}
+        >
+          {cards.map((imgUrl, i) => (
+            <motion.div
+              key={`key-${imgUrl}-${i}`}
+              className="absolute flex h-full origin-center items-center justify-center rounded-xl bg-card border border-border p-2 shadow-lg"
+              style={{
+                width: `${faceWidth}px`,
+                transform: `rotateY(${
+                  i * (360 / faceCount)
+                }deg) translateZ(${radius}px)`,
+              }}
+              onClick={() => handleClick(imgUrl, i)}
+            >
             <div className="relative w-full h-full">
-              <motion.img
+              <img
                 src={imgUrl}
                 alt={titles[i]}
-                layoutId={`img-${imgUrl}`}
                 className="pointer-events-none w-full h-4/5 rounded-lg object-cover"
-                initial={{ filter: "blur(4px)" }}
-                layout="position"
-                animate={{ filter: "blur(0px)" }}
-                transition={transition}
+                style={{ filter: "blur(0px)" }}
               />
               <div className="absolute bottom-2 left-2 right-2 bg-background/90 backdrop-blur-sm rounded-md p-2">
                 <h3 className="text-sm font-semibold text-foreground truncate">
@@ -208,32 +204,21 @@ function BilderKarussel() {
         <motion.div layout className="relative">
           <AnimatePresence mode="sync">
             {activeImg && activeIndex !== null && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0 }}
-                layoutId={`img-container-${activeImg}`}
-                layout="position"
-                onClick={handleClose}
-                className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 cursor-pointer"
-                style={{ willChange: "opacity" }}
-                transition={transitionOverlay}
-              >
+      <motion.div
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0 }}
+        layoutId={`img-container-${activeImg}`}
+        layout="position"
+        onClick={handleClose}
+        className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 cursor-pointer"
+        style={{ willChange: "opacity" }}
+        transition={transitionOverlay}
+      >
                 <div className="relative max-w-4xl w-full">
-                  <motion.img
-                    layoutId={`img-${activeImg}`}
+                  <img
                     src={activeImg}
                     className="w-full h-auto rounded-lg shadow-2xl"
-                    initial={{ scale: 0.5 }}
-                    animate={{ scale: 1 }}
-                    transition={{
-                      delay: 0.2,
-                      duration: 0.5,
-                      ease: [0.25, 0.1, 0.25, 1],
-                    }}
-                    style={{
-                      willChange: "transform",
-                    }}
                   />
                   <div className="absolute bottom-4 left-4 right-4 bg-background/95 backdrop-blur-sm rounded-lg p-4">
                     <h3 className="text-xl font-bold text-foreground mb-2">

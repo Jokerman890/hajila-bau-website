@@ -655,11 +655,17 @@ const Navigation: React.FC<{ items: NavItem[] }> = ({ items }) => (
 // Main Premium Website Component
 const PremiumWebsite: React.FC = () => {
   const [currentTheme, setCurrentTheme] = useState<'light' | 'dark'>('dark');
+  const [cookieAccepted, setCookieAccepted] = useState(false);
 
   const toggleTheme = () => {
     const newTheme = currentTheme === 'light' ? 'dark' : 'light';
     setCurrentTheme(newTheme);
     document.documentElement.classList.toggle('dark', newTheme === 'dark');
+  };
+
+  const handleAcceptCookies = () => {
+    setCookieAccepted(true);
+    // Hier könnte man zusätzliche Logik für das Speichern der Zustimmung implementieren
   };
 
   const menuItems: NavItem[] = [
@@ -750,7 +756,7 @@ const PremiumWebsite: React.FC = () => {
     },
     {
       icon: <Layers className="h-8 w-8 text-[#005B9F]" />,
-      title: "Wärmedämmverbundsysteme mit Klinkeroptik",
+      title: "WDVS mit Klinkeroptik",
       description: "Energieeffiziente WDVS-Lösungen mit authentischer Klinkeroptik für moderne Gebäude."
     },
     {
@@ -853,7 +859,7 @@ const PremiumWebsite: React.FC = () => {
 
       {/* Cookie Banner */}
       <AnimatePresence>
-        {true && ( // In a real app, this would be controlled by a state variable
+        {!cookieAccepted && (
           <motion.div
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -865,7 +871,7 @@ const PremiumWebsite: React.FC = () => {
               Wir verwenden Cookies, um Ihre Nutzererfahrung zu verbessern. Durch die Nutzung unserer Website stimmen Sie unserer Datenschutzerklärung zu.
             </p>
             <button
-              onClick={() => { /* Implement cookie acceptance logic here */ }}
+              onClick={handleAcceptCookies}
               className="px-4 py-2 bg-[var(--blue-start)] hover:bg-[var(--blue-end)] text-white rounded-lg font-medium transition-colors font-['Open_Sans']"
             >
               Akzeptieren

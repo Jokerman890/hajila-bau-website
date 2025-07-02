@@ -1,20 +1,19 @@
 # Active Context - Hajila Bau Webseite
 
 ## Aktueller Arbeitsfokus
-Derzeit wird an der Aktualisierung der Firmendaten und der Menüstruktur der Hajila Bau Webseite gearbeitet.
+Derzeit wird an der Behebung von Hydration-Fehlern und der Funktionalität der Webseite gearbeitet.
 
 ## Kürzliche Änderungen
-- Aktualisierung der Firmendaten in `src/components/ui/premium-website.tsx` mit den korrekten Informationen aus `Hajila_Bau_Unternehmensprofil_Gesamt.txt`.
-- Anpassung des Namens der Geschäftsführerin auf Samia Omerovic in `src/components/ui/premium-website.tsx`.
-- Aktualisierung der Leistungen und Referenz-Links im oberen Menü von `src/components/ui/premium-website.tsx`.
-- Implementierung der Maus-Animation in `HeroSplineBackground` in `src/components/ui/construction-hero-section.tsx`.
-- Integration des 2D-Logos im Footer-Bereich von `src/components/ui/premium-website.tsx`.
+- Erstellung und Integration des `ScrollProgress`-Komponenten in `src/components/ui/scroll-progress.tsx` (später entfernt aufgrund von Problemen).
+- Behebung von Hydration-Fehlern in `bilder-karussel.tsx` durch temporäres Entfernen und Wiederherstellen von `motion`-Komponenten.
+- Funktionalisierung des Datenschutzbanners in `premium-website.tsx`.
+- Kürzung des Titels "Wärmedämmverbundsysteme mit Klinkeroptik" auf "WDVS mit Klinkeroptik" in `premium-website.tsx`.
+- Hinzufügen einer Versionszählungskomponente in `version-info.tsx`, die die Projektversion (0.1.0) und Next.js-Version (15.3.4) anzeigt.
 
 ## Nächste Schritte
-- Überprüfung, ob alle Änderungen korrekt auf der Webseite angezeigt werden.
-- Sicherstellung, dass die Memory Bank vollständig aktualisiert ist und alle relevanten Informationen enthält.
-- Commit der Änderungen in das Git-Repository.
+- Sicherstellen, dass alle Hydration-Fehler behoben sind und die Webseite vollständig funktioniert.
+- Aktualisierung des GitHub-Repositories mit den neuesten Änderungen.
 
 ## Aktive Entscheidungen und Überlegungen
-- Gibt es weitere Anpassungen oder Optimierungen, die für eine bessere Benutzererfahrung notwendig sind?
-- Wie können zukünftige Aktualisierungen der Firmendaten effizienter in die Webseite integriert werden?
+- Wie können Hydration-Fehler dauerhaft behoben werden, ohne die Funktionalität der `motion`-Komponenten zu beeinträchtigen?
+- Gibt es alternative Ansätze oder Bibliotheken, die ähnliche Animationen ohne Hydration-Probleme bieten?

@@ -4,6 +4,8 @@ import React, { useEffect, useRef } from 'react';
 import { motion, useAnimationFrame, useMotionTemplate, useMotionValue, useTransform } from "framer-motion";
 import { cn } from '@/lib/utils';
 import * as THREE from 'three';
+import Image from "next/image";
+import Logo3D from './logo-3d';
 
 // Moving Border Button Component
 export function MovingBorderButton({
@@ -18,12 +20,12 @@ export function MovingBorderButton({
 }: {
   borderRadius?: string;
   children: React.ReactNode;
-  as?: any;
+  as?: React.ElementType;
   containerClassName?: string;
   borderClassName?: string;
   duration?: number;
   className?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }) {
   return (
     <Component
@@ -76,9 +78,9 @@ export const MovingBorder = ({
   duration?: number;
   rx?: string;
   ry?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }) => {
-  const pathRef = useRef<any>();
+  const pathRef = useRef<SVGRectElement | null>(null);
   const progress = useMotionValue<number>(0);
 
   useAnimationFrame((time) => {
@@ -243,7 +245,9 @@ const FloatingElements = () => {
   );
 };
 
-interface HeroSplineBackgroundProps {}
+interface HeroSplineBackgroundProps {
+  // Props can be added if needed
+}
 
 export function HeroSplineBackground({}: HeroSplineBackgroundProps) {
   const [isClient, setIsClient] = React.useState(false);
@@ -273,6 +277,7 @@ export function HeroSplineBackground({}: HeroSplineBackgroundProps) {
 
 interface ScreenshotSectionProps {
   screenshotRef: React.RefObject<HTMLDivElement | null>;
+  // Additional props can be added if needed
 }
 
 function ScreenshotSection({ screenshotRef }: ScreenshotSectionProps) {
@@ -286,9 +291,11 @@ function ScreenshotSection({ screenshotRef }: ScreenshotSectionProps) {
         style={{ transformStyle: "preserve-3d" }}
       >
         <div>
-          <img
+          <Image
             src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=3840&h=2160&q=80&auto=format&fit=crop"
             alt="Construction Project"
+            width={3840}
+            height={2160}
             className="w-full h-auto block rounded-lg mx-auto"
           />
         </div>
@@ -297,11 +304,21 @@ function ScreenshotSection({ screenshotRef }: ScreenshotSectionProps) {
   );
 }
 
-interface HeroContentProps {}
+interface HeroContentProps {
+  // Props can be added if needed
+}
 
 function HeroContent({}: HeroContentProps) {
   return (
     <div className="text-white px-4 max-w-screen-xl mx-auto w-full flex flex-col lg:flex-row justify-between items-start lg:items-center py-16 relative z-40">
+      <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center pointer-events-none z-50">
+        <Logo3D
+          imageUrl="https://hajila-bau.de/3d%20logo%20ohne%20bg.png"
+          size="lg"
+          primaryColor="#00C3E3"
+          secondaryColor="#005B9F"
+        />
+      </div>
       <motion.div 
         className="w-full lg:w-1/2 pr-0 lg:pr-8 mb-8 lg:mb-0"
         initial={{ opacity: 0, x: -50 }}
@@ -314,8 +331,16 @@ function HeroContent({}: HeroContentProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          Ihr Partner für<br />Bauprojekte
+          Hajila Bau GmbH
         </motion.h1>
+<motion.h2 
+          className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold mb-4 leading-tight tracking-wide"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+        >
+          Ihr Partner für Hochbau & Klinkerarbeiten in Osnabrück
+        </motion.h2>
         <motion.div 
           className="text-sm text-gray-300 opacity-90 mt-4"
           initial={{ opacity: 0 }}
@@ -372,7 +397,9 @@ function HeroContent({}: HeroContentProps) {
   );
 }
 
-interface NavbarProps {}
+interface NavbarProps {
+  // Props can be added if needed
+}
 
 function Navbar({}: NavbarProps) {
   return (
@@ -385,13 +412,16 @@ function Navbar({}: NavbarProps) {
       <div className="container mx-auto px-4 py-4 md:px-6 lg:px-8 flex items-center justify-between">
         <div className="flex items-center space-x-6 lg:space-x-8">
           <motion.div 
-            className="text-white w-8 h-8"
+            className="text-white"
             whileHover={{ rotate: 360 }}
             transition={{ duration: 0.5 }}
           >
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-              <path fillRule="evenodd" clipRule="evenodd" d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM12.4306 9.70695C12.742 9.33317 13.2633 9.30058 13.6052 9.62118L19.1798 14.8165C19.4894 15.1054 19.4894 15.5841 19.1798 15.873L13.6052 21.0683C13.2633 21.3889 12.742 21.3563 12.4306 19.9991V9.70695Z" fill="currentColor" />
-            </svg>
+            <Logo3D
+              imageUrl="https://hajila-bau.de/3d%20logo%20ohne%20bg.png"
+              size="sm"
+              primaryColor="#00C3E3"
+              secondaryColor="#005B9F"
+            />
           </motion.div>
 
           <div className="hidden md:flex items-center space-x-6">
@@ -431,7 +461,9 @@ function Navbar({}: NavbarProps) {
   );
 }
 
-interface ConstructionHeroSectionProps {}
+interface ConstructionHeroSectionProps {
+  // Props can be added if needed
+}
 
 const ConstructionHeroSection: React.FC<ConstructionHeroSectionProps> = ({}) => {
   const screenshotRef = useRef<HTMLDivElement>(null);

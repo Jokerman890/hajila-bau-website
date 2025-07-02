@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform, AnimatePresence, Variants } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import * as THREE from 'three';
-import { ChevronDown, Sparkles, Zap, Cpu, Palette, Code, Globe, Layers, Building2, Hammer, LeafyGreen, Phone, Mail, MapPin, Clock, Scale, CalendarDays, Landmark, User, Accessibility, FileText, Lock } from 'lucide-react';
+import { ChevronDown, Sparkles, Zap, Cpu, Code, Layers, Building2, Hammer, Phone, Mail, MapPin, Clock, Scale, CalendarDays, Landmark, User, FileText, Lock } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { GlassCard, Tilt } from './glass-card';
+import { GlassCard } from './glass-card';
 import GlowingServiceGrid from './glowing-service-grid';
 import BilderKarussel from './bilder-karussel';
 import { HeroSplineBackground } from './construction-hero-section';
@@ -190,7 +190,7 @@ const ParticleWave: React.FC<ParticleWaveProps> = ({ className = '' }) => {
     sceneRef.current.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
   };
 
-  useEffect(() => {
+    useEffect(() => {
     initScene();
     animate();
 
@@ -213,9 +213,9 @@ const ParticleWave: React.FC<ParticleWaveProps> = ({ className = '' }) => {
         if (particles.geometry) particles.geometry.dispose();
         if (particles.material) {
           if (Array.isArray(particles.material)) {
-            particles.material.forEach((material: any) => material.dispose());
+            particles.material.forEach((material: THREE.Material) => material.dispose());
           } else {
-            (particles.material as any).dispose();
+            (particles.material as THREE.Material).dispose();
           }
         }
         renderer.dispose();
@@ -435,6 +435,7 @@ const Typewriter = ({
     texts,
     currentTextIndex,
     loop,
+    initialDelay,
   ])
 
   return (

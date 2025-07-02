@@ -1,16 +1,22 @@
 # Active Context - Hajila Bau Webseite
 
 ## Aktueller Arbeitsfokus
-Derzeit wird an der Aktualisierung der Webseite für die Hajila Bau GmbH gearbeitet, insbesondere an der Kürzung von Texten und der Behebung von technischen Fehlern.
+Derzeit wird an der Vorbereitung für das Deployment der Hajila Bau Webseite gearbeitet sowie an der Einrichtung von Regeln für Versionsaktualisierungen und GitHub-Commits.
 
 ## Kürzliche Änderungen
-- Kürzung des Titels "Wärmedämmverbundsysteme mit Klinkeroptik" auf "WDVS mit Klinkeroptik" in den Dateien `premium-website.tsx`, `glowing-service-grid.tsx` und `reference-website.tsx`.
-- Behebung eines Hydration-Fehlers in der Datei `bilder-karussel.tsx` durch Anpassung der `className`-Eigenschaft der Bilder.
+- Behebung aller gemeldeten Linter-Fehler in den Dateien `premium-website.tsx` und `reference-website.tsx`.
+- Identifikation und Lösung des 404-Fehlers durch Überprüfung der `next.config.ts` Datei, die einen `basePath` von `/hajila-bau-website` definiert.
+- Erfolgreiches Laden der Webseite unter `localhost:3000/hajila-bau-website`.
+- Aktualisierung der Memory Bank Dateien, um den aktuellen Status zu dokumentieren.
 
 ## Nächste Schritte
-- Aktualisierung der Memory Bank-Dateien mit den neuesten Änderungen.
-- Hochladen der Änderungen auf GitHub zur Versionskontrolle.
+- Vorbereitung der Webseite für das Deployment, einschließlich der Überprüfung von Build-Prozessen und Hosting-Optionen.
+- Implementierung einer Versionsaktualisierung in der `version-info.tsx` Datei.
+- Erstellung eines GitHub-Commits für alle Änderungen.
+- Festlegung einer Regel, die sicherstellt, dass bei zukünftigen Aufgaben Versionsaktualisierungen und GitHub-Commits durchgeführt werden.
 
 ## Aktive Entscheidungen und Überlegungen
-- Sicherstellen, dass alle relevanten Dateien die korrekten, gekürzten Titel enthalten.
-- Überprüfung, ob weitere technische Fehler behoben werden müssen, um eine reibungslose Funktionalität der Webseite zu gewährleisten.
+- Welche Schritte sind für ein erfolgreiches Deployment erforderlich (z.B. Build-Optimierung, Hosting-Auswahl)?
+- Wie kann die Versionsnummer in `version-info.tsx` sinnvoll aktualisiert werden, um Änderungen nachzuverfolgen?
+- Welche GitHub-Commit-Nachrichtenstruktur soll verwendet werden, um Änderungen klar zu dokumentieren?
+- Wie kann eine Regel in der Memory Bank integriert werden, um sicherzustellen, dass Versionsaktualisierungen und Commits nicht vergessen werden?

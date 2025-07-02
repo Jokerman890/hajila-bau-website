@@ -1,6 +1,6 @@
 "use client"
 
-import { memo, useEffect, useLayoutEffect, useMemo, useState } from "react"
+import { memo, useEffect, useLayoutEffect, useState } from "react"
 import {
   AnimatePresence,
   motion,
@@ -8,6 +8,7 @@ import {
   useMotionValue,
   useTransform,
 } from "framer-motion"
+import Image from "next/image"
 
 export const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect
@@ -59,14 +60,14 @@ export function useMediaQuery(
 }
 
 const projectImages = [
-  "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400&h=400&fit=crop"
+  "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=400&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=400&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1554995207-c18c203602cb?q=80&w=400&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1506377295352-e3154d43ea9e?q=80&w=400&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=400&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1496368077930-c1e31b4e5b44?q=80&w=400&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=400&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=400&auto=format&fit=crop"
 ]
 
 const projectTitles = [
@@ -86,7 +87,7 @@ const transitionOverlay = { duration: 0.5 }
 
 interface CarouselProps {
   handleClick: (imgUrl: string, index: number) => void
-  controls: any
+  controls: ReturnType<typeof useAnimation>
   cards: string[]
   titles: string[]
   isCarouselActive: boolean
@@ -99,6 +100,8 @@ const Carousel = memo(({
   titles,
   isCarouselActive,
 }: CarouselProps) => {
+  // Define display name for the component
+  Carousel.displayName = "Carousel";
   const isScreenSizeSm = useMediaQuery("(max-width: 640px)")
   const cylinderWidth = isScreenSizeSm ? 1100 : 1800
   const faceCount = cards.length
@@ -159,9 +162,11 @@ const Carousel = memo(({
               onClick={() => handleClick(imgUrl, i)}
             >
             <div className="relative w-full h-full">
-              <img
+              <Image
                 src={imgUrl}
                 alt={titles[i]}
+                width={225}
+                height={180}
                 className="pointer-events-none w-full h-4/5 rounded-lg object-cover no_exif_metadata"
                 style={{ filter: "blur(0px)" }}
               />
@@ -216,8 +221,11 @@ function BilderKarussel() {
         transition={transitionOverlay}
       >
                 <div className="relative max-w-4xl w-full">
-                  <img
+                  <Image
                     src={activeImg}
+                    alt={projectTitles[activeIndex]}
+                    width={800}
+                    height={600}
                     className="w-full h-auto rounded-lg shadow-2xl"
                   />
                   <div className="absolute bottom-4 left-4 right-4 bg-background/95 backdrop-blur-sm rounded-lg p-4">

@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Cookie-Hinweis - Hajila Bau GmbH',
@@ -116,12 +117,12 @@ export default function CookiesPage() {
             </div>
 
             <div className="mt-8 pt-6 border-t border-white/20 text-center">
-              <a 
+              <Link 
                 href="/" 
                 className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg hover:from-cyan-600 hover:to-blue-600 transition-all duration-300"
               >
                 ← Zurück zur Startseite
-              </a>
+              </Link>
             </div>
           </div>
         </div>

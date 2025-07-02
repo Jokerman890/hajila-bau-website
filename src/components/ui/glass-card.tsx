@@ -11,7 +11,7 @@ interface TiltProps {
   className?: string;
   rotationFactor?: number;
   isReverse?: boolean;
-  springOptions?: any;
+  springOptions?: Record<string, unknown>;
 }
 
 const Tilt: React.FC<TiltProps> = ({

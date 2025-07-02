@@ -5,7 +5,7 @@
 - Alle Kern-Dateien sind vorhanden und enthalten grundlegende Informationen zur Hajila Bau Webseite.
 - Die PremiumWebsite-Komponente wird korrekt auf der Hauptseite angezeigt.
 - Der Datenschutzbanner ist funktional und kann durch Benutzerzustimmung ausgeblendet werden.
-- Eine Versionszählungskomponente wurde integriert und zeigt die Projektversion (0.1.0) und Next.js-Version (15.3.4) an.
+- Eine Versionszählungskomponente wurde integriert und zeigt die Projektversion (0.2.0) und Next.js-Version (15.3.4) an.
 
 ## Was noch zu bauen ist
 - Dauerhafte Behebung von Hydration-Fehlern, insbesondere in Bezug auf `motion`-Komponenten.

@@ -8,7 +8,7 @@ Derzeit wird an der Behebung von Hydration-Fehlern und der Funktionalität der W
 - Behebung von Hydration-Fehlern in `bilder-karussel.tsx` durch temporäres Entfernen und Wiederherstellen von `motion`-Komponenten.
 - Funktionalisierung des Datenschutzbanners in `premium-website.tsx`.
 - Kürzung des Titels "Wärmedämmverbundsysteme mit Klinkeroptik" auf "WDVS mit Klinkeroptik" in `premium-website.tsx`.
-- Hinzufügen einer Versionszählungskomponente in `version-info.tsx`, die die Projektversion (0.1.0) und Next.js-Version (15.3.4) anzeigt.
+- Hinzufügen einer Versionszählungskomponente in `version-info.tsx`, die die Projektversion (0.2.0) und Next.js-Version (15.3.4) anzeigt.
 
 ## Nächste Schritte
 - Sicherstellen, dass alle Hydration-Fehler behoben sind und die Webseite vollständig funktioniert.

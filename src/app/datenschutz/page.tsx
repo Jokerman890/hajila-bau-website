@@ -26,7 +26,7 @@ export default function DatenschutzPage() {
                   <p>49088 Osnabrück</p>
                   <p>Geschäftsführerin: Samiha Omerovic</p>
                   <p>📞 <a href="tel:054144026213" className="text-cyan-400 hover:text-cyan-300">0541 44026213</a></p>
-                  <p>✉️ <a href="mailto:hajila.bau@icloud.com" className="text-cyan-400 hover:text-cyan-300">hajila.bau@icloud.com</a></p>
+                  <p>✉️ <a href="mailto:info@hajila-bau.de" className="text-cyan-400 hover:text-cyan-300">info@hajila-bau.de</a></p>
                 </div>
               </div>
 
@@ -61,8 +61,8 @@ export default function DatenschutzPage() {
                 <div className="text-gray-200 space-y-2">
                   <p>Unsere Website verwendet Cookies von folgenden Anbietern:</p>
                   <ul className="list-disc list-inside ml-4 space-y-1">
-                    <li>Google (Analytics, Ads, Maps)</li>
-                    <li>Hostinger (Hosting-Services)</li>
+                    <li>Google Analytics (zur Analyse des Nutzerverhaltens)</li>
+                    <li>Hostinger (für Hosting-Services)</li>
                   </ul>
                   <p className="mt-3">
                     <strong>➡️ Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. a & f DSGVO
@@ -79,8 +79,6 @@ export default function DatenschutzPage() {
                   <p>Wir nutzen folgende Google-Dienste:</p>
                   <ul className="list-disc list-inside ml-4 space-y-1">
                     <li>Google Analytics (mit IP-Anonymisierung)</li>
-                    <li>Google Ads</li>
-                    <li>Google Maps</li>
                   </ul>
                   <p className="mt-3">
                     <strong>➡️ Rechtsgrundlage:</strong> Nutzer-Einwilligung und berechtigtes Interesse
@@ -109,11 +107,12 @@ export default function DatenschutzPage() {
                     <li>Recht auf Auskunft</li>
                     <li>Recht auf Berichtigung</li>
                     <li>Recht auf Löschung</li>
+                    <li>Recht auf Einschränkung der Verarbeitung</li>
                     <li>Recht auf Widerspruch</li>
                     <li>Recht auf Datenübertragbarkeit</li>
                   </ul>
                   <p className="mt-3">
-                    Kontakt: ✉️ <a href="mailto:hajila.bau@icloud.com" className="text-cyan-400 hover:text-cyan-300">hajila.bau@icloud.com</a>
+                    Kontakt: ✉️ <a href="mailto:info@hajila-bau.de" className="text-cyan-400 hover:text-cyan-300">info@hajila-bau.de</a>
                   </p>
                 </div>
               </div>
@@ -123,6 +122,7 @@ export default function DatenschutzPage() {
                 <div className="text-gray-200">
                   <p>Zuständige Aufsichtsbehörde:</p>
                   <p className="mt-2">Landesbeauftragte für Datenschutz Niedersachsen</p>
+                  <p>Beschwerden können Sie direkt bei der Aufsichtsbehörde einreichen.</p>
                 </div>
               </div>
 

@@ -1,5 +1,9 @@
-import ReferenceWebsite from '@/components/ui/reference-website';
+import PremiumWebsite from '@/components/ui/premium-website';
 
 export default function Home() {
-  return <ReferenceWebsite />;
+  return (
+    <>
+      <PremiumWebsite />
+    </>
+  );
 }

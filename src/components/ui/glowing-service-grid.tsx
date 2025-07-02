@@ -234,8 +234,8 @@ const GlowingServiceGrid = () => {
     },
     {
       icon: <Home className="h-6 w-6" />,
-      title: "Wärmedämmverbundsysteme mit Klinkeroptik",
-      description: "Moderne WDVS-Systeme mit authentischer Klinkeroptik für optimale Energieeffizienz."
+      title: "WDVS mit Klinkeroptik",
+      description: "Energieeffiziente WDVS-Lösungen mit authentischer Klinkeroptik für moderne Gebäude."
     },
     {
       icon: <Flame className="h-6 w-6" />,

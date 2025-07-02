@@ -686,8 +686,8 @@ const PremiumWebsite: React.FC = () => {
         },
         {
           icon: <Layers className="h-4 w-4" />,
-          text: "Wärmedämmverbundsysteme",
-          description: "WDVS mit Klinkeroptik",
+          text: "WDVS mit Klinkeroptik",
+          description: "Energieeffiziente Lösungen",
           to: "/leistungen/wdvs"
         },
         {
@@ -716,48 +716,20 @@ const PremiumWebsite: React.FC = () => {
         }
       ]
     },
-    {
-      text: "Referenzen",
-      items: [
-        {
-          icon: <Building2 className="h-4 w-4" />,
-          text: "Wohnpark Osnabrück",
-          description: "2024 · Osnabrück",
-          to: "/referenzen/wohnpark-osnabrueck"
-        },
-        {
-          icon: <Building2 className="h-4 w-4" />,
-          text: "Logistikhalle Wallenhorst",
-          description: "2023 · Wallenhorst",
-          to: "/referenzen/logistikhalle-wallenhorst"
-        },
-        {
-          icon: <Building2 className="h-4 w-4" />,
-          text: "EFH Klinkervilla Belm",
-          description: "2022 · Belm",
-          to: "/referenzen/klinkervilla-belm"
-        }
-      ]
-    },
     { text: "Über uns" },
     { text: "Kontakt" }
   ];
 
   const features = [
     {
-      icon: <Building2 className="h-8 w-8 text-[#D4AF37]" />,
-      title: "Klinkerarbeiten & Verblendmauerwerk",
-      description: "Hochwertige Klinkerfassaden und Verblendmauerwerk für anspruchsvolle Bauprojekte."
+      icon: <Layers className="h-8 w-8 text-[#005B9F]" />,
+      title: "WDVS mit Klinkeroptik",
+      description: "Energieeffiziente WDVS-Lösungen mit authentischer Klinkeroptik für moderne Gebäude."
     },
     {
       icon: <Sparkles className="h-8 w-8 text-[#00C3E3]" />,
       title: "Klinker-Detailarbeiten",
       description: "Präzise Detailarbeiten wie Bögen, Gesimse und Pfeiler für architektonische Akzente."
-    },
-    {
-      icon: <Layers className="h-8 w-8 text-[#005B9F]" />,
-      title: "WDVS mit Klinkeroptik",
-      description: "Energieeffiziente WDVS-Lösungen mit authentischer Klinkeroptik für moderne Gebäude."
     },
     {
       icon: <Zap className="h-8 w-8 text-[#D4AF37]" />,

@@ -174,7 +174,7 @@ const ReferenceWebsite: React.FC = () => {
                 Klinker-Detailarbeiten
               </p>
               <p className="hover:text-yellow-400 transition-colors cursor-pointer">
-                Wärmedämmverbundsysteme
+                WDVS mit Klinkeroptik
               </p>
               <p className="hover:text-yellow-400 transition-colors cursor-pointer">
                 Schornstein- und Kaminverkleidungen

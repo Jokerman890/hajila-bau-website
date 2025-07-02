@@ -162,7 +162,7 @@ const Carousel = memo(({
               <img
                 src={imgUrl}
                 alt={titles[i]}
-                className="pointer-events-none w-full h-4/5 rounded-lg object-cover"
+                className="pointer-events-none w-full h-4/5 rounded-lg object-cover no_exif_metadata"
                 style={{ filter: "blur(0px)" }}
               />
               <div className="absolute bottom-2 left-2 right-2 bg-background/90 backdrop-blur-sm rounded-md p-2">

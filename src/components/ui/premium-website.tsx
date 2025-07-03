@@ -9,6 +9,7 @@ import GlowingServiceGrid from './glowing-service-grid';
 import BilderKarussel from './bilder-karussel';
 import { HeroSplineBackground } from './construction-hero-section';
 import Image from 'next/image';
+import AnimatedButton from './animated-button';
 
 // Typewriter Component
 interface TypewriterProps {
@@ -346,12 +347,14 @@ const PremiumWebsite: React.FC = () => {
             <p className="text-sm text-muted-foreground text-center sm:text-left font-['Open_Sans']">
               Wir verwenden Cookies, um Ihre Nutzererfahrung zu verbessern. Durch die Nutzung unserer Website stimmen Sie unserer Datenschutzerklärung zu.
             </p>
-            <button
+            <AnimatedButton
               onClick={handleAcceptCookies}
-              className="px-4 py-2 bg-[var(--blue-start)] hover:bg-[var(--blue-end)] text-white rounded-lg font-medium transition-colors font-['Open_Sans']"
+              variant="primary"
+              size="md"
+              className="font-['Open_Sans']"
             >
               Akzeptieren
-            </button>
+            </AnimatedButton>
           </motion.div>
         )}
       </AnimatePresence>
@@ -376,9 +379,9 @@ const PremiumWebsite: React.FC = () => {
               >
                 {currentTheme === 'dark' ? '🌞' : '🌙'}
               </button>
-              <a href="#contact" className="px-4 py-2 bg-[var(--blue-start)] hover:bg-[var(--blue-end)] text-white rounded-lg font-medium transition-colors font-['Open_Sans']">
+              <AnimatedButton onClick={() => { window.location.hash = 'contact'; }}>
                 Jetzt Angebot anfragen
-              </a>
+              </AnimatedButton>
             </div>
           </div>
         </div>
@@ -432,22 +435,20 @@ const PremiumWebsite: React.FC = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <motion.a
-                  href="#contact"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 bg-gradient-to-r from-[var(--blue-start)] to-[var(--blue-end)] hover:from-[var(--blue-end)] hover:to-[var(--blue-start)] text-white rounded-xl font-semibold shadow-lg shadow-[var(--blue-start)]/25 transition-all duration-300 text-center font-['Open_Sans']"
+                <AnimatedButton 
+                  onClick={() => { window.location.hash = 'contact'; }}
+                  variant="primary"
+                  size="md"
                 >
                   Jetzt Angebot anfragen
-                </motion.a>
-                <motion.a
-                  href="#services"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 border border-border hover:bg-muted/50 rounded-xl font-semibold transition-all duration-300 text-center font-['Open_Sans']"
+                </AnimatedButton>
+                <AnimatedButton 
+                  onClick={() => { window.location.hash = 'services'; }}
+                  variant="ghost"
+                  size="md"
                 >
                   Unsere Leistungen
-                </motion.a>
+                </AnimatedButton>
               </div>
 
               {/* Unternehmensinformationen entfernt */}
@@ -591,22 +592,20 @@ const PremiumWebsite: React.FC = () => {
               <p className="flex items-center justify-center gap-2"><Mail className="h-5 w-5 text-[var(--blue-end)]" /> E-Mail info@hajila-bau.de</p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.a
-                href="mailto:info@hajjila-bau.de"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-gradient-to-r from-[var(--blue-start)] to-[var(--blue-end)] hover:from-[var(--blue-end)] hover:to-[var(--blue-start)] text-white rounded-xl font-semibold shadow-lg shadow-[var(--blue-start)]/25 transition-all duration-300 text-center font-['Open_Sans']"
+              <AnimatedButton 
+                onClick={() => { window.location.href = 'mailto:info@hajila-bau.de'; }}
+                variant="primary"
+                size="md"
               >
                 E-Mail senden
-              </motion.a>
-              <motion.a
-                href="tel:+4915223000800"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 border border-border hover:bg-muted/50 rounded-xl font-semibold transition-all duration-300 text-center font-['Open_Sans']"
+              </AnimatedButton>
+              <AnimatedButton 
+                onClick={() => { window.location.href = 'tel:+4915223000800'; }}
+                variant="ghost"
+                size="md"
               >
                 Jetzt anrufen
-              </motion.a>
+              </AnimatedButton>
             </div>
           </motion.div>
         </div>

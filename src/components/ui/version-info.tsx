@@ -5,7 +5,7 @@ import React from 'react';
 const VersionInfo = () => {
   return (
     <div className="text-xs text-gray-500 p-2">
-      Version: 0.3.3 | Next.js: 15.3.4
+      Version: 0.4.0 | Next.js: 15.3.4
     </div>
   );
 };

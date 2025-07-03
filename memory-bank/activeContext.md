@@ -1,19 +1,27 @@
 # Active Context - Hajila Bau Webseite
 
 ## Aktueller Arbeitsfokus
-Derzeit wird an der Vorbereitung der Webseite für das Deployment auf GitHub Pages gearbeitet. Dies umfasst die Anpassung der Konfigurationen in `next.config.ts` und das Hinzufügen eines Export-Skripts in `package.json`.
+MCP-Server-Integration für VSCode und Docker wurde erfolgreich implementiert. Der MCP-Installer ist jetzt konfiguriert und bietet Zugang zu allen verfügbaren MCP-Servern.
 
 ## Kürzliche Änderungen
-- Anpassung von `next.config.ts`, um `output: export`, `basePath` und `assetPrefix` für GitHub Pages zu setzen.
-- Hinzufügen eines `export`-Skripts zu `package.json`, um statische Dateien zu generieren.
-- Behebung von Linter-Fehlern in `construction-hero-section.tsx`, um den Build-Prozess erfolgreich abzuschließen.
+- Implementierung des MCP-Installers in der Cline-Konfiguration
+- Konfiguration der MCP-Einstellungen in `/home/codespace/.vscode-remote/data/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json`
+- **Installation und Konfiguration von 4 MCP-Servern:**
+  - `mcp-installer` - Zentrale Installation weiterer MCP-Server
+  - `memory` - Wissensgraph und persistente Datenspeicherung
+  - `sequential-thinking` - Strukturiertes Denken und Problemlösung
+  - `github` - GitHub-Integration (benötigt GITHUB_PERSONAL_ACCESS_TOKEN)
+- Entfernung des Kubernetes MCP-Servers auf Benutzerwunsch
+- Vollständige Integration aller Server in VSCode/Cline
 
 ## Nächste Schritte
-- Behebung der verbleibenden Linter-Fehler in `premium-website.tsx` und `logo-3d.tsx`, um einen erfolgreichen Build sicherzustellen.
-- Durchführung des Build-Prozesses mit `npm run build`, um die statischen Dateien für GitHub Pages zu generieren.
-- Anleitung zur Einrichtung eines GitHub-Repositories und zum Deployment der Webseite auf GitHub Pages.
+- Testen der MCP-Server-Funktionalität durch Installation spezifischer Server über den Installer
+- Konfiguration von Docker-spezifischen MCP-Servern für Container-Management
+- Integration von VSCode-spezifischen Tools über MCP-Server
+- Dokumentation der verfügbaren MCP-Server und deren Verwendung
 
 ## Aktive Entscheidungen und Überlegungen
-- Wie können die verbleibenden Linter-Fehler effizient behoben werden, um den Build-Prozess abzuschließen?
-- Welche weiteren Schritte sind notwendig, um die Webseite erfolgreich auf GitHub Pages zu deployen?
-- Sollten zusätzliche Anpassungen an der Webseite vorgenommen werden, um die Benutzererfahrung auf GitHub Pages zu optimieren?
+- Der MCP-Installer bietet Zugang zu über 30 verschiedenen MCP-Servern aus dem NPM-Registry und Python Package Index
+- Docker ist bereits im System verfügbar und kann über MCP-Server integriert werden
+- VSCode Extensions sind installiert und können durch MCP-Server erweitert werden
+- Die Konfiguration ermöglicht einfache Installation weiterer Server nach Bedarf

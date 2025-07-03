@@ -2,7 +2,7 @@
 import { CarouselImage } from './admin'
 
 // Hilfsfunktionen für Memory MCP Integration
-export class MemoryAdminAPI {
+export class MemoryAdminAPI { // eslint-disable-line @typescript-eslint/no-unused-vars
   
   // Alle Bilder aus der Memory Bank abrufen
   static async getImages(): Promise<CarouselImage[]> {

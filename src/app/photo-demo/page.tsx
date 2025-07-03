@@ -80,7 +80,7 @@ export default function PhotoDemoPage() {
       } else {
         setMessage({ type: 'error', text: result.error || 'Upload fehlgeschlagen' })
       }
-    } catch (error) {
+    } catch {
       setMessage({ type: 'error', text: 'Netzwerkfehler beim Upload' })
     } finally {
       setUploading(false)
@@ -100,7 +100,7 @@ export default function PhotoDemoPage() {
       } else {
         setMessage({ type: 'error', text: result.error || 'Fehler beim Laden der Fotos' })
       }
-    } catch (error) {
+    } catch {
       setMessage({ type: 'error', text: 'Netzwerkfehler beim Laden der Fotos' })
     } finally {
       setLoading(false)
@@ -123,7 +123,7 @@ export default function PhotoDemoPage() {
       } else {
         setMessage({ type: 'error', text: result.error || 'Löschen fehlgeschlagen' })
       }
-    } catch (error) {
+    } catch {
       setMessage({ type: 'error', text: 'Netzwerkfehler beim Löschen' })
     }
   }
@@ -144,7 +144,7 @@ export default function PhotoDemoPage() {
         setMessage({ type: 'error', text: result.error || 'Fehler beim Generieren der Signed URL' })
         return null
       }
-    } catch (error) {
+    } catch {
       setMessage({ type: 'error', text: 'Netzwerkfehler bei Signed URL' })
       return null
     }

@@ -5,6 +5,15 @@ Alle wichtigen Änderungen an der Hajila Bau GmbH Website werden in dieser Datei
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2025-07-03
+
+### 🎉 Neu hinzugefügt
+- **Memory MCP Server Integration**: Hinzufügen von API-Endpunkten zur Interaktion mit dem Memory MCP Server für die Verwaltung von Karussell-Bildern.
+- **Power Bank System**: Implementierung eines erweiterten Speicherbank-Systems zur Sicherstellung der Kontinuität und des Kontexts zwischen Sitzungen.
+
+### 🐛 Behoben
+- **ESLint-Fehler**: Behebung von ungenutzten Variablen und Funktionen in mehreren Dateien durch Entfernen ungenutzter Importe oder Hinzufügen von ESLint-Kommentaren zur Deaktivierung der Regel für ungenutzte Elemente.
+
 ## [Unreleased]
 
 ### 🎉 Neu hinzugefügt

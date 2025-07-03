@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { writeFile, mkdir } from 'fs/promises'
+import { writeFile, mkdir, readFile } from 'fs/promises'
 import { existsSync } from 'fs'
 import path from 'path'
 
@@ -33,8 +33,8 @@ async function loadImagesData(): Promise<CarouselImage[]> {
   try {
     await ensureDirectoryExists(path.dirname(IMAGES_JSON_PATH))
     if (existsSync(IMAGES_JSON_PATH)) {
-      const data = await import(IMAGES_JSON_PATH)
-      return data.default || []
+      const fileContent = await readFile(IMAGES_JSON_PATH, 'utf-8')
+      return JSON.parse(fileContent)
     }
     return []
   } catch (error) {

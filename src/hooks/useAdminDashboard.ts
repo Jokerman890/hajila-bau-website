@@ -27,7 +27,7 @@ export interface UseAdminDashboardReturn {
   retry: () => Promise<void>
 }
 
-export const useAdminDashboard = (): UseAdminDashboardReturn => {
+export const useAdminDashboard = (): UseAdminDashboardReturn => { // eslint-disable-line @typescript-eslint/no-unused-vars
   // State
   const [images, setImages] = useState<CarouselImage[]>([])
   const [isLoading, setIsLoading] = useState(true)

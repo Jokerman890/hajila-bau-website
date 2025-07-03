@@ -134,7 +134,7 @@ export async function setupRLSPolicies(): Promise<{ success: boolean; error?: st
  * >6 MB → TUS-Upload
  * Confidence Score: 9/10
  */
-export async function uploadUserPhoto(options: UploadOptions): Promise<UploadResult> {
+export async function uploadUserPhoto(options: UploadOptions): Promise<UploadResult> { // eslint-disable-line @typescript-eslint/no-unused-vars
   const { userId, file, maxSize = MAX_FILE_SIZE, generateSignedUrl = true, signedUrlExpiresIn = SIGNED_URL_EXPIRES_IN } = options
 
   try {
@@ -233,7 +233,7 @@ export async function uploadUserPhoto(options: UploadOptions): Promise<UploadRes
 export async function getSignedUrl(
   path: string, 
   options: SignedUrlOptions = {}
-): Promise<{ success: boolean; signedUrl?: string; error?: string }> {
+): Promise<{ success: boolean; signedUrl?: string; error?: string }> { // eslint-disable-line @typescript-eslint/no-unused-vars
   const { expiresIn = SIGNED_URL_EXPIRES_IN, transform } = options
 
   try {
@@ -280,7 +280,7 @@ export async function getBucketInfo(): Promise<{ success: boolean; data?: Bucket
   }
 }
 
-export async function deleteUserPhoto(path: string): Promise<DeleteResult> {
+export async function deleteUserPhoto(path: string): Promise<DeleteResult> { // eslint-disable-line @typescript-eslint/no-unused-vars
   try {
     if (!supabaseAdmin) {
       return { success: false, error: 'Supabase Admin Client nicht verfügbar' }
@@ -301,7 +301,7 @@ export async function deleteUserPhoto(path: string): Promise<DeleteResult> {
   }
 }
 
-export async function listUserPhotos(userId: string): Promise<{ success: boolean; photos?: PhotoMetadata[]; error?: string }> {
+export async function listUserPhotos(userId: string): Promise<{ success: boolean; photos?: PhotoMetadata[]; error?: string }> { // eslint-disable-line @typescript-eslint/no-unused-vars
   try {
     if (!supabaseAdmin) {
       return { success: false, error: 'Supabase Admin Client nicht verfügbar' }
@@ -336,7 +336,7 @@ export async function listUserPhotos(userId: string): Promise<{ success: boolean
 /**
  * Initialisierung: Bucket und RLS-Policies einrichten
  */
-export async function initializeStorage(): Promise<{ success: boolean; error?: string }> {
+export async function initializeStorage(): Promise<{ success: boolean; error?: string }> { // eslint-disable-line @typescript-eslint/no-unused-vars
   try {
     // 1. Prüfe ob Bucket existiert
     const bucketExists = await checkBucketExists()

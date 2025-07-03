@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { writeFile, mkdir, readdir, unlink, stat, readFile } from 'fs/promises'
+import { writeFile, mkdir, unlink, readFile } from 'fs/promises'
 import { existsSync } from 'fs'
 import path from 'path'
 import { v4 as uuidv4 } from 'uuid'
@@ -33,7 +33,7 @@ async function ensureDirectoryExists(dirPath: string) {
   }
 }
 
-async function getImageDimensions(buffer: Buffer): Promise<{ width: number; height: number }> {
+async function getImageDimensions(): Promise<{ width: number; height: number }> {
   // Einfache Implementierung - in Produktion sollte eine Bibliothek wie 'sharp' verwendet werden
   return { width: 800, height: 600 } // Placeholder
 }
@@ -115,7 +115,7 @@ export async function POST(request: NextRequest) {
       await writeFile(filepath, buffer)
       
       // Bildmetadaten erstellen
-      const dimensions = await getImageDimensions(buffer)
+      const dimensions = await getImageDimensions()
       const maxOrder = images.length > 0 ? Math.max(...images.map(img => img.order)) : 0
       
       const newImage: CarouselImage = {

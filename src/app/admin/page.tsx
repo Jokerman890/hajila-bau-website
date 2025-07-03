@@ -6,16 +6,30 @@ import {
   Image as ImageIcon,
   Settings,
   BarChart3,
-  FileText,
   Phone,
   Mail,
   MapPin,
   Users,
-  Shield,
   Globe
 } from 'lucide-react'
 
 // Dynamically import the dashboard to avoid SSR issues
+interface CarouselImage {
+  id: string
+  url: string
+  title: string
+  description?: string
+  alt: string
+  order: number
+  isActive: boolean
+  uploadedAt: Date
+  size: number
+  dimensions: {
+    width: number
+    height: number
+  }
+}
+
 const AdminDashboard = dynamic(() => import('@/components/ui/admin-dashboard'), {
   ssr: false,
   loading: () => (
@@ -93,7 +107,7 @@ const useHajilaBauDashboard = () => ({
   deleteImage: async (id: string) => {
     console.log('Hajila Bau delete:', id)
   },
-  updateImage: async (id: string, updates: any) => {
+  updateImage: async (id: string, updates: Partial<CarouselImage>) => {
     console.log('Hajila Bau update:', id, updates)
   },
   reorderImages: async (imageIds: string[]) => {
@@ -195,23 +209,23 @@ export default function HajilaBauAdminPage() {
           </div>
 
           {/* Admin Dashboard Component */}
-          <AdminDashboard
-            images={dashboard.images}
-            isLoading={dashboard.isLoading}
-            hasError={!!dashboard.error}
-            onRetry={dashboard.retry}
-            onImageUpload={dashboard.uploadImages}
-            onImageDelete={dashboard.deleteImage}
-            onImageUpdate={dashboard.updateImage}
-            onImageReorder={(images) => {
-              const imageIds = images.map(img => img.id)
-              dashboard.reorderImages(imageIds)
-            }}
-            maxImages={20}
-            allowedFormats={['image/jpeg', 'image/png', 'image/webp']}
-            maxFileSize={5 * 1024 * 1024}
-          />
-        </div>
+<AdminDashboard
+  images={dashboard.images}
+  isLoading={dashboard.isLoading}
+  hasError={!!dashboard.error}
+  onRetry={dashboard.retry}
+  onImageUpload={dashboard.uploadImages}
+  onImageDelete={dashboard.deleteImage}
+  onImageUpdate={dashboard.updateImage}
+  onImageReorder={(images) => {
+    const imageIds = images.map(img => img.id)
+    dashboard.reorderImages(imageIds)
+  }}
+  maxImages={20}
+  allowedFormats={['image/jpeg', 'image/png', 'image/webp']}
+  maxFileSize={5 * 1024 * 1024}
+/>
+</div>
 
         {/* Company Information Section */}
         <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -287,9 +301,9 @@ export default function HajilaBauAdminPage() {
                 <div className="flex items-center gap-4">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                   <div className="flex-1">
-                    <p className="text-sm text-slate-900 dark:text-slate-100">
-                      Neues Projektbild "Klinkerarbeiten Projekt" hochgeladen
-                    </p>
+<p className="text-sm text-slate-900 dark:text-slate-100">
+  Neues Projektbild "Klinkerarbeiten Projekt" hochgeladen
+</p>
                     <p className="text-xs text-slate-500 dark:text-slate-400">
                       vor 2 Minuten
                     </p>
@@ -323,9 +337,9 @@ export default function HajilaBauAdminPage() {
                 <div className="flex items-center gap-4">
                   <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                   <div className="flex-1">
-                    <p className="text-sm text-slate-900 dark:text-slate-100">
-                      Neues Projekt "WDVS Installation" hinzugefügt
-                    </p>
+<p className="text-sm text-slate-900 dark:text-slate-100">
+  Neues Projekt "WDVS Installation" hinzugefügt
+</p>
                     <p className="text-xs text-slate-500 dark:text-slate-400">
                       vor 3 Stunden
                     </p>
@@ -339,10 +353,10 @@ export default function HajilaBauAdminPage() {
         {/* Footer */}
         <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-700">
           <div className="text-center text-sm text-slate-500 dark:text-slate-400">
-            <p>
-              Hajila Bau GmbH Admin Dashboard • 
-              Ihr Partner für Hochbau & Klinkerarbeiten in Osnabrück
-            </p>
+<p>
+  Hajila Bau GmbH Admin Dashboard • 
+  Ihr Partner für Hochbau & Klinkerarbeiten in Osnabrück
+</p>
             <p className="mt-1">
               Gegründet 2016 • Qualität und Präzision seit über 8 Jahren
             </p>

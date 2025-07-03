@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { getSignedUrl } from '@/lib/supabase/storage'
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
     const { path, expiresIn } = await request.json()
 

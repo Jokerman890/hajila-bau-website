@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { uploadUserPhoto as mockUploadUserPhoto, initializeStorage as mockInitializeStorage } from '@/lib/supabase/mock-storage'
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
     // Initialisiere Storage (Bucket + RLS) falls noch nicht geschehen
     const initResult = await mockInitializeStorage()

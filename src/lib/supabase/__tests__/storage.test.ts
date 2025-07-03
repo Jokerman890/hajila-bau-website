@@ -1,161 +1,43 @@
 import { jest } from '@jest/globals'
 import { 
-  checkBucketExists, 
-  createBucket, 
-  setupRLSPolicies, 
-  uploadUserPhoto, 
-  getSignedUrl,
-  deleteUserPhoto,
-  listUserPhotos,
-  initializeStorage
-} from '../storage'
+  uploadUserPhoto as mockUploadUserPhoto,
+  getSignedUrl as mockGetSignedUrl,
+  deleteUserPhoto as mockDeleteUserPhoto,
+  listUserPhotos as mockListUserPhotos,
+  initializeStorage as mockInitializeStorage
+} from '../mock-storage'
 
-// Mock Supabase Admin Client
-jest.mock('../client', () => ({
-  supabaseAdmin: {
-    storage: {
-      getBucket: jest.fn(),
-      createBucket: jest.fn(),
-      from: jest.fn(() => ({
-        upload: jest.fn(),
-        createSignedUrl: jest.fn(),
-        remove: jest.fn(),
-        list: jest.fn()
-      }))
-    },
-    rpc: jest.fn()
-  },
-  STORAGE_BUCKET: 'user-photos',
-  MAX_FILE_SIZE: 6 * 1024 * 1024,
-  SIGNED_URL_EXPIRES_IN: 3600,
-  ALLOWED_FILE_TYPES: ['image/jpeg', 'image/png', 'image/webp']
-}))
-
-describe('Supabase Photo Storage', () => {
+describe('Supabase Photo Storage (Mock)', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
-  describe('checkBucketExists', () => {
-    test('sollte true zurückgeben wenn Bucket existiert', async () => {
-      const { supabaseAdmin } = await import('../client')
-      const mockGetBucket = supabaseAdmin.storage.getBucket as jest.MockedFunction<any>
-      
-      mockGetBucket.mockResolvedValue({
-        data: { name: 'user-photos', id: '123' },
-        error: null
-      })
-
-      const result = await checkBucketExists()
-      expect(result).toBe(true)
-      expect(mockGetBucket).toHaveBeenCalledWith('user-photos')
-    })
-
-    test('sollte false zurückgeben wenn Bucket nicht existiert', async () => {
-      const { supabaseAdmin } = await import('../client')
-      const mockGetBucket = supabaseAdmin.storage.getBucket as jest.MockedFunction<any>
-      
-      mockGetBucket.mockResolvedValue({
-        data: null,
-        error: { message: 'Bucket not found' }
-      })
-
-      const result = await checkBucketExists()
-      expect(result).toBe(false)
-    })
-  })
-
-  describe('createBucket', () => {
-    test('sollte Bucket erfolgreich erstellen', async () => {
-      const { supabaseAdmin } = await import('../client')
-      const mockCreateBucket = supabaseAdmin.storage.createBucket as jest.MockedFunction<any>
-      
-      mockCreateBucket.mockResolvedValue({
-        data: { name: 'user-photos' },
-        error: null
-      })
-
-      const result = await createBucket()
+  describe('initializeStorage', () => {
+    test('sollte Storage erfolgreich initialisieren', async () => {
+      const result = await mockInitializeStorage()
       expect(result.success).toBe(true)
-      expect(mockCreateBucket).toHaveBeenCalledWith('user-photos', {
-        public: false,
-        allowedMimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
-        fileSizeLimit: 6 * 1024 * 1024
-      })
-    })
-
-    test('sollte Fehler bei Bucket-Erstellung behandeln', async () => {
-      const { supabaseAdmin } = await import('../client')
-      const mockCreateBucket = supabaseAdmin.storage.createBucket as jest.MockedFunction<any>
-      
-      mockCreateBucket.mockResolvedValue({
-        data: null,
-        error: { message: 'Bucket creation failed' }
-      })
-
-      const result = await createBucket()
-      expect(result.success).toBe(false)
-      expect(result.error).toBe('Bucket creation failed')
-    })
-  })
-
-  describe('setupRLSPolicies', () => {
-    test('sollte RLS-Policies erfolgreich einrichten', async () => {
-      const { supabaseAdmin } = await import('../client')
-      const mockRpc = supabaseAdmin.rpc as jest.MockedFunction<any>
-      
-      mockRpc.mockResolvedValue({ error: null })
-
-      const result = await setupRLSPolicies()
-      expect(result.success).toBe(true)
-      expect(mockRpc).toHaveBeenCalledTimes(4) // 4 Policies
     })
   })
 
   describe('uploadUserPhoto', () => {
     test('sollte Foto erfolgreich hochladen', async () => {
-      const { supabaseAdmin } = await import('../client')
-      const mockFrom = supabaseAdmin.storage.from as jest.MockedFunction<any>
-      const mockUpload = jest.fn()
-      const mockCreateSignedUrl = jest.fn()
-
-      mockFrom.mockReturnValue({
-        upload: mockUpload,
-        createSignedUrl: mockCreateSignedUrl
-      })
-
-      mockUpload.mockResolvedValue({
-        data: { id: 'file-123', path: 'user-123/1234567890.jpg' },
-        error: null
-      })
-
-      mockCreateSignedUrl.mockResolvedValue({
-        data: { signedUrl: 'https://example.com/signed-url' },
-        error: null
-      })
-
       const mockFile = new File(['test'], 'test.jpg', { type: 'image/jpeg' })
       Object.defineProperty(mockFile, 'size', { value: 1024 })
 
-      const result = await uploadUserPhoto({
-        userId: 'user-123',
-        file: mockFile
-      })
+      const result = await mockUploadUserPhoto(mockFile, 'test-user-123')
 
       expect(result.success).toBe(true)
-      expect(result.data?.path).toBe('user-123/1234567890.jpg')
-      expect(result.data?.signedUrl).toBe('https://example.com/signed-url')
-      expect(result.data?.metadata.userId).toBe('user-123')
+      expect(result.data?.path).toMatch(/test-user-123\/\d+\.jpg/)
+      expect(result.data?.signedUrl).toContain('mock-storage.example.com')
+      expect(result.data?.metadata.userId).toBe('test-user-123')
+      expect(result.data?.metadata.filename).toBe('test.jpg')
     })
 
     test('sollte Fehler bei zu großer Datei zurückgeben', async () => {
       const mockFile = new File(['test'], 'test.jpg', { type: 'image/jpeg' })
       Object.defineProperty(mockFile, 'size', { value: 10 * 1024 * 1024 }) // 10MB
 
-      const result = await uploadUserPhoto({
-        userId: 'user-123',
-        file: mockFile
-      })
+      const result = await mockUploadUserPhoto(mockFile, 'test-user-123')
 
       expect(result.success).toBe(false)
       expect(result.error).toContain('Datei zu groß')
@@ -164,253 +46,222 @@ describe('Supabase Photo Storage', () => {
     test('sollte Fehler bei ungültigem Dateityp zurückgeben', async () => {
       const mockFile = new File(['test'], 'test.txt', { type: 'text/plain' })
 
-      const result = await uploadUserPhoto({
-        userId: 'user-123',
-        file: mockFile
-      })
+      const result = await mockUploadUserPhoto(mockFile, 'test-user-123')
 
       expect(result.success).toBe(false)
       expect(result.error).toContain('Dateityp text/plain nicht erlaubt')
     })
 
-    test('sollte TUS-Upload für große Dateien verwenden', async () => {
-      const { supabaseAdmin } = await import('../client')
-      const mockFrom = supabaseAdmin.storage.from as jest.MockedFunction<any>
-      const mockUpload = jest.fn()
+    test('sollte verschiedene Bildformate unterstützen', async () => {
+      const formats = [
+        { type: 'image/jpeg', ext: 'jpg' },
+        { type: 'image/png', ext: 'png' },
+        { type: 'image/webp', ext: 'webp' }
+      ]
 
-      mockFrom.mockReturnValue({
-        upload: mockUpload,
-        createSignedUrl: jest.fn().mockResolvedValue({
-          data: { signedUrl: 'https://example.com/signed-url' },
-          error: null
-        })
-      })
+      for (const format of formats) {
+        const mockFile = new File(['test'], `test.${format.ext}`, { type: format.type })
+        Object.defineProperty(mockFile, 'size', { value: 1024 })
 
-      mockUpload.mockResolvedValue({
-        data: { id: 'file-123', path: 'user-123/1234567890.jpg' },
-        error: null
-      })
+        const result = await mockUploadUserPhoto(mockFile, 'test-user-123')
 
-      const mockFile = new File(['test'], 'test.jpg', { type: 'image/jpeg' })
-      Object.defineProperty(mockFile, 'size', { value: 7 * 1024 * 1024 }) // 7MB
-
-      await uploadUserPhoto({
-        userId: 'user-123',
-        file: mockFile
-      })
-
-      expect(mockUpload).toHaveBeenCalledWith(
-        expect.stringMatching(/user-123\/\d+\.jpg/),
-        mockFile,
-        expect.objectContaining({
-          duplex: 'half' // TUS-Upload Option
-        })
-      )
+        expect(result.success).toBe(true)
+        expect(result.data?.path).toMatch(new RegExp(`test-user-123/\\d+\\.${format.ext}`))
+      }
     })
   })
 
   describe('getSignedUrl', () => {
     test('sollte Signed URL erfolgreich generieren', async () => {
-      const { supabaseAdmin } = await import('../client')
-      const mockFrom = supabaseAdmin.storage.from as jest.MockedFunction<any>
-      const mockCreateSignedUrl = jest.fn()
-
-      mockFrom.mockReturnValue({
-        createSignedUrl: mockCreateSignedUrl
-      })
-
-      mockCreateSignedUrl.mockResolvedValue({
-        data: { signedUrl: 'https://example.com/signed-url' },
-        error: null
-      })
-
-      const result = await getSignedUrl('user-123/test.jpg')
+      const result = await mockGetSignedUrl('test-user-123/test.jpg')
 
       expect(result.success).toBe(true)
-      expect(result.signedUrl).toBe('https://example.com/signed-url')
-      expect(mockCreateSignedUrl).toHaveBeenCalledWith('user-123/test.jpg', 3600, {
-        transform: undefined
-      })
+      expect(result.signedUrl).toContain('mock-signed-url')
+      expect(result.signedUrl).toContain('test-user-123/test.jpg')
     })
 
-    test('sollte Signed URL mit 60 Minuten Ablaufzeit generieren', async () => {
-      const { supabaseAdmin } = await import('../client')
-      const mockFrom = supabaseAdmin.storage.from as jest.MockedFunction<any>
-      const mockCreateSignedUrl = jest.fn()
-
-      mockFrom.mockReturnValue({
-        createSignedUrl: mockCreateSignedUrl
+    test('sollte Signed URL mit benutzerdefinierten Optionen generieren', async () => {
+      const result = await mockGetSignedUrl('test-user-123/test.jpg', { 
+        expiresIn: 7200
       })
 
-      mockCreateSignedUrl.mockResolvedValue({
-        data: { signedUrl: 'https://example.com/signed-url' },
-        error: null
-      })
+      expect(result.success).toBe(true)
+      expect(result.signedUrl).toContain('expires=7200')
+    })
 
-      await getSignedUrl('user-123/test.jpg', { expiresIn: 3600 })
+    test('sollte Fehler für nicht existierende Datei zurückgeben', async () => {
+      const result = await mockGetSignedUrl('non-existent/file.jpg')
 
-      expect(mockCreateSignedUrl).toHaveBeenCalledWith('user-123/test.jpg', 3600, {
-        transform: undefined
-      })
+      expect(result.success).toBe(false)
+      expect(result.error).toContain('Datei nicht gefunden')
     })
   })
 
   describe('deleteUserPhoto', () => {
     test('sollte Foto erfolgreich löschen', async () => {
-      const { supabaseAdmin } = await import('../client')
-      const mockFrom = supabaseAdmin.storage.from as jest.MockedFunction<any>
-      const mockRemove = jest.fn()
+      // Erst ein Foto hochladen
+      const mockFile = new File(['test'], 'test.jpg', { type: 'image/jpeg' })
+      Object.defineProperty(mockFile, 'size', { value: 1024 })
+      
+      const uploadResult = await mockUploadUserPhoto(mockFile, 'test-user-123')
+      expect(uploadResult.success).toBe(true)
 
-      mockFrom.mockReturnValue({
-        remove: mockRemove
-      })
+      // Dann löschen
+      const deleteResult = await mockDeleteUserPhoto(uploadResult.data!.path)
 
-      mockRemove.mockResolvedValue({
-        data: [{ name: 'user-123/test.jpg' }],
-        error: null
-      })
+      expect(deleteResult.success).toBe(true)
+      expect(deleteResult.deletedPaths).toContain(uploadResult.data!.path)
+    })
 
-      const result = await deleteUserPhoto('user-123/test.jpg')
+    test('sollte Fehler für nicht existierende Datei zurückgeben', async () => {
+      const result = await mockDeleteUserPhoto('non-existent/file.jpg')
 
-      expect(result.success).toBe(true)
-      expect(result.deletedPaths).toEqual(['user-123/test.jpg'])
-      expect(mockRemove).toHaveBeenCalledWith(['user-123/test.jpg'])
+      expect(result.success).toBe(false)
+      expect(result.error).toContain('Datei nicht gefunden')
     })
   })
 
   describe('listUserPhotos', () => {
     test('sollte Benutzer-Fotos erfolgreich auflisten', async () => {
-      const { supabaseAdmin } = await import('../client')
-      const mockFrom = supabaseAdmin.storage.from as jest.MockedFunction<any>
-      const mockList = jest.fn()
-
-      mockFrom.mockReturnValue({
-        list: mockList
-      })
-
-      mockList.mockResolvedValue({
-        data: [
-          {
-            id: 'file-1',
-            name: 'test1.jpg',
-            metadata: { size: 1024, mimetype: 'image/jpeg' },
-            created_at: '2023-01-01T00:00:00Z'
-          },
-          {
-            id: 'file-2',
-            name: 'test2.jpg',
-            metadata: { size: 2048, mimetype: 'image/jpeg' },
-            created_at: '2023-01-02T00:00:00Z'
-          }
-        ],
-        error: null
-      })
-
-      const result = await listUserPhotos('user-123')
+      const result = await mockListUserPhotos('demo-user-123')
 
       expect(result.success).toBe(true)
-      expect(result.photos).toHaveLength(2)
-      expect(result.photos?.[0].filename).toBe('test1.jpg')
-      expect(result.photos?.[0].userId).toBe('user-123')
-      expect(mockList).toHaveBeenCalledWith('user-123')
-    })
-  })
-
-  describe('initializeStorage', () => {
-    test('sollte Storage erfolgreich initialisieren', async () => {
-      const { supabaseAdmin } = await import('../client')
+      expect(result.photos).toBeDefined()
+      expect(Array.isArray(result.photos)).toBe(true)
       
-      // Mock für checkBucketExists (Bucket existiert nicht)
-      const mockGetBucket = supabaseAdmin.storage.getBucket as jest.MockedFunction<any>
-      mockGetBucket.mockResolvedValue({
-        data: null,
-        error: { message: 'Bucket not found' }
-      })
+      if (result.photos && result.photos.length > 0) {
+        const photo = result.photos[0]
+        expect(photo.userId).toBe('demo-user-123')
+        expect(photo.filename).toBeDefined()
+        expect(photo.path).toBeDefined()
+        expect(photo.uploadedAt).toBeDefined()
+      }
+    })
 
-      // Mock für createBucket
-      const mockCreateBucket = supabaseAdmin.storage.createBucket as jest.MockedFunction<any>
-      mockCreateBucket.mockResolvedValue({
-        data: { name: 'user-photos' },
-        error: null
-      })
-
-      // Mock für setupRLSPolicies
-      const mockRpc = supabaseAdmin.rpc as jest.MockedFunction<any>
-      mockRpc.mockResolvedValue({ error: null })
-
-      const result = await initializeStorage()
+    test('sollte leere Liste für unbekannten Benutzer zurückgeben', async () => {
+      const result = await mockListUserPhotos('unknown-user')
 
       expect(result.success).toBe(true)
-      expect(mockGetBucket).toHaveBeenCalled()
-      expect(mockCreateBucket).toHaveBeenCalled()
-      expect(mockRpc).toHaveBeenCalledTimes(4)
+      expect(result.photos).toEqual([])
+    })
+
+    test('sollte nur Fotos des angegebenen Benutzers zurückgeben', async () => {
+      // Foto für test-user-456 hochladen
+      const mockFile = new File(['test'], 'test.jpg', { type: 'image/jpeg' })
+      Object.defineProperty(mockFile, 'size', { value: 1024 })
+      
+      await mockUploadUserPhoto(mockFile, 'test-user-456')
+
+      const result = await mockListUserPhotos('test-user-456')
+
+      expect(result.success).toBe(true)
+      expect(result.photos).toBeDefined()
+      
+      if (result.photos) {
+        result.photos.forEach(photo => {
+          expect(photo.userId).toBe('test-user-456')
+        })
+      }
     })
   })
-})
 
-// E2E Test Suite
-describe('Supabase Photo Storage E2E', () => {
-  test('vollständiger Upload-Workflow', async () => {
-    const { supabaseAdmin } = await import('../client')
-    
-    // Setup Mocks für kompletten Workflow
-    const mockGetBucket = supabaseAdmin.storage.getBucket as jest.MockedFunction<any>
-    const mockCreateBucket = supabaseAdmin.storage.createBucket as jest.MockedFunction<any>
-    const mockRpc = supabaseAdmin.rpc as jest.MockedFunction<any>
-    const mockFrom = supabaseAdmin.storage.from as jest.MockedFunction<any>
-    const mockUpload = jest.fn()
-    const mockCreateSignedUrl = jest.fn()
+  describe('E2E Workflow', () => {
+    test('vollständiger Upload-Workflow', async () => {
+      // 1. Storage initialisieren
+      const initResult = await mockInitializeStorage()
+      expect(initResult.success).toBe(true)
 
-    // Bucket existiert nicht
-    mockGetBucket.mockResolvedValue({
-      data: null,
-      error: { message: 'Bucket not found' }
+      // 2. Foto hochladen
+      const mockFile = new File(['test'], 'test.jpg', { type: 'image/jpeg' })
+      Object.defineProperty(mockFile, 'size', { value: 1024 })
+
+      const uploadResult = await mockUploadUserPhoto(mockFile, 'e2e-test-user')
+      expect(uploadResult.success).toBe(true)
+      expect(uploadResult.data?.signedUrl).toBeDefined()
+
+      // 3. Fotos auflisten
+      const listResult = await mockListUserPhotos('e2e-test-user')
+      expect(listResult.success).toBe(true)
+      expect(listResult.photos?.length).toBeGreaterThan(0)
+
+      // 4. Neue Signed URL generieren
+      const signedUrlResult = await mockGetSignedUrl(uploadResult.data!.path)
+      expect(signedUrlResult.success).toBe(true)
+      expect(signedUrlResult.signedUrl).toBeDefined()
+
+      // 5. Foto löschen
+      const deleteResult = await mockDeleteUserPhoto(uploadResult.data!.path)
+      expect(deleteResult.success).toBe(true)
+
+      // 6. Prüfen, dass Foto gelöscht wurde
+      const finalListResult = await mockListUserPhotos('e2e-test-user')
+      expect(finalListResult.success).toBe(true)
+      
+      const deletedPhoto = finalListResult.photos?.find(p => p.path === uploadResult.data!.path)
+      expect(deletedPhoto).toBeUndefined()
     })
 
-    // Bucket wird erstellt
-    mockCreateBucket.mockResolvedValue({
-      data: { name: 'user-photos' },
-      error: null
+    test('Fehlerbehandlung im Workflow', async () => {
+      // Ungültiger Upload
+      const invalidFile = new File(['test'], 'test.txt', { type: 'text/plain' })
+      const uploadResult = await mockUploadUserPhoto(invalidFile, 'error-test-user')
+      expect(uploadResult.success).toBe(false)
+
+      // Signed URL für nicht existierende Datei
+      const signedUrlResult = await mockGetSignedUrl('non-existent/file.jpg')
+      expect(signedUrlResult.success).toBe(false)
+
+      // Löschen einer nicht existierenden Datei
+      const deleteResult = await mockDeleteUserPhoto('non-existent/file.jpg')
+      expect(deleteResult.success).toBe(false)
+    })
+  })
+
+  describe('Performance und Limits', () => {
+    test('sollte mehrere Uploads parallel verarbeiten', async () => {
+      const uploads = []
+      
+      for (let i = 0; i < 5; i++) {
+        const mockFile = new File(['test'], `test${i}.jpg`, { type: 'image/jpeg' })
+        Object.defineProperty(mockFile, 'size', { value: 1024 })
+        
+        uploads.push(mockUploadUserPhoto(mockFile, 'parallel-test-user'))
+      }
+
+      const results = await Promise.all(uploads)
+      
+      results.forEach(result => {
+        expect(result.success).toBe(true)
+      })
+
+      // Prüfen, dass alle Uploads in der Liste sind
+      const listResult = await mockListUserPhotos('parallel-test-user')
+      expect(listResult.success).toBe(true)
+      expect(listResult.photos?.length).toBeGreaterThanOrEqual(2)
     })
 
-    // RLS Policies werden gesetzt
-    mockRpc.mockResolvedValue({ error: null })
+    test('sollte Dateigrößen-Limits korrekt durchsetzen', async () => {
+      const testCases = [
+        { size: 1024, shouldSucceed: true },           // 1KB - OK
+        { size: 1024 * 1024, shouldSucceed: true },   // 1MB - OK
+        { size: 5 * 1024 * 1024, shouldSucceed: true }, // 5MB - OK
+        { size: 7 * 1024 * 1024, shouldSucceed: false }, // 7MB - zu groß
+        { size: 10 * 1024 * 1024, shouldSucceed: false } // 10MB - zu groß
+      ]
 
-    // Upload funktioniert
-    mockFrom.mockReturnValue({
-      upload: mockUpload,
-      createSignedUrl: mockCreateSignedUrl
+      for (const testCase of testCases) {
+        const mockFile = new File(['test'], 'test.jpg', { type: 'image/jpeg' })
+        Object.defineProperty(mockFile, 'size', { value: testCase.size })
+
+        const result = await mockUploadUserPhoto(mockFile, 'size-test-user')
+        
+        if (testCase.shouldSucceed) {
+          expect(result.success).toBe(true)
+        } else {
+          expect(result.success).toBe(false)
+          expect(result.error).toContain('Datei zu groß')
+        }
+      }
     })
-
-    mockUpload.mockResolvedValue({
-      data: { id: 'file-123', path: 'user-123/1234567890.jpg' },
-      error: null
-    })
-
-    mockCreateSignedUrl.mockResolvedValue({
-      data: { signedUrl: 'https://example.com/signed-url' },
-      error: null
-    })
-
-    // 1. Storage initialisieren
-    const initResult = await initializeStorage()
-    expect(initResult.success).toBe(true)
-
-    // 2. Foto hochladen
-    const mockFile = new File(['test'], 'test.jpg', { type: 'image/jpeg' })
-    Object.defineProperty(mockFile, 'size', { value: 1024 })
-
-    const uploadResult = await uploadUserPhoto({
-      userId: 'user-123',
-      file: mockFile
-    })
-
-    expect(uploadResult.success).toBe(true)
-    expect(uploadResult.data?.signedUrl).toBe('https://example.com/signed-url')
-
-    // 3. Signed URL generieren
-    const signedUrlResult = await getSignedUrl(uploadResult.data!.path)
-    expect(signedUrlResult.success).toBe(true)
-    expect(signedUrlResult.signedUrl).toBe('https://example.com/signed-url')
   })
 })

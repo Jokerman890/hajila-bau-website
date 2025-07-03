@@ -15,6 +15,11 @@ import {
  */
 export async function checkBucketExists(): Promise<boolean> {
   try {
+    if (!supabaseAdmin) {
+      console.error('Supabase Admin Client nicht verfügbar')
+      return false
+    }
+    
     const { data, error } = await supabaseAdmin.storage.getBucket(STORAGE_BUCKET)
     
     if (error) {
@@ -36,6 +41,10 @@ export async function checkBucketExists(): Promise<boolean> {
  */
 export async function createBucket(): Promise<{ success: boolean; error?: string }> {
   try {
+    if (!supabaseAdmin) {
+      return { success: false, error: 'Supabase Admin Client nicht verfügbar' }
+    }
+    
     const { data, error } = await supabaseAdmin.storage.createBucket(STORAGE_BUCKET, {
       public: false,
       allowedMimeTypes: ALLOWED_FILE_TYPES,
@@ -60,6 +69,10 @@ export async function createBucket(): Promise<{ success: boolean; error?: string
  */
 export async function setupRLSPolicies(): Promise<{ success: boolean; error?: string }> {
   try {
+    if (!supabaseAdmin) {
+      return { success: false, error: 'Supabase Admin Client nicht verfügbar' }
+    }
+    
     // RLS Policy für READ - nur Owner kann eigene Dateien lesen
     const readPolicy = `
       CREATE POLICY "Users can read own photos" ON storage.objects
@@ -125,6 +138,10 @@ export async function uploadUserPhoto(options: UploadOptions): Promise<UploadRes
   const { userId, file, maxSize = MAX_FILE_SIZE, generateSignedUrl = true, signedUrlExpiresIn = SIGNED_URL_EXPIRES_IN } = options
 
   try {
+    if (!supabaseAdmin) {
+      return { success: false, error: 'Supabase Admin Client nicht verfügbar' }
+    }
+    
     // Validierung
     if (!file) {
       return { success: false, error: 'Keine Datei bereitgestellt' }
@@ -220,6 +237,10 @@ export async function getSignedUrl(
   const { expiresIn = SIGNED_URL_EXPIRES_IN, transform } = options
 
   try {
+    if (!supabaseAdmin) {
+      return { success: false, error: 'Supabase Admin Client nicht verfügbar' }
+    }
+    
     const { data, error } = await supabaseAdmin.storage
       .from(STORAGE_BUCKET)
       .createSignedUrl(path, expiresIn, {
@@ -242,6 +263,10 @@ export async function getSignedUrl(
  */
 export async function getBucketInfo(): Promise<{ success: boolean; data?: BucketInfo; error?: string }> {
   try {
+    if (!supabaseAdmin) {
+      return { success: false, error: 'Supabase Admin Client nicht verfügbar' }
+    }
+    
     const { data, error } = await supabaseAdmin.storage.getBucket(STORAGE_BUCKET)
     
     if (error) {
@@ -257,6 +282,10 @@ export async function getBucketInfo(): Promise<{ success: boolean; data?: Bucket
 
 export async function deleteUserPhoto(path: string): Promise<DeleteResult> {
   try {
+    if (!supabaseAdmin) {
+      return { success: false, error: 'Supabase Admin Client nicht verfügbar' }
+    }
+    
     const { data, error } = await supabaseAdmin.storage
       .from(STORAGE_BUCKET)
       .remove([path])
@@ -274,6 +303,10 @@ export async function deleteUserPhoto(path: string): Promise<DeleteResult> {
 
 export async function listUserPhotos(userId: string): Promise<{ success: boolean; photos?: PhotoMetadata[]; error?: string }> {
   try {
+    if (!supabaseAdmin) {
+      return { success: false, error: 'Supabase Admin Client nicht verfügbar' }
+    }
+    
     const { data, error } = await supabaseAdmin.storage
       .from(STORAGE_BUCKET)
       .list(userId)

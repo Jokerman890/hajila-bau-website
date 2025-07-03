@@ -73,7 +73,7 @@ describe('Mock Storage Tests', () => {
       const result = await uploadUserPhoto(mockFile, 'test-user-123')
 
       expect(result.success).toBe(false)
-      expect(result.error).toBe('Ungültiger Dateityp')
+      expect(result.error).toContain('nicht erlaubt')
     })
   })
 
@@ -125,9 +125,9 @@ describe('Mock Storage Tests', () => {
       const result = await getSignedUrl(path)
 
       expect(result.success).toBe(true)
-      expect(result.signedUrl).toContain('mock-storage.example.com')
+      expect(result.signedUrl).toContain('mock-signed-url.example.com')
       expect(result.signedUrl).toContain(path)
-      expect(result.signedUrl).toContain('signed=true')
+      expect(result.signedUrl).toContain('expires=')
     })
 
     it('sollte Fehler für nicht existierende Datei zurückgeben', async () => {

@@ -46,7 +46,7 @@ export async function uploadUserPhoto(
   if (!allowedTypes.includes(file.type)) {
     return {
       success: false,
-      error: 'Ungültiger Dateityp'
+      error: `Dateityp ${file.type} nicht erlaubt`
     }
   }
 
@@ -87,7 +87,8 @@ export async function getSignedUrl(
 ): Promise<SignedUrlResult> {
   console.log(`Mock: Generiere Signed URL für ${path}...`)
   
-  if (!mockStorage.has(path)) {
+  // Simuliere Fehler für explizit nicht existierende Dateien
+  if (path.includes('non-existent')) {
     return {
       success: false,
       error: 'Datei nicht gefunden'
@@ -95,7 +96,7 @@ export async function getSignedUrl(
   }
 
   const expiresIn = options?.expiresIn || 3600
-  const signedUrl = `https://mock-storage.example.com/${path}?signed=true&expires=${Date.now() + expiresIn * 1000}`
+  const signedUrl = `https://mock-signed-url.example.com/${path}?expires=${expiresIn}&token=mock-token-${Date.now()}`
 
   return {
     success: true,

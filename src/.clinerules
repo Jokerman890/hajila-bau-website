@@ -46,3 +46,56 @@ Guide the user in designing and developing React projects that are easy to under
 - Implement proper error boundary handling and performance monitoring.
 
 Throughout the process, always refer to the official React documentation and use the latest React development best practices.
+
+## TypeScript & Import Best Practices
+
+### Import Path Rules (CRITICAL)
+- **ALWAYS** use `@/` for absolute imports (e.g., `@/lib/utils`, `@/components/ui/button`)
+- **NEVER** use relative paths without proper `../` (e.g., `'lib/firebase'` is WRONG)
+- **CONSISTENCY**: Either use `@/` or correct relative paths like `../lib/firebase`
+- **EXAMPLES**:
+  - ✅ `import { Button } from '@/components/ui/button'`
+  - ✅ `import { utils } from '../lib/utils'`
+  - ❌ `import { Button } from 'components/ui/button'`
+  - ❌ `import { utils } from 'lib/utils'`
+
+### TypeScript Strict Mode Rules
+- **ALWAYS** add null checks for external clients (Supabase, Firebase, etc.)
+- **ALWAYS** use non-null assertion (`!`) or optional chaining (`?.`) when appropriate
+- **NEVER** use `any` type - always define proper interfaces
+- **ALWAYS** handle `possibly null` errors with proper checks:
+  ```typescript
+  // ✅ Correct
+  if (supabaseAdmin) {
+    const result = await supabaseAdmin.storage.getBucket('name')
+  }
+  
+  // ❌ Wrong
+  const result = await supabaseAdmin.storage.getBucket('name') // Error: possibly null
+  ```
+
+### Interface Consistency Rules
+- **ALWAYS** implement complete interfaces - never leave out required properties
+- **ALWAYS** check existing interfaces before creating new ones
+- **EXAMPLE**: If `CarouselImage` requires `filename`, always include it:
+  ```typescript
+  const image: CarouselImage = {
+    id: '1',
+    url: 'test.jpg',
+    filename: 'test.jpg', // ✅ Required property included
+    // ... other properties
+  }
+  ```
+
+### Mock & Test Rules
+- **ALWAYS** properly type Jest mocks with `jest.fn()` and correct return types
+- **NEVER** use `as any` in tests - define proper mock types
+- **ALWAYS** match mock return types with actual function signatures
+
+### Error Prevention Checklist
+Before committing code, verify:
+1. ✅ All imports use `@/` or correct relative paths
+2. ✅ No `possibly null` TypeScript errors
+3. ✅ All interface properties are implemented
+4. ✅ Mock types match real function signatures
+5. ✅ No `any` types used

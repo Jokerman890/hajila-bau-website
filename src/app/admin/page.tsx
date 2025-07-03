@@ -217,10 +217,6 @@ export default function HajilaBauAdminPage() {
   onImageUpload={dashboard.uploadImages}
   onImageDelete={dashboard.deleteImage}
   onImageUpdate={dashboard.updateImage}
-  onImageReorder={(images) => {
-    const imageIds = images.map(img => img.id)
-    dashboard.reorderImages(imageIds)
-  }}
   maxImages={20}
   allowedFormats={['image/jpeg', 'image/png', 'image/webp']}
   maxFileSize={5 * 1024 * 1024}

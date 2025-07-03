@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState, useRef } from 'react'
+import Image from 'next/image'
 import { 
   Upload,
   Image as ImageIcon,
@@ -40,7 +41,7 @@ interface AdminDashboardProps {
   onImageUpload?: (files: FileList) => void
   onImageDelete?: (id: string) => void
   onImageUpdate?: (id: string, updates: Partial<CarouselImage>) => void
-  onImageReorder?: (images: CarouselImage[]) => void
+  // onImageReorder?: (images: CarouselImage[]) => void // eslint-disable-line @typescript-eslint/no-unused-vars
   maxImages?: number
   allowedFormats?: string[]
   maxFileSize?: number
@@ -286,9 +287,11 @@ const ImageCard: React.FC<{
   return (
     <Card className="group hover:shadow-lg transition-all duration-300">
       <div className="relative">
-        <img
+        <Image
           src={image.url}
           alt={image.alt}
+          width={800}
+          height={600}
           className="w-full h-48 object-cover rounded-t-lg"
         />
         <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -703,9 +706,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {activeImages.slice(0, 6).map(image => (
                   <div key={image.id} className="relative group">
-                    <img
+                    <Image
                       src={image.url}
                       alt={image.alt}
+                      width={800}
+                      height={600}
                       className="w-full h-32 object-cover rounded-lg"
                     />
                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">

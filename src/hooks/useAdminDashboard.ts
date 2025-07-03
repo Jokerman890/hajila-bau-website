@@ -2,7 +2,9 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { MemoryAdminAPI } from '@/lib/api/memory-admin'
-import { CarouselImage, ApiResponse, validateImageFiles } from '@/lib/api/admin'
+import { CarouselImage, validateImageFiles } from '@/lib/api/admin'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { ApiResponse } from '@/lib/api/admin'
 
 export interface UseAdminDashboardReturn {
   // State

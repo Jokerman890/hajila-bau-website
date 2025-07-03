@@ -1,13 +1,16 @@
 {
   "name": "hajila-website",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "export": "next export"
+    "export": "next export",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@21st-extension/react": "^0.5.6",
@@ -18,9 +21,13 @@
     "@radix-ui/react-separator": "^1.1.7",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tabs": "^1.1.12",
+    "@supabase/supabase-js": "^2.50.3",
     "@types/uuid": "^10.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^17.0.1",
+    "firebase": "^11.10.0",
+    "firebase-admin": "^13.4.0",
     "framer-motion": "^12.23.0",
     "lucide-react": "^0.523.0",
     "motion": "^12.22.0",
@@ -33,14 +40,19 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@jest/globals": "^30.0.4",
     "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/three": "^0.177.0",
     "eslint": "^9",
     "eslint-config-next": "15.3.4",
+    "jest": "^30.0.4",
     "tailwindcss": "^4",
+    "ts-jest": "^29.4.0",
     "tw-animate-css": "^1.3.4",
     "typescript": "^5"
   }

@@ -14,8 +14,9 @@ const nextConfig: NextConfig = {
     ],
     unoptimized: true,
   },
-  output: 'export',
+  // Nur für Production export verwenden, nicht für Development
   ...(isExport && {
+    output: 'export',
     basePath: '/hajila-bau-website',
     assetPrefix: '/hajila-bau-website/',
   }),

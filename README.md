@@ -138,13 +138,26 @@ Die Website ist vollständig responsive und optimiert für:
 
 ## 📜 Changelog
 
-### Version 1.0.0 (02.07.2025)
-- Initiale Erstellung der Website für Hajila Bau GmbH.
-- Implementierung von Premium Glassmorphism-Design mit 3D-Effekten.
-- Hinzufügung von responsivem Design für alle Bildschirmgrößen.
-- Integration von Dark/Light Mode Toggle.
-- Erstellung von rechtlichen Seiten (Impressum, Datenschutz, Cookies) für DSGVO-Konformität.
-- Einrichtung der Speicherbank für Cline, angepasst an die Hajila Bau Webseite.
+### Version 0.3.0 (03.07.2025) - Aktuelle Version
+- **Supabase Photo Storage System** - Vollständiges Foto-Management mit API-Endpunkten
+- **Mock Storage System** - Demo-Funktionalität ohne externe Abhängigkeiten  
+- **Jest Testing Framework** - 16 Unit-Tests und E2E-Workflows
+- **Admin Dashboard Erweiterungen** - Erweiterte Content-Management-Funktionen
+- **TypeScript Optimierungen** - 100% Typisierung und Strict Mode
+- **API-Struktur** - RESTful Endpunkte für Photos, Admin und Memory-Bank
+- **Dokumentation** - Vollständige API-Docs und Supabase-Integration-Guide
+
+### Version 0.2.0 (15.01.2025)
+- **Content Management System** - Bilder-Karussell und Admin-Dashboard
+- **Firebase Integration** - Storage und Admin SDK für Bildverwaltung
+- **Drag & Drop Upload** - Intuitive Bildverwaltung mit Sortierung
+
+### Version 0.1.0 (02.01.2025)
+- **Initiale Website-Erstellung** - Next.js 15 mit TypeScript und Tailwind CSS
+- **Premium Glassmorphism-Design** - 3D-Effekte und moderne Optik
+- **Responsive Design** - Optimiert für alle Bildschirmgrößen
+- **Rechtliche Compliance** - DSGVO-konforme Seiten (Impressum, Datenschutz, Cookies)
+- **3D-Animationen** - Three.js Integration mit interaktiven Elementen
 
 ## 📞 Kontakt
 

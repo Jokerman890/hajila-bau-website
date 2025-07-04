@@ -42,7 +42,7 @@ interface AdminDashboardProps {
   onImageDelete?: (id: string) => void
   onImageUpdate?: (id: string, updates: Partial<CarouselImage>) => void
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onImageReorder?: (imageIds: string[]) => Promise<void>
+  onImageReorder?: (imageIds: string[]) => Promise<void> // TODO: Implement reorder functionality
   maxImages?: number
   allowedFormats?: string[]
   maxFileSize?: number
@@ -55,47 +55,7 @@ const Card: React.FC<{ children: React.ReactNode; className?: string }> = ({ chi
   </div>
 )
 
-// Simple Button Component
-const Button: React.FC<{ 
-  children: React.ReactNode
-  onClick?: () => void
-  variant?: 'default' | 'destructive' | 'outline' | 'secondary'
-  size?: 'sm' | 'default' | 'lg'
-  className?: string
-  disabled?: boolean
-}> = ({ 
-  children, 
-  onClick, 
-  variant = 'default', 
-  size = 'default', 
-  className = '',
-  disabled = false
-}) => {
-  const baseClasses = 'inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none'
-  
-  const variantClasses = {
-    default: 'bg-blue-600 text-white hover:bg-blue-700',
-    destructive: 'bg-red-600 text-white hover:bg-red-700',
-    outline: 'border border-slate-300 bg-transparent hover:bg-slate-100 dark:border-slate-600 dark:hover:bg-slate-800',
-    secondary: 'bg-slate-100 text-slate-900 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700'
-  }
-  
-  const sizeClasses = {
-    sm: 'h-8 px-3 text-sm',
-    default: 'h-10 px-4 py-2',
-    lg: 'h-11 px-8'
-  }
-  
-  return (
-    <button
-      className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
-      onClick={onClick}
-      disabled={disabled}
-    >
-      {children}
-    </button>
-  )
-}
+import { Button } from './button'
 
 // Simple Input Component
 const Input: React.FC<{

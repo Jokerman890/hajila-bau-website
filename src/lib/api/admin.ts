@@ -40,7 +40,7 @@ class AdminAPI {
       }
       
       // Datum-Strings zu Date-Objekten konvertieren
-      const images = data.images.map((img: any) => ({
+      const images = data.images.map((img: CarouselImage) => ({
         ...img,
         uploadedAt: new Date(img.uploadedAt)
       }))
@@ -80,7 +80,7 @@ class AdminAPI {
       }
       
       // Datum-Strings zu Date-Objekten konvertieren
-      const images = data.images.map((img: any) => ({
+      const images = data.images.map((img: CarouselImage) => ({
         ...img,
         uploadedAt: new Date(img.uploadedAt)
       }))
@@ -180,7 +180,7 @@ class AdminAPI {
       }
       
       // Datum-Strings zu Date-Objekten konvertieren
-      const images = data.images.map((img: any) => ({
+      const images = data.images.map((img: CarouselImage) => ({
         ...img,
         uploadedAt: new Date(img.uploadedAt)
       }))

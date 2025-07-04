@@ -53,7 +53,8 @@ export async function uploadUserPhoto(
   // Mock Upload
   const timestamp = Date.now()
   const extension = file.name.split('.').pop() || 'jpg'
-  const filePath = `${userId}/${timestamp}.${extension}` // eslint-disable-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const filePath = `${userId}/${timestamp}.${extension}`
   
   const metadata: PhotoMetadata = {
     id: `mock-${timestamp}`,

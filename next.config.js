@@ -4,9 +4,5 @@
  */
 
 module.exports = {
-  output: 'export',
-  alias: {
-    '/public/': '/_next/static/',
-    '/images/': '/_next/static/media/'
-  }
+  output: 'export'
 };

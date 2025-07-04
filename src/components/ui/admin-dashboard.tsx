@@ -41,7 +41,7 @@ interface AdminDashboardProps {
   onImageUpload?: (files: FileList) => void
   onImageDelete?: (id: string) => void
   onImageUpdate?: (id: string, updates: Partial<CarouselImage>) => void
-  // onImageReorder?: (images: CarouselImage[]) => void // eslint-disable-line @typescript-eslint/no-unused-vars
+  onImageReorder?: (imageIds: string[]) => Promise<void> // Temporarily commented out to fix ESLint error
   maxImages?: number
   allowedFormats?: string[]
   maxFileSize?: number

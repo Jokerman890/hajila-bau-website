@@ -297,9 +297,9 @@ export default function HajilaBauAdminPage() {
                 <div className="flex items-center gap-4">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                   <div className="flex-1">
-<p className="text-sm text-slate-900 dark:text-slate-100">
-  Neues Projektbild "Klinkerarbeiten Projekt" hochgeladen
-</p>
+                <p className="text-sm text-slate-900 dark:text-slate-100">
+                  Neues Projektbild "Klinkerarbeiten Projekt" hochgeladen
+                </p>
                     <p className="text-xs text-slate-500 dark:text-slate-400">
                       vor 2 Minuten
                     </p>
@@ -333,9 +333,9 @@ export default function HajilaBauAdminPage() {
                 <div className="flex items-center gap-4">
                   <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                   <div className="flex-1">
-<p className="text-sm text-slate-900 dark:text-slate-100">
-  Neues Projekt "WDVS Installation" hinzugefügt
-</p>
+                <p className="text-sm text-slate-900 dark:text-slate-100">
+                  Neues Projekt "WDVS Installation" hinzugefügt
+                </p>
                     <p className="text-xs text-slate-500 dark:text-slate-400">
                       vor 3 Stunden
                     </p>

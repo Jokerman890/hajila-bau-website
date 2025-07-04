@@ -18,7 +18,7 @@ export interface CarouselImage {
 }
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
-export interface ApiResponse<T = any> { // eslint-disable-line @typescript-eslint/no-unused-vars
+export interface ApiResponse<T = unknown> {
   success: boolean
   data?: T
   error?: string
@@ -232,7 +232,7 @@ export const validateImageFile = (file: File): { valid: boolean; error?: string 
   return { valid: true }
 }
 
-export const validateImageFiles = (files: FileList): { valid: File[]; invalid: { file: File; error: string }[] } => { // eslint-disable-line @typescript-eslint/no-unused-vars
+export const validateImageFiles = (files: FileList): { valid: File[]; invalid: { file: File; error: string }[] } => {
   const valid: File[] = []
   const invalid: { file: File; error: string }[] = []
   

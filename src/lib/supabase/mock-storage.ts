@@ -28,7 +28,7 @@ export async function setupRLSPolicies(): Promise<StorageInitResult> {
   return { success: true }
 }
 
-export async function uploadUserPhoto( // eslint-disable-line @typescript-eslint/no-unused-vars
+export async function uploadUserPhoto(
   file: File,
   userId: string
 ): Promise<UploadResult> {
@@ -81,7 +81,7 @@ export async function uploadUserPhoto( // eslint-disable-line @typescript-eslint
   }
 }
 
-export async function getSignedUrl( // eslint-disable-line @typescript-eslint/no-unused-vars
+export async function getSignedUrl(
   path: string,
   options?: { expiresIn?: number }
 ): Promise<SignedUrlResult> {
@@ -104,7 +104,7 @@ export async function getSignedUrl( // eslint-disable-line @typescript-eslint/no
   }
 }
 
-export async function deleteUserPhoto(path: string): Promise<DeleteResult> { // eslint-disable-line @typescript-eslint/no-unused-vars
+export async function deleteUserPhoto(path: string): Promise<DeleteResult> {
   console.log(`Mock: Lösche Foto ${path}...`)
   
   if (!mockStorage.has(path)) {
@@ -122,7 +122,7 @@ export async function deleteUserPhoto(path: string): Promise<DeleteResult> { // 
   }
 }
 
-export async function listUserPhotos(userId: string): Promise<ListResult> { // eslint-disable-line @typescript-eslint/no-unused-vars
+export async function listUserPhotos(userId: string): Promise<ListResult> {
   console.log(`Mock: Liste Fotos für User ${userId}...`)
   
   const userPhotos: PhotoMetadata[] = []
@@ -142,7 +142,7 @@ export async function listUserPhotos(userId: string): Promise<ListResult> { // e
   }
 }
 
-export async function initializeStorage(): Promise<StorageInitResult> { // eslint-disable-line @typescript-eslint/no-unused-vars
+export async function initializeStorage(): Promise<StorageInitResult> {
   console.log('Mock: Initialisiere Storage...')
   
   // Simuliere Initialisierung

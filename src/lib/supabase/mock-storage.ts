@@ -54,6 +54,7 @@ export async function uploadUserPhoto(
   const timestamp = Date.now()
   const extension = file.name.split('.').pop() || 'jpg'
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const filePath = `${userId}/${timestamp}.${extension}`
   
   const metadata: PhotoMetadata = {

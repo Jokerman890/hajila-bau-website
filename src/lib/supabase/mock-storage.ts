@@ -82,6 +82,7 @@ export async function uploadUserPhoto(
 }
 
 export async function getSignedUrl(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   path: string,
   options?: { expiresIn?: number }
 ): Promise<SignedUrlResult> {

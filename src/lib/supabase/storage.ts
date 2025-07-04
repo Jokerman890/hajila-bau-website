@@ -6,6 +6,7 @@ import {
   BucketInfo, 
   SignedUrlOptions, 
   DeleteResult,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   StorageError 
 } from './types'
 
@@ -27,7 +28,7 @@ export async function checkBucketExists(): Promise<boolean> {
       return false
     }
     
-    console.log(`Bucket ${STORAGE_BUCKET} existiert bereits:`, data)
+    console.log(`Bucket ${STORAGE_BUCKET} existiert bereits:`, data as BucketInfo)
     return true
   } catch (error) {
     console.error('Fehler beim Prüfen des Buckets:', error)
@@ -134,7 +135,7 @@ export async function setupRLSPolicies(): Promise<{ success: boolean; error?: st
  * >6 MB → TUS-Upload
  * Confidence Score: 9/10
  */
-export async function uploadUserPhoto(options: UploadOptions): Promise<UploadResult> { // eslint-disable-line @typescript-eslint/no-unused-vars
+export async function uploadUserPhoto(options: UploadOptions): Promise<UploadResult> {
   const { userId, file, maxSize = MAX_FILE_SIZE, generateSignedUrl = true, signedUrlExpiresIn = SIGNED_URL_EXPIRES_IN } = options
 
   try {
@@ -233,7 +234,7 @@ export async function uploadUserPhoto(options: UploadOptions): Promise<UploadRes
 export async function getSignedUrl(
   path: string, 
   options: SignedUrlOptions = {}
-): Promise<{ success: boolean; signedUrl?: string; error?: string }> { // eslint-disable-line @typescript-eslint/no-unused-vars
+): Promise<{ success: boolean; signedUrl?: string; error?: string }> {
   const { expiresIn = SIGNED_URL_EXPIRES_IN, transform } = options
 
   try {
@@ -280,7 +281,7 @@ export async function getBucketInfo(): Promise<{ success: boolean; data?: Bucket
   }
 }
 
-export async function deleteUserPhoto(path: string): Promise<DeleteResult> { // eslint-disable-line @typescript-eslint/no-unused-vars
+export async function deleteUserPhoto(path: string): Promise<DeleteResult> {
   try {
     if (!supabaseAdmin) {
       return { success: false, error: 'Supabase Admin Client nicht verfügbar' }
@@ -301,7 +302,7 @@ export async function deleteUserPhoto(path: string): Promise<DeleteResult> { // 
   }
 }
 
-export async function listUserPhotos(userId: string): Promise<{ success: boolean; photos?: PhotoMetadata[]; error?: string }> { // eslint-disable-line @typescript-eslint/no-unused-vars
+export async function listUserPhotos(userId: string): Promise<{ success: boolean; photos?: PhotoMetadata[]; error?: string }> {
   try {
     if (!supabaseAdmin) {
       return { success: false, error: 'Supabase Admin Client nicht verfügbar' }
@@ -336,7 +337,7 @@ export async function listUserPhotos(userId: string): Promise<{ success: boolean
 /**
  * Initialisierung: Bucket und RLS-Policies einrichten
  */
-export async function initializeStorage(): Promise<{ success: boolean; error?: string }> { // eslint-disable-line @typescript-eslint/no-unused-vars
+export async function initializeStorage(): Promise<{ success: boolean; error?: string }> {
   try {
     // 1. Prüfe ob Bucket existiert
     const bucketExists = await checkBucketExists()

@@ -53,28 +53,28 @@ export async function uploadUserPhoto(
   // Mock Upload
   const timestamp = Date.now()
   const extension = file.name.split('.').pop() || 'jpg'
-  const path = `${userId}/${timestamp}.${extension}`
+  const filePath = `${userId}/${timestamp}.${extension}`
   
   const metadata: PhotoMetadata = {
     id: `mock-${timestamp}`,
     userId,
     filename: file.name,
     originalName: file.name,
-    path,
+    path: filePath,
     size: file.size,
     mimeType: file.type,
     uploadedAt: new Date()
   }
 
   // Speichere in Mock Storage
-  mockStorage.set(path, metadata)
+  mockStorage.set(filePath, metadata)
 
-  const signedUrl = `https://mock-storage.example.com/${path}?signed=true`
+  const signedUrl = `https://mock-storage.example.com/${filePath}?signed=true`
 
   return {
     success: true,
     data: {
-      path,
+      path: filePath,
       signedUrl,
       metadata
     }
@@ -165,7 +165,7 @@ export async function initializeStorage(): Promise<StorageInitResult> {
 }
 
 // Demo-Daten hinzufügen
-export function addMockData() {
+function addMockData() {
   const demoPhotos: PhotoMetadata[] = [
     {
       id: 'demo-1',

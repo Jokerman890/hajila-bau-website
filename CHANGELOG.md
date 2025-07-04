@@ -19,6 +19,9 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 ### 🎉 Neu hinzugefügt
 - Zukünftige Features werden hier dokumentiert
 
+### 🐛 Behoben
+- **ESLint-Fehler**: Behebung von ungenutzten Variablen und Funktionen in mehreren Dateien durch Umbenennen und Entfernen ungenutzter Elemente.
+
 ---
 
 ## [0.3.0] - 2025-07-03

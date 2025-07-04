@@ -620,7 +620,7 @@ const PremiumWebsite: React.FC = () => {
               Hajila Bau GmbH
             </span>
           </div>
-          <p className="mb-2">Hajila Bau GmbH · Geschäftsführerin Samia Omerovic · HRB 210702, Amtsgericht Osnabrück</p>
+                <p className="mb-2">Hajila Bau GmbH · Geschäftsführerin Samia Omerovic · HRB 210702, Amtsgericht Osnabrück</p>
           <p className="mb-4">USt-ID: DE401804294</p>
           <p className="mb-4">© 2025 Hajila Bau GmbH – Alle Rechte vorbehalten.</p>
           <div className="flex justify-center gap-x-6">

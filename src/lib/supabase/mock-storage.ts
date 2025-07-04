@@ -53,7 +53,7 @@ export async function uploadUserPhoto(
   // Mock Upload
   const timestamp = Date.now()
   const extension = file.name.split('.').pop() || 'jpg'
-  const filePath = `${userId}/${timestamp}.${extension}`
+  const filePath = `${userId}/${timestamp}.${extension}` // eslint-disable-line @typescript-eslint/no-unused-vars
   
   const metadata: PhotoMetadata = {
     id: `mock-${timestamp}`,
@@ -165,6 +165,7 @@ export async function initializeStorage(): Promise<StorageInitResult> {
 }
 
 // Demo-Daten hinzufügen
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function addMockData() {
   const demoPhotos: PhotoMetadata[] = [
     {

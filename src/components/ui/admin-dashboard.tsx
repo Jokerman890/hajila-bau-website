@@ -41,7 +41,8 @@ interface AdminDashboardProps {
   onImageUpload?: (files: FileList) => void
   onImageDelete?: (id: string) => void
   onImageUpdate?: (id: string, updates: Partial<CarouselImage>) => void
-  onImageReorder?: (imageIds: string[]) => Promise<void> // Temporarily commented out to fix ESLint error
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onImageReorder?: (imageIds: string[]) => Promise<void>
   maxImages?: number
   allowedFormats?: string[]
   maxFileSize?: number
@@ -176,17 +177,17 @@ const ImageUploadZone: React.FC<{
   const [isDragOver, setIsDragOver] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const handleDragOver = (e: React.DragEvent) => {
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     setIsDragOver(true)
   }
 
-  const handleDragLeave = (e: React.DragEvent) => {
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     setIsDragOver(false)
   }
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     setIsDragOver(false)
     const files = e.dataTransfer.files

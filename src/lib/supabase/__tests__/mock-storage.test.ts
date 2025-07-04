@@ -6,8 +6,7 @@ import {
   initializeStorage,
   checkBucketExists,
   createBucket,
-  setupRLSPolicies,
-  addMockData
+  setupRLSPolicies
 } from '../mock-storage'
 
 describe('Mock Storage Tests', () => {

@@ -17,14 +17,12 @@ export interface CarouselImage {
   filename: string
 }
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
 export interface ApiResponse<T = unknown> {
   success: boolean
   data?: T
   error?: string
   message?: string
 }
-/* eslint-enable @typescript-eslint/no-unused-vars */
 
 class AdminAPI {
   private baseUrl = '/api/admin'

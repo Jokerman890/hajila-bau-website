@@ -118,7 +118,6 @@ describe('Mock Storage Tests', () => {
       const uploadResult = await uploadUserPhoto(mockFile, 'test-user-123')
       
       expect(uploadResult.success).toBe(true)
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const path = uploadResult.data!.path
 
       // Dann Signed URL generieren

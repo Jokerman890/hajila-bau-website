@@ -53,8 +53,6 @@ export async function uploadUserPhoto(
   // Mock Upload
   const timestamp = Date.now()
   const extension = file.name.split('.').pop() || 'jpg'
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const filePath = `${userId}/${timestamp}.${extension}`
   
   const metadata: PhotoMetadata = {
@@ -84,7 +82,6 @@ export async function uploadUserPhoto(
 }
 
 export async function getSignedUrl(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   path: string,
   options?: { expiresIn?: number }
 ): Promise<SignedUrlResult> {
@@ -168,7 +165,6 @@ export async function initializeStorage(): Promise<StorageInitResult> {
 }
 
 // Demo-Daten hinzufügen
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function addMockData() {
   const demoPhotos: PhotoMetadata[] = [
     {

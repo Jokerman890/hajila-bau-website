@@ -53,28 +53,28 @@ export async function uploadUserPhoto(
   // Mock Upload
   const timestamp = Date.now()
   const extension = file.name.split('.').pop() || 'jpg'
-  const filePath = `${userId}/${timestamp}.${extension}`
+  const _filePath = `${userId}/${timestamp}.${extension}`
   
   const metadata: PhotoMetadata = {
     id: `mock-${timestamp}`,
     userId,
     filename: file.name,
     originalName: file.name,
-    path: filePath,
+    path: _filePath,
     size: file.size,
     mimeType: file.type,
     uploadedAt: new Date()
   }
 
   // Speichere in Mock Storage
-  mockStorage.set(filePath, metadata)
+  mockStorage.set(_filePath, metadata)
 
-  const signedUrl = `https://mock-storage.example.com/${filePath}?signed=true`
+  const signedUrl = `https://mock-storage.example.com/${_filePath}?signed=true`
 
   return {
     success: true,
     data: {
-      path: filePath,
+      path: _filePath,
       signedUrl,
       metadata
     }
@@ -127,11 +127,11 @@ export async function listUserPhotos(userId: string): Promise<ListResult> {
   
   const userPhotos: PhotoMetadata[] = []
   
-  for (const [path, metadata] of mockStorage.entries()) {
-    if (metadata.userId === userId) {
-      userPhotos.push(metadata)
-    }
+for (const [, metadata] of mockStorage.entries()) {
+  if (metadata.userId === userId) {
+    userPhotos.push(metadata)
   }
+}
 
   // Sortiere nach Upload-Datum (neueste zuerst)
   userPhotos.sort((a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime())

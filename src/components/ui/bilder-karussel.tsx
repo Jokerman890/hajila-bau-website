@@ -59,9 +59,9 @@ export function ImageCarousel({
         } else {
           setError("Keine Bilder gefunden.");
         }
-      } catch (err: any) {
+      } catch (err) {
         console.error('Fehler beim Abrufen der Bilder:', err);
-        setError(err.message || 'Ein unbekannter Fehler ist aufgetreten.');
+        setError(err instanceof Error ? err.message : 'Ein unbekannter Fehler ist aufgetreten.');
       } finally {
         setIsLoading(false);
       }
@@ -79,13 +79,13 @@ export function ImageCarousel({
 
   const nextSlide = useCallback(() => {
     setDirection(1)
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length)
-  }, [images.length])
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % loadedImages.length)
+  }, [loadedImages.length])
 
   const prevSlide = useCallback(() => {
     setDirection(-1)
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length)
-  }, [images.length])
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + loadedImages.length) % loadedImages.length)
+  }, [loadedImages.length])
 
   const goToSlide = useCallback((index: number) => {
     setDirection(index > currentIndex ? 1 : -1)
@@ -190,6 +190,34 @@ export function ImageCarousel({
     );
   }
 
+  if (loadedImages.length === 0) {
+    return (
+      <div className={`relative w-full max-w-6xl mx-auto ${className}`}>
+        <div className="text-center mb-12">
+          <motion.h2 
+            className="text-4xl md:text-5xl font-bold text-foreground mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            Unsere Referenzen
+          </motion.h2>
+          <motion.p 
+            className="text-xl text-muted-foreground"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            Erfolgreich abgeschlossene Projekte
+          </motion.p>
+        </div>
+        <div className="relative h-[500px] md:h-[600px] overflow-hidden rounded-2xl bg-background border border-border shadow-lg flex items-center justify-center">
+          <p>Keine Bilder zum Anzeigen.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={`relative w-full max-w-6xl mx-auto ${className}`}>
       {/* Header */}
@@ -248,8 +276,8 @@ export function ImageCarousel({
             >
               <div className="relative h-full w-full">
                 <Image
-                  src={images[currentIndex].src}
-                  alt={images[currentIndex].alt}
+                  src={loadedImages[currentIndex].src}
+                  alt={loadedImages[currentIndex].alt}
                   width={800}
                   height={600}
                   className="w-full h-full object-cover"
@@ -300,7 +328,7 @@ export function ImageCarousel({
       {/* Indicators */}
       {showIndicators && (
         <div className="flex justify-center mt-8 gap-3">
-          {images.map((_, index) => (
+          {loadedImages.map((_, index) => (
             <motion.button
               key={index}
               onClick={() => goToSlide(index)}
@@ -326,7 +354,7 @@ export function ImageCarousel({
 
       {/* Thumbnail Navigation */}
       <div className="mt-8 flex justify-center gap-4 overflow-x-auto pb-4">
-        {images.map((image, index) => (
+        {loadedImages.map((image, index) => (
           <motion.button
             key={image.id}
             onClick={() => goToSlide(index)}

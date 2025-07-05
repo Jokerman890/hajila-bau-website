@@ -11,5 +11,6 @@ module.exports = {
   assetPrefix: isProd ? '/hajila-bau-website/' : '',
   images: {
     unoptimized: true
-  }
+  },
+  trailingSlash: true
 };

@@ -135,6 +135,7 @@ export function ImageCarousel({
     );
   }
 
+  console.log("Aktueller Bild-SRC:", loadedImages[currentIndex]?.src);
   return (
     <div className={`relative w-full max-w-6xl mx-auto ${className}`}>
       {/* Header */}
@@ -158,7 +159,7 @@ export function ImageCarousel({
       </div>
 
       {/* Main Carousel */}
-      <div className="relative h-[500px] md:h-[600px] overflow-hidden rounded-2xl bg-background border border-border shadow-lg" style={{ minHeight: '500px' }}>
+      <div className="relative h-[500px] md:h-[600px] overflow-hidden rounded-2xl bg-background border border-border shadow-lg" style={{ minHeight: '500px', position: 'relative' }}>
         <div 
           className="relative h-full"
           style={{ perspective: "1000px" }}
@@ -195,9 +196,9 @@ export function ImageCarousel({
                 <Image
                   src={loadedImages[currentIndex].src}
                   alt={loadedImages[currentIndex].alt}
-                  width={1200}
-                  height={800}
-                  className="w-full h-full object-cover"
+                  layout="fill"
+                  objectFit="cover"
+                  className="transition-opacity duration-300"
                 />
                 
                 {/* Gradient Overlay */}
@@ -286,9 +287,9 @@ export function ImageCarousel({
             <Image
               src={image.src}
               alt={image.alt}
-              width={200}
-              height={160}
-              className="w-full h-full object-cover"
+              layout="fill"
+              objectFit="cover"
+              className="transition-opacity duration-300"
             />
             {index === currentIndex && (
               <motion.div

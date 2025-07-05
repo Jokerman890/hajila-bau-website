@@ -21,10 +21,8 @@ interface ImageCarouselProps {
   className?: string
 }
 
+// Entferne window.__NEXT_DATA__ aus getBasePath und nutze nur process.env.NEXT_PUBLIC_BASE_PATH
 const getBasePath = () => {
-  if (typeof window !== 'undefined') {
-    return window.__NEXT_DATA__?.assetPrefix || process.env.NEXT_PUBLIC_BASE_PATH || ''
-  }
   return process.env.NEXT_PUBLIC_BASE_PATH || ''
 }
 

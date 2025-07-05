@@ -1,19 +1,18 @@
 # Active Context - Hajila Bau Webseite
 
 ## Aktueller Arbeitsfokus
-Derzeit wird an der Behebung von Problemen mit der Bildanzeige im Karussell der Hajila Bau Webseite gearbeitet.
+Das Karussell zeigt jetzt automatisch alle Bilder aus dem Upload-Ordner an. Die Bildanzeige ist damit gelöst.
 
 ## Kürzliche Änderungen
-- Anpassung der `bilder-karussel.tsx`-Datei, um die Anzahl der Bilder zu reduzieren und eine Mindesthöhe für den Container sicherzustellen.
-- Aktualisierung der Versionsnummer in `package.json` auf 0.3.4.
-- Mehrfache Commits und Deploys zur Fehlerbehebung bei der Bildanzeige.
+- Automatisches Skript zur Generierung der Bildliste (`carousel-images.json`) implementiert.
+- Karussell-Komponente liest alle Bilder aus der JSON-Liste ein.
+- Version auf 0.3.6 erhöht.
+- Mehrfache Commits und Deploys zur Fehlerbehebung und Automatisierung.
 
 ## Nächste Schritte
-- Überprüfung, ob die Bilder nach den letzten Änderungen korrekt angezeigt werden.
-- Weitere Anpassungen an der Bildanzeige, falls erforderlich.
-- Aktualisierung der Dokumentation in der Speicherbank, um den aktuellen Status und die nächsten Schritte zu reflektieren.
+- Weitere UI- und Inhaltsoptimierungen nach Bedarf.
+- Dokumentation und MCP-Memory aktuell halten.
 
 ## Aktive Entscheidungen und Überlegungen
-- Warum werden die Bilder im Karussell nicht angezeigt, obwohl die Pfade korrekt zu sein scheinen?
-- Gibt es möglicherweise ein Problem mit der Next.js-Konfiguration oder dem Deployment-Prozess, das die Bildanzeige beeinflusst?
-- Sollten weitere Bilder hinzugefügt werden, sobald das Anzeigeproblem behoben ist?
+- Die Bildanzeige im Karussell ist jetzt robust und wartungsfrei.
+- Neue Bilder können einfach durch Skriptlauf hinzugefügt werden.

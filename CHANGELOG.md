@@ -14,6 +14,16 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 ### 🐛 Behoben
 - **ESLint-Fehler**: Behebung von ungenutzten Variablen und Funktionen in mehreren Dateien durch Entfernen ungenutzter Importe oder Hinzufügen von ESLint-Kommentaren zur Deaktivierung der Regel für ungenutzte Elemente.
 
+## [0.3.6] - 2025-06-15
+
+### 🎉 Neu hinzugefügt
+- Karussell zeigt jetzt automatisch alle Bilder aus dem Ordner `public/uploads/carousel/` an (dank JSON-Generierung per Skript).
+- Skript `scripts/generate-carousel-images.js` erstellt die Bildliste für das Karussell.
+
+### 🔧 Verbessert
+- MCP-Memory und Speicherbank aktualisiert.
+- Versionierung und Dokumentation angepasst.
+
 ## [Unreleased]
 
 ### 🎉 Neu hinzugefügt

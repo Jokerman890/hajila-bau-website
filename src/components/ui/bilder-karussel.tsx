@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react"
+// Importiere die generierte JSON-Liste mit allen Bildern, typisiere als ImageItem[]
+import carouselImages from '../../../data/carousel-images.json';
 
 interface ImageItem {
   id: string
@@ -32,11 +34,11 @@ function withBasePath(path: string) {
   return `${base}${path.startsWith('/') ? '' : '/'}${path}`
 }
 
-const defaultImages: ImageItem[] = [
-  { id: "1", src: withBasePath("/uploads/carousel/5e360067-9ad3-4601-8a3e-79dd542a0527.JPG"), alt: "Referenzprojekt 1" },
-  { id: "2", src: withBasePath("/uploads/carousel/48a7d956-25b4-41fd-8f26-c54d3dffd5d4.JPG"), alt: "Referenzprojekt 2" },
-  { id: "3", src: withBasePath("/uploads/carousel/b21f7119-84f5-47fe-9cbe-c428ca2dfa97.JPG"), alt: "Referenzprojekt 3" }
-];
+// defaultImages: alle Bilder aus JSON verwenden
+const defaultImages: ImageItem[] = (carouselImages as ImageItem[]).map((img) => ({
+  ...img,
+  src: withBasePath(img.src)
+}));
 
 export function ImageCarousel({
   images = defaultImages,

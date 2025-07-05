@@ -59,7 +59,7 @@ export function ImageCarousel({
         } else {
           setError("Keine Bilder gefunden.");
         }
-      } catch (err) {
+      } catch (err: unknown) {
         console.error('Fehler beim Abrufen der Bilder:', err);
         setError(err instanceof Error ? err.message : 'Ein unbekannter Fehler ist aufgetreten.');
       } finally {

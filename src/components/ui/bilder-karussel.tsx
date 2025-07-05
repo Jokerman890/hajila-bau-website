@@ -246,7 +246,6 @@ export function ImageCarousel({
                   alt={loadedImages[currentIndex].alt}
                   width={800}
                   height={600}
-                  sizes="(max-width: 768px) 100vw, 800px"
                   className="w-full h-full object-cover"
                 />
                 
@@ -338,7 +337,6 @@ export function ImageCarousel({
               alt={image.alt}
               width={100}
               height={80}
-              sizes="(max-width: 768px) 20vw, 100px"
               className="w-full h-full object-cover"
             />
             {index === currentIndex && (

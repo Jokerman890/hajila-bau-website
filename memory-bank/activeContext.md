@@ -1,6 +1,6 @@
-# Aktiver Kontext (Version 0.4.1, Stand 2025-07-05)
-- Version 0.4.1, statischer Export für GitHub Pages, AnimatedButton, Logo3D, Karussell, basePath/assetPrefix überall korrekt
-- MCP-Memorybank, Changelog, README gepflegt
+# Aktiver Kontext (Version 0.4.2, Stand 2025-07-05)
+- Logo und Favicon transparent (logo_2d.png), Version 0.4.2
+- Memorybank, Changelog, README gepflegt
 
 # Aktueller Arbeitsfokus
 Das Karussell zeigt jetzt automatisch alle Bilder aus dem Upload-Ordner an. Die Bildanzeige ist damit gelöst.

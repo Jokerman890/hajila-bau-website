@@ -144,12 +144,16 @@ Die Website ist vollständig responsive und optimiert für:
 - Karussell zeigt alle Bilder aus Upload-Ordner automatisch
 - MCP-Memorybank und Changelog gepflegt
 
+### Version 0.4.2 (2025-07-05)
+- Logo und Favicon auf transparentes logo_2d.png gesetzt
+- Memorybank und Changelog gepflegt
+
 ### Version 0.3.0 (03.07.2025) - Aktuelle Version
 - **Supabase Photo Storage System** - Vollständiges Foto-Management mit API-Endpunkten
 - **Mock Storage System** - Demo-Funktionalität ohne externe Abhängigkeiten  
 - **Jest Testing Framework** - 16 Unit-Tests und E2E-Workflows
 - **Admin Dashboard Erweiterungen** - Erweiterte Content-Management-Funktionen
-- **TypeScript Optimierungen** - 100% Typisierung und Strict Mode
+- **TypeScript Optimierungen** - 100% Typierung und Strict Mode
 - **API-Struktur** - RESTful Endpunkte für Photos, Admin und Memory-Bank
 - **Dokumentation** - Vollständige API-Docs und Supabase-Integration-Guide
 

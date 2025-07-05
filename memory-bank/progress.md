@@ -23,3 +23,7 @@ Die Speicherbank ist eingerichtet. Das Problem mit der Bildanzeige im Karussell 
 - AnimatedButton und Logo3D überall integriert
 - Karussell dynamisch, basePath/assetPrefix überall korrekt
 - MCP-Memorybank gepflegt
+
+## Stand 0.4.2 (2025-07-05)
+- Logo und Favicon jetzt transparent (logo_2d.png)
+- Version 0.4.2, Memorybank und Changelog gepflegt

@@ -1,4 +1,4 @@
-# Aktiver Kontext (Version 0.4.2, Stand 2025-07-05)
+# Aktiver Kontext (Version 0.4.3, Stand 2025-07-05)
 - Logo und Favicon transparent (logo_2d.png), Version 0.4.2
 - Memorybank, Changelog, README gepflegt
 
@@ -18,3 +18,7 @@ Das Karussell zeigt jetzt automatisch alle Bilder aus dem Upload-Ordner an. Die 
 ## Aktive Entscheidungen und Überlegungen
 - Die Bildanzeige im Karussell ist jetzt robust und wartungsfrei.
 - Neue Bilder können einfach durch Skriptlauf hinzugefügt werden.
+
+### 2025-07-05
+- Doppelte Überschrift im References-Bereich entfernt (nur noch Farbverlauf)
+- Versionierung auf 0.4.3, Changelog und progress.md aktualisiert

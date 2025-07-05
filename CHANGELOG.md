@@ -5,6 +5,11 @@ Alle wichtigen Änderungen an der Hajila Bau GmbH Website werden in dieser Datei
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.3] - 2025-07-05
+### Changed
+- Doppelte Überschrift im References-Bereich entfernt (nur noch Farbverlauf-Version sichtbar)
+- Versionierung, Memory-Bank und MCP aktualisiert
+
 ## [0.4.2] - 2025-07-05
 ### Changed
 - Logo im Header/Footer und Favicon auf transparentes hajila-bau.de/logo_2d.png gesetzt

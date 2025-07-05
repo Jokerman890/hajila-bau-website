@@ -41,7 +41,7 @@ interface AdminDashboardProps {
   onImageUpload?: (files: FileList) => void
   onImageDelete?: (id: string) => void
   onImageUpdate?: (id: string, updates: Partial<CarouselImage>) => void
-  onImageReorder?: (imageIds: string[]) => Promise<void>
+  // onImageReorder?: (imageIds: string[]) => Promise<void>
   maxImages?: number
   allowedFormats?: string[]
   maxFileSize?: number
@@ -432,7 +432,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   onImageUpload,
   onImageDelete,
   onImageUpdate,
-  onImageReorder,
+  // onImageReorder,
   maxImages = 20,
   allowedFormats = ['image/jpeg', 'image/png', 'image/webp'],
   maxFileSize = 5 * 1024 * 1024

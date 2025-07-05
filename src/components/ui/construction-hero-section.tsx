@@ -402,7 +402,7 @@ function Navbar() {
           >
             <Logo3D
               imageUrl="https://hajila-bau.de/3d%20logo%20ohne%20bg.png"
-              size="sm"
+              size="md"
               primaryColor="#00C3E3"
               secondaryColor="#005B9F"
             />

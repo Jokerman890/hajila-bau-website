@@ -17,3 +17,9 @@ Die Speicherbank ist eingerichtet. Das Problem mit der Bildanzeige im Karussell 
 ## Bekannte Probleme
 - Keine Cloud-Synchronisation oder Backup-Funktion integriert.
 - Die Inhalte sind noch teilweise generisch und müssen vollständig auf die Hajila Bau Webseite zugeschnitten werden.
+
+## Stand 0.4.1 (2025-07-05)
+- Version 0.4.1, alle Hauptfeatures für statisches GitHub Pages Deployment umgesetzt
+- AnimatedButton und Logo3D überall integriert
+- Karussell dynamisch, basePath/assetPrefix überall korrekt
+- MCP-Memorybank gepflegt

@@ -5,6 +5,16 @@ Alle wichtigen Änderungen an der Hajila Bau GmbH Website werden in dieser Datei
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2025-07-05
+
+### Changed
+- Version auf 0.4.1 erhöht
+- Finales Logo- und Asset-Handling für GitHub Pages
+- AnimatedButton und Logo3D überall integriert
+- Karussell zeigt alle Bilder aus Upload-Ordner automatisch
+- basePath/assetPrefix Handling für alle Assets
+- MCP-Memorybank und README aktualisiert
+
 ## [0.4.0] - 2025-07-03
 
 ### 🎉 Neu hinzugefügt
@@ -345,4 +355,4 @@ Unbefugte Nutzung, Vervielfältigung oder Verbreitung ist untersagt.
 
 ---
 
-*Letzte Aktualisierung: 03.07.2025*
+*Letzte Aktualisierung: 05.07.2025*

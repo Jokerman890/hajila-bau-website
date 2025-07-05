@@ -138,6 +138,12 @@ Die Website ist vollständig responsive und optimiert für:
 
 ## 📜 Changelog
 
+### Version 0.4.1 (2025-07-05)
+- Statischer Export für GitHub Pages, basePath/assetPrefix überall korrekt
+- AnimatedButton und Logo3D überall integriert
+- Karussell zeigt alle Bilder aus Upload-Ordner automatisch
+- MCP-Memorybank und Changelog gepflegt
+
 ### Version 0.3.0 (03.07.2025) - Aktuelle Version
 - **Supabase Photo Storage System** - Vollständiges Foto-Management mit API-Endpunkten
 - **Mock Storage System** - Demo-Funktionalität ohne externe Abhängigkeiten  

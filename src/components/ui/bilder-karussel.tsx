@@ -315,17 +315,5 @@ export function ImageCarousel({
   )
 }
 
-export default function BilderKarussellDemo() {
-  return (
-    <div className="min-h-screen bg-background py-20 px-6">
-      <div className="max-w-7xl mx-auto">
-        <ImageCarousel
-          autoPlay={true}
-          autoPlayInterval={5000}
-          showControls={true}
-          showIndicators={true}
-        />
-      </div>
-    </div>
-  )
-}
+// Exportiere das Karussell direkt als Default-Export
+export default ImageCarousel;

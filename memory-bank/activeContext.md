@@ -1,6 +1,8 @@
-# Active Context - Hajila Bau Webseite
+# Aktiver Kontext (Version 0.4.1, Stand 2025-07-05)
+- Version 0.4.1, statischer Export für GitHub Pages, AnimatedButton, Logo3D, Karussell, basePath/assetPrefix überall korrekt
+- MCP-Memorybank, Changelog, README gepflegt
 
-## Aktueller Arbeitsfokus
+# Aktueller Arbeitsfokus
 Das Karussell zeigt jetzt automatisch alle Bilder aus dem Upload-Ordner an. Die Bildanzeige ist damit gelöst.
 
 ## Kürzliche Änderungen

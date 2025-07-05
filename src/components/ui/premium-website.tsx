@@ -8,8 +8,19 @@ import { GlassCard } from './glass-card';
 import GlowingServiceGrid from './glowing-service-grid';
 import BilderKarussel from './bilder-karussel';
 import { HeroSplineBackground } from './construction-hero-section';
-import Image from 'next/image';
 import AnimatedButton from './animated-button';
+import Logo3D from './logo-3d';
+
+// Hilfsfunktion für basePath
+function withBasePath(path: string) {
+  if (typeof window !== 'undefined') {
+    // Im Browser: basePath aus __NEXT_DATA__ assetPrefix
+    const base = (window as Window & { __NEXT_DATA__?: { assetPrefix?: string } }).__NEXT_DATA__?.assetPrefix || '';
+    return `${base}${path}`.replace(/\/+/g, '/');
+  }
+  // Im Build: basePath aus Umgebungsvariable oder leer
+  return `${process.env.NEXT_PUBLIC_BASE_PATH || ''}${path}`.replace(/\/+/g, '/');
+}
 
 // Typewriter Component
 interface TypewriterProps {
@@ -364,10 +375,7 @@ const PremiumWebsite: React.FC = () => {
         <div className="mx-auto max-w-7xl px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Image src="https://hajila-bau.de/logo_2d.png" alt="Hajila Bau Logo" className="h-8 w-8 object-contain" width={32} height={32} priority />
-              <span className="text-xl font-bold bg-gradient-to-r from-[var(--blue-start)] to-[var(--blue-end)] bg-clip-text text-transparent font-['Merriweather']">
-                Hajila Bau GmbH
-              </span>
+              <Logo3D imageUrl={withBasePath('/uploads/Hexagon-logo.jpg')} size="md" />
             </div>
 
             <Navigation items={menuItems} />
@@ -615,7 +623,7 @@ const PremiumWebsite: React.FC = () => {
       <footer className="relative z-10 py-12 px-6 border-t border-border/50 bg-background/80 backdrop-blur-md">
         <div className="mx-auto max-w-7xl text-center text-sm text-muted-foreground font-['Open_Sans']">
           <div className="flex justify-center items-center mb-4">
-            <Image src="https://hajila-bau.de/logo_2d.png" alt="Hajila Bau Logo" className="h-8 w-8 object-contain mr-2" width={32} height={32} priority />
+            <Logo3D imageUrl={withBasePath('/uploads/Hexagon-logo.jpg')} size="md" className="mr-2" />
             <span className="text-xl font-bold bg-gradient-to-r from-[var(--blue-start)] to-[var(--blue-end)] bg-clip-text text-transparent font-['Merriweather']">
               Hajila Bau GmbH
             </span>

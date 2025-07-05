@@ -1,18 +1,19 @@
 # Active Context - Hajila Bau Webseite
 
 ## Aktueller Arbeitsfokus
-Derzeit wird an der Einrichtung der grundlegenden Struktur der Speicherbank für die Hajila Bau Webseite gearbeitet.
+Derzeit wird an der Behebung von Problemen mit der Bildanzeige im Karussell der Hajila Bau Webseite gearbeitet.
 
 ## Kürzliche Änderungen
-- Erstellung der Kern-Dateien für die Speicherbank, angepasst an die Hajila Bau Webseite.
-- Implementierung der grundlegenden Dokumentationsstruktur für das Projekt.
-- Hinzufügung der Regel, dass die Gemini CLI für alle Anfragen und Aufgaben als Provider verwendet werden muss.
+- Anpassung der `bilder-karussel.tsx`-Datei, um die Anzahl der Bilder zu reduzieren und eine Mindesthöhe für den Container sicherzustellen.
+- Aktualisierung der Versionsnummer in `package.json` auf 0.3.4.
+- Mehrfache Commits und Deploys zur Fehlerbehebung bei der Bildanzeige.
 
 ## Nächste Schritte
-- Fertigstellung der restlichen Kern-Dateien mit spezifischen Informationen zur Hajila Bau Webseite.
-- Überprüfung und Aktualisierung der Inhalte basierend auf den Anforderungen des Hajila Bau Teams.
+- Überprüfung, ob die Bilder nach den letzten Änderungen korrekt angezeigt werden.
+- Weitere Anpassungen an der Bildanzeige, falls erforderlich.
+- Aktualisierung der Dokumentation in der Speicherbank, um den aktuellen Status und die nächsten Schritte zu reflektieren.
 
 ## Aktive Entscheidungen und Überlegungen
-- Wie können die Informationen in der Speicherbank am besten organisiert werden, um eine einfache Wiederherstellung des Kontexts für die Hajila Bau Webseite zu ermöglichen?
-- Welche zusätzlichen Dateien oder Strukturen könnten für die spezifischen Anforderungen des Hajila Bau Projekts nützlich sein?
-- Sicherstellung, dass die Gemini CLI konsequent für alle zukünftigen Aufgaben genutzt wird.
+- Warum werden die Bilder im Karussell nicht angezeigt, obwohl die Pfade korrekt zu sein scheinen?
+- Gibt es möglicherweise ein Problem mit der Next.js-Konfiguration oder dem Deployment-Prozess, das die Bildanzeige beeinflusst?
+- Sollten weitere Bilder hinzugefügt werden, sobald das Anzeigeproblem behoben ist?

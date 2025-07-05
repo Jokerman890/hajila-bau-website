@@ -1,6 +1,12 @@
 import { NextResponse } from 'next/server'
 import { listUserPhotos as mockListUserPhotos } from '@/lib/supabase/mock-storage'
 
+export const dynamic = 'force-static'
+
+export async function generateStaticParams() {
+  return [{ userId: 'demo-user' }];
+}
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ userId: string }> }

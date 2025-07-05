@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState, useEffect, useCallback } from "react"
+import Image from 'next/image'
 import { motion, AnimatePresence } from "framer-motion"
 import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react"
 
@@ -21,43 +22,7 @@ interface ImageCarouselProps {
   className?: string
 }
 
-const defaultImages: ImageItem[] = [
-  {
-    id: "1",
-    src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
-    alt: "Wohnpark Osnabrück",
-    title: "Wohnpark Osnabrück",
-    description: "2024 · Osnabrück"
-  },
-  {
-    id: "2", 
-    src: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop",
-    alt: "Logistikzentrum Hamburg",
-    title: "Logistikzentrum Hamburg",
-    description: "2024 · Hamburg"
-  },
-  {
-    id: "3",
-    src: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop", 
-    alt: "Bürokomplex München",
-    title: "Bürokomplex München",
-    description: "2023 · München"
-  },
-  {
-    id: "4",
-    src: "https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?w=800&h=600&fit=crop",
-    alt: "Einkaufszentrum Berlin",
-    title: "Einkaufszentrum Berlin", 
-    description: "2023 · Berlin"
-  },
-  {
-    id: "5",
-    src: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&h=600&fit=crop",
-    alt: "Industrieanlage Köln",
-    title: "Industrieanlage Köln",
-    description: "2022 · Köln"
-  }
-]
+const defaultImages: ImageItem[] = [];
 
 export function ImageCarousel({
   images = defaultImages,
@@ -67,6 +32,36 @@ export function ImageCarousel({
   showIndicators = true,
   className = ""
 }: ImageCarouselProps) {
+  const [loadedImages, setLoadedImages] = useState<ImageItem[]>(images);
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await fetch('/api/admin/images');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.images && data.images.length > 0) {
+            const apiImages = data.images.map((img: any) => ({
+              id: img.id,
+              src: img.url,
+              alt: img.alt || img.title || `Foto ${img.id}`,
+              title: img.title,
+              description: img.description
+            }));
+            setLoadedImages(apiImages);
+          }
+        } else {
+          console.error('Fehler beim Abrufen der Bilder:', response.status);
+        }
+      } catch (error) {
+        console.error('Fehler beim Abrufen der Bilder:', error);
+      }
+    };
+
+    if (images.length === 0) {
+      fetchImages();
+    }
+  }, [images]);
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(autoPlay)
   const [direction, setDirection] = useState(0)
@@ -185,29 +180,18 @@ export function ImageCarousel({
               className="absolute inset-0 cursor-grab active:cursor-grabbing"
             >
               <div className="relative h-full w-full">
-                <img
+                <Image
                   src={images[currentIndex].src}
                   alt={images[currentIndex].alt}
+                  width={800}
+                  height={600}
                   className="w-full h-full object-cover"
                 />
                 
                 {/* Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 
-                {/* Content Overlay */}
-                <motion.div 
-                  className="absolute bottom-0 left-0 right-0 p-8 text-white"
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3, duration: 0.6 }}
-                >
-                  <h3 className="text-3xl md:text-4xl font-bold mb-2">
-                    {images[currentIndex].title}
-                  </h3>
-                  <p className="text-lg md:text-xl text-white/80">
-                    {images[currentIndex].description}
-                  </p>
-                </motion.div>
+                {/* Content Overlay entfernt */}
               </div>
             </motion.div>
           </AnimatePresence>
@@ -287,9 +271,11 @@ export function ImageCarousel({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <img
+            <Image
               src={image.src}
               alt={image.alt}
+              width={100}
+              height={80}
               className="w-full h-full object-cover"
             />
             {index === currentIndex && (

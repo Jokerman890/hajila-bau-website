@@ -10,7 +10,9 @@
     "export": "next export",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d out"
   },
   "dependencies": {
     "@21st-extension/react": "^0.5.6",
@@ -50,6 +52,7 @@
     "@types/three": "^0.177.0",
     "eslint": "^9",
     "eslint-config-next": "15.3.4",
+    "gh-pages": "^6.3.0",
     "jest": "^30.0.4",
     "tailwindcss": "^4",
     "ts-jest": "^29.4.0",

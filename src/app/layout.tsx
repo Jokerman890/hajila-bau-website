@@ -61,6 +61,7 @@ export default function RootLayout({
       >
         <TwentyFirstToolbar config={{ plugins: [ReactPlugin] }} />
         {children}
+        <link rel="icon" type="image/jpeg" href="/uploads/Hexagon-logo.jpg" />
       </body>
     </html>
   );

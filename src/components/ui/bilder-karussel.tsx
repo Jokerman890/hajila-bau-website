@@ -37,8 +37,6 @@ export function ImageCarousel({
   className = ""
 }: ImageCarouselProps) {
   const [loadedImages, setLoadedImages] = useState<ImageItem[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (images && images.length > 0) {
@@ -108,61 +106,6 @@ export function ImageCarousel({
     return Math.abs(offset) * velocity
   }
 
-  if (isLoading) {
-    return (
-      <div className={`relative w-full max-w-6xl mx-auto ${className}`}>
-        <div className="text-center mb-12">
-          <motion.h2 
-            className="text-4xl md:text-5xl font-bold text-foreground mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            Unsere Referenzen
-          </motion.h2>
-          <motion.p 
-            className="text-xl text-muted-foreground"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            Erfolgreich abgeschlossene Projekte
-          </motion.p>
-        </div>
-        <div className="relative h-[500px] md:h-[600px] overflow-hidden rounded-2xl bg-background border border-border shadow-lg flex items-center justify-center">
-          <p>Lade Bilder...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className={`relative w-full max-w-6xl mx-auto ${className}`}>
-        <div className="text-center mb-12">
-          <motion.h2 
-            className="text-4xl md:text-5xl font-bold text-foreground mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            Unsere Referenzen
-          </motion.h2>
-          <motion.p 
-            className="text-xl text-muted-foreground"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            Erfolgreich abgeschlossene Projekte
-          </motion.p>
-        </div>
-        <div className="relative h-[500px] md:h-[600px] overflow-hidden rounded-2xl bg-background border border-border shadow-lg flex items-center justify-center">
-          <p className="text-red-500">Fehler: {error}</p>
-        </div>
-      </div>
-    );
-  }
 
   if (loadedImages.length === 0) {
     return (

@@ -1,7 +1,6 @@
 "use client"
 
 import React, { useState, useEffect, useCallback } from "react"
-import Image from 'next/image'
 import { motion, AnimatePresence } from "framer-motion"
 import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react"
 
@@ -206,12 +205,11 @@ export function ImageCarousel({
               className="absolute inset-0 cursor-grab active:cursor-grabbing"
             >
               <div className="relative h-full w-full">
-                <Image
+                <img
                   src={loadedImages[currentIndex].src}
                   alt={loadedImages[currentIndex].alt}
-                  layout="fill"
-                  objectFit="cover"
-                  className="transition-opacity duration-300"
+                  className="w-full h-full object-cover transition-opacity duration-300 rounded-2xl"
+                  style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
                 />
                 
                 {/* Gradient Overlay */}
@@ -297,12 +295,11 @@ export function ImageCarousel({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <Image
+            <img
               src={image.src}
               alt={image.alt}
-              layout="fill"
-              objectFit="cover"
-              className="transition-opacity duration-300"
+              className="w-full h-full object-cover transition-opacity duration-300 rounded-lg"
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
             />
             {index === currentIndex && (
               <motion.div

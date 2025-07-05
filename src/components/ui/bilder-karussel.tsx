@@ -22,7 +22,11 @@ interface ImageCarouselProps {
   className?: string
 }
 
-const defaultImages: ImageItem[] = [];
+const defaultImages: ImageItem[] = [
+  { id: "1", src: "/uploads/carousel/image1.jpg", alt: "Referenzprojekt 1" },
+  { id: "2", src: "/uploads/carousel/image2.jpg", alt: "Referenzprojekt 2" },
+  { id: "3", src: "/uploads/carousel/image3.jpg", alt: "Referenzprojekt 3" }
+];
 
 export function ImageCarousel({
   images = defaultImages,
@@ -37,40 +41,10 @@ export function ImageCarousel({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchImages = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const response = await fetch('/api/admin/images');
-        if (!response.ok) {
-          throw new Error(`Fehler beim Abrufen der Bilder: ${response.status}`);
-        }
-        const data: { images: { id: string | number; url: string; alt?: string; title?: string; description?: string }[] } = await response.json();
-        
-        if (data.images && data.images.length > 0) {
-          const apiImages: ImageItem[] = data.images.map((img) => ({
-            id: img.id.toString(),
-            src: img.url,
-            alt: img.alt || img.title || `Foto ${img.id}`,
-            title: img.title,
-            description: img.description
-          }));
-          setLoadedImages(apiImages);
-        } else {
-          setError("Keine Bilder gefunden.");
-        }
-      } catch (err: unknown) {
-        console.error('Fehler beim Abrufen der Bilder:', err);
-        setError(err instanceof Error ? err.message : 'Ein unbekannter Fehler ist aufgetreten.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     if (images && images.length > 0) {
       setLoadedImages(images);
     } else {
-      fetchImages();
+      setLoadedImages(defaultImages);
     }
   }, [images]);
   const [currentIndex, setCurrentIndex] = useState(0)

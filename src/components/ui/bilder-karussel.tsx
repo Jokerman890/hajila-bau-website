@@ -122,24 +122,6 @@ export function ImageCarousel({
   if (loadedImages.length === 0) {
     return (
       <div className={`relative w-full max-w-6xl mx-auto ${className}`}>
-        <div className="text-center mb-12">
-          <motion.h2 
-            className="text-4xl md:text-5xl font-bold text-foreground mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            Unsere Referenzen
-          </motion.h2>
-          <motion.p 
-            className="text-xl text-muted-foreground"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            Erfolgreich abgeschlossene Projekte
-          </motion.p>
-        </div>
         <div className="relative h-[500px] md:h-[600px] overflow-hidden rounded-2xl bg-background border border-border shadow-lg flex items-center justify-center">
           <p>Keine Bilder zum Anzeigen.</p>
         </div>
@@ -150,26 +132,6 @@ export function ImageCarousel({
   console.log("Aktueller Bild-SRC:", loadedImages[currentIndex]?.src);
   return (
     <div className={`relative w-full max-w-6xl mx-auto ${className}`}>
-      {/* Header */}
-      <div className="text-center mb-12">
-        <motion.h2 
-          className="text-4xl md:text-5xl font-bold text-foreground mb-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          Unsere Referenzen
-        </motion.h2>
-        <motion.p 
-          className="text-xl text-muted-foreground"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          Erfolgreich abgeschlossene Projekte
-        </motion.p>
-      </div>
-
       {/* Main Carousel */}
       <div className="relative h-[500px] md:h-[600px] overflow-hidden rounded-2xl bg-background border border-border shadow-lg" style={{ minHeight: '500px', position: 'relative' }}>
         <div 

@@ -32,33 +32,44 @@ export function ImageCarousel({
   showIndicators = true,
   className = ""
 }: ImageCarouselProps) {
-  const [loadedImages, setLoadedImages] = useState<ImageItem[]>(images);
+  const [loadedImages, setLoadedImages] = useState<ImageItem[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchImages = async () => {
+      setIsLoading(true);
+      setError(null);
       try {
         const response = await fetch('/api/admin/images');
-        if (response.ok) {
-          const data = await response.json();
-          if (data.images && data.images.length > 0) {
-            const apiImages = data.images.map((img: any) => ({
-              id: img.id,
-              src: img.url,
-              alt: img.alt || img.title || `Foto ${img.id}`,
-              title: img.title,
-              description: img.description
-            }));
-            setLoadedImages(apiImages);
-          }
-        } else {
-          console.error('Fehler beim Abrufen der Bilder:', response.status);
+        if (!response.ok) {
+          throw new Error(`Fehler beim Abrufen der Bilder: ${response.status}`);
         }
-      } catch (error) {
-        console.error('Fehler beim Abrufen der Bilder:', error);
+        const data: { images: { id: string | number; url: string; alt?: string; title?: string; description?: string }[] } = await response.json();
+        
+        if (data.images && data.images.length > 0) {
+          const apiImages: ImageItem[] = data.images.map((img) => ({
+            id: img.id.toString(),
+            src: img.url,
+            alt: img.alt || img.title || `Foto ${img.id}`,
+            title: img.title,
+            description: img.description
+          }));
+          setLoadedImages(apiImages);
+        } else {
+          setError("Keine Bilder gefunden.");
+        }
+      } catch (err: any) {
+        console.error('Fehler beim Abrufen der Bilder:', err);
+        setError(err.message || 'Ein unbekannter Fehler ist aufgetreten.');
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    if (images.length === 0) {
+    if (images && images.length > 0) {
+      setLoadedImages(images);
+    } else {
       fetchImages();
     }
   }, [images]);
@@ -121,6 +132,62 @@ export function ImageCarousel({
   const swipeConfidenceThreshold = 10000
   const swipePower = (offset: number, velocity: number) => {
     return Math.abs(offset) * velocity
+  }
+
+  if (isLoading) {
+    return (
+      <div className={`relative w-full max-w-6xl mx-auto ${className}`}>
+        <div className="text-center mb-12">
+          <motion.h2 
+            className="text-4xl md:text-5xl font-bold text-foreground mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            Unsere Referenzen
+          </motion.h2>
+          <motion.p 
+            className="text-xl text-muted-foreground"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            Erfolgreich abgeschlossene Projekte
+          </motion.p>
+        </div>
+        <div className="relative h-[500px] md:h-[600px] overflow-hidden rounded-2xl bg-background border border-border shadow-lg flex items-center justify-center">
+          <p>Lade Bilder...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={`relative w-full max-w-6xl mx-auto ${className}`}>
+        <div className="text-center mb-12">
+          <motion.h2 
+            className="text-4xl md:text-5xl font-bold text-foreground mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            Unsere Referenzen
+          </motion.h2>
+          <motion.p 
+            className="text-xl text-muted-foreground"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            Erfolgreich abgeschlossene Projekte
+          </motion.p>
+        </div>
+        <div className="relative h-[500px] md:h-[600px] overflow-hidden rounded-2xl bg-background border border-border shadow-lg flex items-center justify-center">
+          <p className="text-red-500">Fehler: {error}</p>
+        </div>
+      </div>
+    );
   }
 
   return (

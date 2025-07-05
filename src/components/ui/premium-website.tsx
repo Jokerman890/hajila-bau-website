@@ -10,17 +10,6 @@ import BilderKarussel from './bilder-karussel';
 import { HeroSplineBackground } from './construction-hero-section';
 import AnimatedButton from './animated-button';
 
-// Hilfsfunktion für basePath
-function withBasePath(path: string) {
-  if (typeof window !== 'undefined') {
-    // Im Browser: basePath aus __NEXT_DATA__ assetPrefix
-    const base = (window as Window & { __NEXT_DATA__?: { assetPrefix?: string } }).__NEXT_DATA__?.assetPrefix || '';
-    return `${base}${path}`.replace(/\/+/g, '/');
-  }
-  // Im Build: basePath aus Umgebungsvariable oder leer
-  return `${process.env.NEXT_PUBLIC_BASE_PATH || ''}${path}`.replace(/\/+/g, '/');
-}
-
 // Typewriter Component
 interface TypewriterProps {
   text: string | string[]

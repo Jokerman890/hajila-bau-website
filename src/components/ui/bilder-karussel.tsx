@@ -244,9 +244,8 @@ export function ImageCarousel({
                 <Image
                   src={loadedImages[currentIndex].src}
                   alt={loadedImages[currentIndex].alt}
-                  width={800}
-                  height={600}
-                  className="w-full h-full object-cover"
+                  layout="fill"
+                  objectFit="cover"
                 />
                 
                 {/* Gradient Overlay */}
@@ -335,9 +334,8 @@ export function ImageCarousel({
             <Image
               src={image.src}
               alt={image.alt}
-              width={100}
-              height={80}
-              className="w-full h-full object-cover"
+              layout="fill"
+              objectFit="cover"
             />
             {index === currentIndex && (
               <motion.div

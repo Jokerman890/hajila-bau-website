@@ -1,269 +1,322 @@
 "use client"
 
-import { memo, useEffect, useLayoutEffect, useState } from "react"
-import {
-  AnimatePresence,
-  motion,
-  useAnimation,
-  useMotionValue,
-  useTransform,
-} from "framer-motion"
-import Image from "next/image"
+import React, { useState, useEffect, useCallback } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react"
 
-export const useIsomorphicLayoutEffect =
-  typeof window !== "undefined" ? useLayoutEffect : useEffect
-
-type UseMediaQueryOptions = {
-  defaultValue?: boolean
-  initializeWithValue?: boolean
+interface ImageItem {
+  id: string
+  src: string
+  alt: string
+  title?: string
+  description?: string
 }
 
-const IS_SERVER = typeof window === "undefined"
+interface ImageCarouselProps {
+  images?: ImageItem[]
+  autoPlay?: boolean
+  autoPlayInterval?: number
+  showControls?: boolean
+  showIndicators?: boolean
+  className?: string
+}
 
-export function useMediaQuery(
-  query: string,
+const defaultImages: ImageItem[] = [
   {
-    defaultValue = false,
-    initializeWithValue = true,
-  }: UseMediaQueryOptions = {}
-): boolean {
-  const getMatches = (query: string): boolean => {
-    if (IS_SERVER) {
-      return defaultValue
-    }
-    return window.matchMedia(query).matches
+    id: "1",
+    src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
+    alt: "Wohnpark Osnabrück",
+    title: "Wohnpark Osnabrück",
+    description: "2024 · Osnabrück"
+  },
+  {
+    id: "2", 
+    src: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop",
+    alt: "Logistikzentrum Hamburg",
+    title: "Logistikzentrum Hamburg",
+    description: "2024 · Hamburg"
+  },
+  {
+    id: "3",
+    src: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop", 
+    alt: "Bürokomplex München",
+    title: "Bürokomplex München",
+    description: "2023 · München"
+  },
+  {
+    id: "4",
+    src: "https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?w=800&h=600&fit=crop",
+    alt: "Einkaufszentrum Berlin",
+    title: "Einkaufszentrum Berlin", 
+    description: "2023 · Berlin"
+  },
+  {
+    id: "5",
+    src: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&h=600&fit=crop",
+    alt: "Industrieanlage Köln",
+    title: "Industrieanlage Köln",
+    description: "2022 · Köln"
   }
-
-  const [matches, setMatches] = useState<boolean>(() => {
-    if (initializeWithValue) {
-      return getMatches(query)
-    }
-    return defaultValue
-  })
-
-  const handleChange = () => {
-    setMatches(getMatches(query))
-  }
-
-  useIsomorphicLayoutEffect(() => {
-    const matchMedia = window.matchMedia(query)
-    handleChange()
-
-    matchMedia.addEventListener("change", handleChange)
-
-    return () => {
-      matchMedia.removeEventListener("change", handleChange)
-    }
-  }, [query])
-
-  return matches
-}
-
-const projectImages = [
-  "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=400&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=400&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1554995207-c18c203602cb?q=80&w=400&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1506377295352-e3154d43ea9e?q=80&w=400&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=400&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1496368077930-c1e31b4e5b44?q=80&w=400&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=400&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=400&auto=format&fit=crop"
 ]
 
-const projectTitles = [
-  "Wohnpark Osnabrück",
-  "Logistikzentrum Hamburg",
-  "Bürokomplex München",
-  "Einkaufszentrum Berlin",
-  "Wohnanlage Frankfurt",
-  "Industriehalle Köln",
-  "Geschäftshaus Dresden",
-  "Wohnturm Stuttgart"
-]
+export function ImageCarousel({
+  images = defaultImages,
+  autoPlay = true,
+  autoPlayInterval = 4000,
+  showControls = true,
+  showIndicators = true,
+  className = ""
+}: ImageCarouselProps) {
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isPlaying, setIsPlaying] = useState(autoPlay)
+  const [direction, setDirection] = useState(0)
 
-const transitionOverlay = { duration: 0.5 }
+  const nextSlide = useCallback(() => {
+    setDirection(1)
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length)
+  }, [images.length])
 
-interface CarouselProps {
-  handleClick: (imgUrl: string, index: number) => void
-  controls: ReturnType<typeof useAnimation>
-  cards: string[]
-  titles: string[]
-  isCarouselActive: boolean
-}
+  const prevSlide = useCallback(() => {
+    setDirection(-1)
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length)
+  }, [images.length])
 
-const Carousel = memo(({
-  handleClick,
-  controls,
-  cards,
-  titles,
-  isCarouselActive,
-}: CarouselProps) => {
-  // Define display name for the component
-  Carousel.displayName = "Carousel";
-  const isScreenSizeSm = useMediaQuery("(max-width: 640px)")
-  const cylinderWidth = isScreenSizeSm ? 1100 : 1800
-  const faceCount = cards.length
-  const faceWidth = cylinderWidth / faceCount
-  const radius = cylinderWidth / (2 * Math.PI)
-  const rotation = useMotionValue(0)
-  const transform = useTransform(
-    rotation,
-    (value) => `rotate3d(0, 1, 0, ${value}deg)`
-  )
+  const goToSlide = useCallback((index: number) => {
+    setDirection(index > currentIndex ? 1 : -1)
+    setCurrentIndex(index)
+  }, [currentIndex])
+
+  const togglePlayPause = useCallback(() => {
+    setIsPlaying(!isPlaying)
+  }, [isPlaying])
+
+  useEffect(() => {
+    if (!isPlaying) return
+
+    const interval = setInterval(() => {
+      nextSlide()
+    }, autoPlayInterval)
+
+    return () => clearInterval(interval)
+  }, [isPlaying, nextSlide, autoPlayInterval])
+
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0,
+      scale: 0.8,
+      rotateY: direction > 0 ? 25 : -25
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+      scale: 1,
+      rotateY: 0
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0,
+      scale: 0.8,
+      rotateY: direction < 0 ? 25 : -25
+    })
+  }
+
+  const swipeConfidenceThreshold = 10000
+  const swipePower = (offset: number, velocity: number) => {
+    return Math.abs(offset) * velocity
+  }
 
   return (
-    <div
-      className="flex h-full items-center justify-center bg-background"
-      style={{
-        perspective: "1000px",
-        transformStyle: "preserve-3d",
-        willChange: "transform",
-      }}
-    >
-        <motion.div
-          drag={isCarouselActive ? "x" : false}
-          className="relative flex h-full origin-center cursor-grab justify-center active:cursor-grabbing"
-          style={{
-            transform,
-            rotateY: rotation,
-            width: cylinderWidth,
-            transformStyle: "preserve-3d",
-          }}
-          onDrag={(_, info) =>
-            isCarouselActive &&
-            rotation.set(rotation.get() + info.offset.x * 0.05)
-          }
-          onDragEnd={(_, info) =>
-            isCarouselActive &&
-            controls.start({
-              rotateY: rotation.get() + info.velocity.x * 0.05,
-              transition: {
-                type: "spring",
-                stiffness: 100,
-                damping: 30,
-                mass: 0.1,
-              },
-            })
-          }
-          animate={controls}
+    <div className={`relative w-full max-w-6xl mx-auto ${className}`}>
+      {/* Header */}
+      <div className="text-center mb-12">
+        <motion.h2 
+          className="text-4xl md:text-5xl font-bold text-foreground mb-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
         >
-          {cards.map((imgUrl, i) => (
+          Unsere Referenzen
+        </motion.h2>
+        <motion.p 
+          className="text-xl text-muted-foreground"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          Erfolgreich abgeschlossene Projekte
+        </motion.p>
+      </div>
+
+      {/* Main Carousel */}
+      <div className="relative h-[500px] md:h-[600px] overflow-hidden rounded-2xl bg-background border border-border shadow-lg">
+        <div 
+          className="relative h-full"
+          style={{ perspective: "1000px" }}
+        >
+          <AnimatePresence initial={false} custom={direction}>
             <motion.div
-              key={`key-${imgUrl}-${i}`}
-              className="absolute flex h-full origin-center items-center justify-center rounded-xl bg-card border border-border p-2 shadow-lg"
-              style={{
-                width: `${faceWidth}px`,
-                transform: `rotateY(${
-                  i * (360 / faceCount)
-                }deg) translateZ(${radius}px)`,
+              key={currentIndex}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.4 },
+                scale: { duration: 0.4 },
+                rotateY: { duration: 0.6 }
               }}
-              onClick={() => handleClick(imgUrl, i)}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={1}
+              onDragEnd={(e, { offset, velocity }) => {
+                const swipe = swipePower(offset.x, velocity.x)
+
+                if (swipe < -swipeConfidenceThreshold) {
+                  nextSlide()
+                } else if (swipe > swipeConfidenceThreshold) {
+                  prevSlide()
+                }
+              }}
+              className="absolute inset-0 cursor-grab active:cursor-grabbing"
             >
-            <div className="relative w-full h-full">
-              <Image
-                src={imgUrl}
-                alt={titles[i]}
-                width={225}
-                height={180}
-                className="pointer-events-none w-full h-4/5 rounded-lg object-cover no_exif_metadata"
-                style={{ filter: "blur(0px)" }}
-              />
-              <div className="absolute bottom-2 left-2 right-2 bg-background/90 backdrop-blur-sm rounded-md p-2">
-                <h3 className="text-sm font-semibold text-foreground truncate">
-                  {titles[i]}
-                </h3>
-                <p className="text-xs text-muted-foreground">2024</p>
+              <div className="relative h-full w-full">
+                <img
+                  src={images[currentIndex].src}
+                  alt={images[currentIndex].alt}
+                  className="w-full h-full object-cover"
+                />
+                
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                
+                {/* Content Overlay */}
+                <motion.div 
+                  className="absolute bottom-0 left-0 right-0 p-8 text-white"
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.6 }}
+                >
+                  <h3 className="text-3xl md:text-4xl font-bold mb-2">
+                    {images[currentIndex].title}
+                  </h3>
+                  <p className="text-lg md:text-xl text-white/80">
+                    {images[currentIndex].description}
+                  </p>
+                </motion.div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Navigation Controls */}
+        {showControls && (
+          <>
+            <motion.button
+              onClick={prevSlide}
+              className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-background/80 backdrop-blur-sm border border-border text-foreground hover:bg-background/90 transition-all shadow-lg"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </motion.button>
+
+            <motion.button
+              onClick={nextSlide}
+              className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-background/80 backdrop-blur-sm border border-border text-foreground hover:bg-background/90 transition-all shadow-lg"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <ChevronRight className="w-6 h-6" />
+            </motion.button>
+
+            <motion.button
+              onClick={togglePlayPause}
+              className="absolute top-4 right-4 p-3 rounded-full bg-background/80 backdrop-blur-sm border border-border text-foreground hover:bg-background/90 transition-all shadow-lg"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+            </motion.button>
+          </>
+        )}
+      </div>
+
+      {/* Indicators */}
+      {showIndicators && (
+        <div className="flex justify-center mt-8 gap-3">
+          {images.map((_, index) => (
+            <motion.button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`relative h-3 rounded-full transition-all ${
+                index === currentIndex 
+                  ? 'w-8 bg-primary' 
+                  : 'w-3 bg-muted-foreground/30 hover:bg-muted-foreground/50'
+              }`}
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              {index === currentIndex && (
+                <motion.div
+                  className="absolute inset-0 bg-primary rounded-full"
+                  layoutId="activeIndicator"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                />
+              )}
+            </motion.button>
+          ))}
+        </div>
+      )}
+
+      {/* Thumbnail Navigation */}
+      <div className="mt-8 flex justify-center gap-4 overflow-x-auto pb-4">
+        {images.map((image, index) => (
+          <motion.button
+            key={image.id}
+            onClick={() => goToSlide(index)}
+            className={`relative flex-shrink-0 w-20 h-16 rounded-lg overflow-hidden border-2 transition-all ${
+              index === currentIndex 
+                ? 'border-primary shadow-lg' 
+                : 'border-border hover:border-muted-foreground'
+            }`}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <img
+              src={image.src}
+              alt={image.alt}
+              className="w-full h-full object-cover"
+            />
+            {index === currentIndex && (
+              <motion.div
+                className="absolute inset-0 bg-primary/20"
+                layoutId="activeThumbnail"
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              />
+            )}
+          </motion.button>
         ))}
-      </motion.div>
+      </div>
     </div>
   )
-})
-
-function BilderKarussel() {
-  const [activeImg, setActiveImg] = useState<string | null>(null)
-  const [activeIndex, setActiveIndex] = useState<number | null>(null)
-  const [isCarouselActive, setIsCarouselActive] = useState(true)
-  const controls = useAnimation()
-
-  const handleClick = (imgUrl: string, index: number) => {
-    setActiveImg(imgUrl)
-    setActiveIndex(index)
-    setIsCarouselActive(false)
-    controls.stop()
-  }
-
-  const handleClose = () => {
-    setActiveImg(null)
-    setActiveIndex(null)
-    setIsCarouselActive(true)
-  }
-
-  return (
-    <section className="relative z-10 py-20 px-6 bg-background">
-      <div className="mx-auto max-w-7xl">
-        <motion.div layout className="relative">
-          <AnimatePresence mode="sync">
-            {activeImg && activeIndex !== null && (
-      <motion.div
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0 }}
-        layoutId={`img-container-${activeImg}`}
-        layout="position"
-        onClick={handleClose}
-        className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 cursor-pointer"
-        style={{ willChange: "opacity" }}
-        transition={transitionOverlay}
-      >
-                <div className="relative max-w-4xl w-full">
-                  <Image
-                    src={activeImg}
-                    alt={projectTitles[activeIndex]}
-                    width={800}
-                    height={600}
-                    className="w-full h-auto rounded-lg shadow-2xl"
-                  />
-                  <div className="absolute bottom-4 left-4 right-4 bg-background/95 backdrop-blur-sm rounded-lg p-4">
-                    <h3 className="text-xl font-bold text-foreground mb-2">
-                      {projectTitles[activeIndex]}
-                    </h3>
-                    <p className="text-muted-foreground">
-                      2024 · Erfolgreich abgeschlossenes Projekt
-                    </p>
-                  </div>
-                  <button
-                    onClick={handleClose}
-                    className="absolute top-4 right-4 w-10 h-10 bg-background/80 backdrop-blur-sm rounded-full flex items-center justify-center text-foreground hover:bg-background transition-colors"
-                  >
-                    ✕
-                  </button>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-          
-          <div className="relative h-[500px] w-full overflow-hidden rounded-xl border border-border">
-            <Carousel
-              handleClick={handleClick}
-              controls={controls}
-              cards={projectImages}
-              titles={projectTitles}
-              isCarouselActive={isCarouselActive}
-            />
-          </div>
-          
-          <div className="text-center mt-8">
-            <p className="text-sm text-muted-foreground">
-              Ziehen Sie das Karussell oder klicken Sie auf ein Projekt für Details
-            </p>
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  )
 }
 
-export default BilderKarussel
+export default function BilderKarussellDemo() {
+  return (
+    <div className="min-h-screen bg-background py-20 px-6">
+      <div className="max-w-7xl mx-auto">
+        <ImageCarousel
+          autoPlay={true}
+          autoPlayInterval={5000}
+          showControls={true}
+          showIndicators={true}
+        />
+      </div>
+    </div>
+  )
+}

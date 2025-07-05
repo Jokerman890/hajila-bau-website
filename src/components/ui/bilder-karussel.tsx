@@ -22,10 +22,23 @@ interface ImageCarouselProps {
   className?: string
 }
 
+const getBasePath = () => {
+  if (typeof window !== 'undefined') {
+    return window.__NEXT_DATA__?.assetPrefix || process.env.NEXT_PUBLIC_BASE_PATH || ''
+  }
+  return process.env.NEXT_PUBLIC_BASE_PATH || ''
+}
+
+function withBasePath(path: string) {
+  const base = getBasePath()
+  if (!base || path.startsWith(base)) return path
+  return `${base}${path.startsWith('/') ? '' : '/'}${path}`
+}
+
 const defaultImages: ImageItem[] = [
-  { id: "1", src: "/uploads/carousel/5e360067-9ad3-4601-8a3e-79dd542a0527.JPG", alt: "Referenzprojekt 1" },
-  { id: "2", src: "/uploads/carousel/48a7d956-25b4-41fd-8f26-c54d3dffd5d4.JPG", alt: "Referenzprojekt 2" },
-  { id: "3", src: "/uploads/carousel/b21f7119-84f5-47fe-9cbe-c428ca2dfa97.JPG", alt: "Referenzprojekt 3" }
+  { id: "1", src: withBasePath("/uploads/carousel/5e360067-9ad3-4601-8a3e-79dd542a0527.JPG"), alt: "Referenzprojekt 1" },
+  { id: "2", src: withBasePath("/uploads/carousel/48a7d956-25b4-41fd-8f26-c54d3dffd5d4.JPG"), alt: "Referenzprojekt 2" },
+  { id: "3", src: withBasePath("/uploads/carousel/b21f7119-84f5-47fe-9cbe-c428ca2dfa97.JPG"), alt: "Referenzprojekt 3" }
 ];
 
 export function ImageCarousel({
@@ -40,9 +53,9 @@ export function ImageCarousel({
 
   useEffect(() => {
     if (images && images.length > 0) {
-      setLoadedImages(images);
+      setLoadedImages(images.map(img => ({ ...img, src: withBasePath(img.src) })))
     } else {
-      setLoadedImages(defaultImages);
+      setLoadedImages(defaultImages)
     }
   }, [images]);
   const [currentIndex, setCurrentIndex] = useState(0)

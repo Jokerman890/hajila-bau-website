@@ -169,6 +169,16 @@ Die Website ist vollständig responsive und optimiert für:
 - **Rechtliche Compliance** - DSGVO-konforme Seiten (Impressum, Datenschutz, Cookies)
 - **3D-Animationen** - Three.js Integration mit interaktiven Elementen
 
+## 🔐 Supabase Authentifizierung (feature/supabase-auth)
+
+- Admin-Bereich und API sind mit Supabase Auth geschützt.
+- .env.local benötigt:
+  - NEXT_PUBLIC_SUPABASE_URL=...
+  - NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+- E-Mail/Passwort-Login und Google Login im Admin-Bereich
+- Logout-Button oben rechts im Admin
+- API-Requests müssen den Bearer-Token mitsenden (siehe Beispiel in src/app/api/admin/images/route.ts)
+
 ## 📞 Kontakt
 
 **Hajila Bau GmbH**

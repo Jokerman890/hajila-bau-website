@@ -45,6 +45,11 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 - MCP-Memory und Speicherbank aktualisiert.
 - Versionierung und Dokumentation angepasst.
 
+## [0.4.4] - 2025-07-06
+### Added
+- Supabase Social Auth: Google Login im Admin-Bereich (Button im Login-Formular)
+- Passwort-Reset-Funktion im Login-Formular
+
 ## [Unreleased]
 
 ### 🎉 Neu hinzugefügt

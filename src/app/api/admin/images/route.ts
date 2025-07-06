@@ -65,7 +65,27 @@ async function saveImagesData(images: CarouselImage[]): Promise<void> {
 }
 
 // GET - Alle Bilder abrufen
-export async function GET() {
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
+async function getUserFromRequest(request: NextRequest) {
+  const authHeader = request.headers.get('authorization');
+  if (!authHeader) return null;
+  const token = authHeader.replace('Bearer ', '');
+  const { data, error } = await supabase.auth.getUser(token);
+  if (error || !data.user) return null;
+  return data.user;
+}
+
+export async function GET(request: NextRequest) {
+  const user = await getUserFromRequest(request);
+  if (!user) {
+    return NextResponse.json({ error: 'Nicht autorisiert' }, { status: 401 });
+  }
   try {
     const images = await loadImagesData()
     return NextResponse.json({ images, success: true })

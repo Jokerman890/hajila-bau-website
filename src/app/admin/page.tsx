@@ -116,12 +116,21 @@ const useHajilaBauDashboard = () => ({
   clearError: () => {}
 })
 
+import { useAuth } from '@/components/AuthProvider';
+import LoginForm from '@/components/LoginForm';
+import LogoutButton from '@/components/LogoutButton';
+
 export default function HajilaBauAdminPage() {
+  const { user, loading } = useAuth();
   const dashboard = useHajilaBauDashboard()
+
+  if (loading) return <div>Lade...</div>;
+  if (!user) return <LoginForm />;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       <div className="container mx-auto px-4 py-8">
+        <div className="flex justify-end mb-4"><LogoutButton /></div>
         {/* Header */}
         <div className="mb-12">
           <div className="text-center">

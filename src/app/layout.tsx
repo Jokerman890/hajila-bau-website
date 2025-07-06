@@ -3,6 +3,7 @@ import { Merriweather, Open_Sans } from "next/font/google";
 import "./globals.css";
 import { TwentyFirstToolbar } from "@21st-extension/toolbar-next";
 import { ReactPlugin } from "@21st-extension/react";
+import { AuthProvider } from "@/components/AuthProvider";
 
 const merriweather = Merriweather({
   variable: "--font-merriweather",
@@ -60,7 +61,9 @@ export default function RootLayout({
         className={`${merriweather.variable} ${openSans.variable} antialiased`}
       >
         <TwentyFirstToolbar config={{ plugins: [ReactPlugin] }} />
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
         <link rel="icon" type="image/jpeg" href="/uploads/Hexagon-logo.jpg" />
       </body>
     </html>

@@ -60,6 +60,26 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 ---
 
+## [0.4.5] - 2024-06-09
+
+### 🎉 Neu hinzugefügt
+- Komplettes Redesign des Admin-Dashboards im Stil der Hauptseite
+- Drag & Drop für Bilder mit Animationen, Touch- und Keyboard-Support
+- Visuelles und interaktives Feedback beim Sortieren und Bearbeiten
+- Zentrale Versionierung und Build-Info im Dashboard-Footer
+
+### 🔧 Verbessert
+- Einheitliches, modernes Design (Farben, Schatten, Buttons, Alerts)
+- Responsive Grid und optimierte Darstellung auf allen Geräten
+- Verbesserte Barrierefreiheit (Keyboard, Touch, Hinweise)
+- Fehler- und Erfolgsmeldungen mit sanften Animationen
+
+### 🐛 Behoben
+- Diverse kleinere UI- und Usability-Probleme im Admin-Bereich
+
+---
+
+
 ## [0.3.0] - 2025-07-03
 
 ### 🎉 Neu hinzugefügt

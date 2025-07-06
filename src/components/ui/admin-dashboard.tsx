@@ -101,7 +101,59 @@ const Label: React.FC<{ children: React.ReactNode; htmlFor?: string; className?:
 )
 
 // Simple Badge Component
-const Badge: React.FC<{ children: React.ReactNode; variant?: 'default' | 'secondary' }> = ({ children, variant = 'default' }) => {
+
+// Drag & Drop Imports
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  TouchSensor,
+  KeyboardSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+  sortableKeyboardCoordinates,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
+// SortableImageCard-Komponente
+interface SortableImageCardProps {
+  image: CarouselImage;
+  onDelete: (id: string) => void;
+  onUpdate: (id: string, updates: Partial<CarouselImage>) => void;
+  onPreview: (image: CarouselImage) => void;
+}
+
+function SortableImageCard({ image, ...props }: SortableImageCardProps) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging, isOver } = useSortable({ id: image.id });
+  const style = {
+    transform: ` scale()`,
+  transition: 'transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s',
+    transition,
+    opacity: isDragging ? 0.7 : 1,
+    boxShadow: isDragging
+      ? '0 8px 32px 0 rgba(30, 64, 175, 0.25), 0 1.5px 6px 0 rgba(30, 64, 175, 0.10)'
+      : '0 1px 4px 0 rgba(30, 41, 59, 0.08)',
+    border: isOver ? '2px solid #3b82f6' : '1px solid transparent',
+    borderRadius: '1rem',
+    background: isDragging ? 'linear-gradient(90deg, #e0e7ef 0%, #f1f5f9 100%)' : undefined,
+    cursor: isDragging ? 'grabbing' : 'grab',
+    zIndex: isDragging ? 50 : 1,
+  };
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <ImageCard image={image} {...props} />
+    </div>
+  );
+}
+
+
   const variantClasses = {
     default: 'bg-blue-600 text-white',
     secondary: 'bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-100'
@@ -255,27 +307,15 @@ const ImageCard: React.FC<{
           className="w-full h-48 object-cover rounded-t-lg"
         />
         <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <Button
-            size="sm"
-            variant="secondary"
-            onClick={() => onPreview(image)}
-            className="h-8 w-8 p-0"
+          <Button="h-8 w-8 p-0 transition-transform duration-150 hover:scale-105"
           >
             <Eye className="w-4 h-4" />
           </Button>
-          <Button
-            size="sm"
-            variant="secondary"
-            onClick={() => setIsEditing(true)}
-            className="h-8 w-8 p-0"
+          <Button="h-8 w-8 p-0 transition-transform duration-150 hover:scale-105"
           >
             <Edit className="w-4 h-4" />
           </Button>
-          <Button
-            size="sm"
-            variant="destructive"
-            onClick={() => onDelete(image.id)}
-            className="h-8 w-8 p-0"
+          <Button="h-8 w-8 p-0 transition-transform duration-150 hover:scale-105"
           >
             <Trash2 className="w-4 h-4" />
           </Button>
@@ -328,12 +368,10 @@ const ImageCard: React.FC<{
               />
             </div>
             <div className="flex gap-2">
-              <Button size="sm" onClick={handleSave}>
-                <Save className="w-4 h-4 mr-1" />
+              <Button="w-4 h-4 mr-1 transition-transform duration-150 hover:scale-105" />
                 Save
               </Button>
-              <Button size="sm" variant="outline" onClick={handleCancel}>
-                <X className="w-4 h-4 mr-1" />
+              <Button="w-4 h-4 mr-1 transition-transform duration-150 hover:scale-105" />
                 Cancel
               </Button>
             </div>
@@ -354,10 +392,7 @@ const ImageCard: React.FC<{
               <span className="text-xs text-slate-500 dark:text-slate-400">
                 Order: {image.order}
               </span>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => onUpdate(image.id, { isActive: !image.isActive })}
+              <Button="bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800 transition-colors transition-transform duration-150 hover:scale-105" onUpdate(image.id, { isActive: !image.isActive })}
               >
                 {image.isActive ? 'Deactivate' : 'Activate'}
               </Button>
@@ -375,7 +410,7 @@ const LoadingSkeleton: React.FC = () => (
       <div className="w-full h-32 bg-slate-200 dark:bg-slate-700 rounded animate-pulse" />
     </Card>
     
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
       {Array.from({ length: 8 }).map((_, i) => (
         <Card key={i} className="overflow-hidden">
           <div className="w-full h-48 bg-slate-200 dark:bg-slate-700 animate-pulse" />
@@ -391,18 +426,12 @@ const LoadingSkeleton: React.FC = () => (
 )
 
 const ErrorState: React.FC<{ onRetry?: () => void }> = ({ onRetry }) => (
-  <Alert className="border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-950/20">
+  <Alert className="border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-950/20 rounded-xl shadow transition-opacity duration-300">
     <AlertCircle className="h-4 w-4 text-red-600" />
     <AlertDescription className="text-red-800 dark:text-red-200">
       Failed to load dashboard data. Please try again.
       {onRetry && (
-        <Button 
-          variant="outline" 
-          size="sm" 
-          onClick={onRetry}
-          className="ml-2"
-        >
-          <RefreshCw className="w-4 h-4 mr-1" />
+        <Button="w-4 h-4 mr-1 transition-transform duration-150 hover:scale-105" />
           Retry
         </Button>
       )}
@@ -417,8 +446,7 @@ const EmptyState: React.FC<{ onUpload: () => void }> = ({ onUpload }) => (
     <p className="text-slate-600 dark:text-slate-400 mb-4">
       Start building your carousel by uploading reference images.
     </p>
-    <Button onClick={onUpload}>
-      <Plus className="w-4 h-4 mr-2" />
+    <Button="w-4 h-4 mr-2 transition-transform duration-150 hover:scale-105" />
       Upload Images
     </Button>
   </Card>
@@ -432,7 +460,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   onImageUpload,
   onImageDelete,
   onImageUpdate,
-  // onImageReorder,
+  onImageReorder,
   maxImages = 20,
   allowedFormats = ['image/jpeg', 'image/png', 'image/webp'],
   maxFileSize = 5 * 1024 * 1024
@@ -458,8 +486,44 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   }
 
   const activeImages = images.filter(img => img.isActive)
-  const inactiveImages = images.filter(img => !img.isActive)
-  const totalSize = images.reduce((sum, img) => sum + img.size, 0)
+const inactiveImages = images.filter(img => !img.isActive)
+const totalSize = images.reduce((sum, img) => sum + img.size, 0)
+
+// Drag & Drop State für aktive Bilder
+const [orderedImages, setOrderedImages] = useState(activeImages);
+const [reorderError, setReorderError] = useState<string | null>(null);
+const [reorderSuccess, setReorderSuccess] = useState(false);
+
+useEffect(() => {
+  setOrderedImages(activeImages);
+}, [activeImages]);
+const sensors = useSensors(
+  useSensor(PointerSensor),
+  useSensor(TouchSensor),
+  useSensor(KeyboardSensor, {
+    coordinateGetter: sortableKeyboardCoordinates,
+  })
+);
+const handleDragEnd = async (event: DragEndEvent) => {
+  const { active, over } = event;
+  if (active.id !== over?.id) {
+    const oldIndex = orderedImages.findIndex(img => img.id === active.id);
+    const newIndex = orderedImages.findIndex(img => img.id === over?.id);
+    const newOrder = arrayMove(orderedImages, oldIndex, newIndex);
+    setOrderedImages(newOrder);
+    if (onImageReorder) {
+      try {
+        await onImageReorder(newOrder.map(img => img.id));
+        setReorderSuccess(true);
+        setTimeout(() => setReorderSuccess(false), 2000);
+      } catch (e: any) {
+        setReorderError("Reihenfolge konnte nicht gespeichert werden.");
+        setOrderedImages(activeImages); // Rollback
+        setTimeout(() => setReorderError(null), 4000);
+      }
+    }
+  }
+};
 
   if (isLoading) {
     return <LoadingSkeleton />
@@ -479,7 +543,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
         </div>
         
         <div className="flex items-center gap-3">
-          <Button onClick={() => fileInputRef.current?.click()}>
+          <Button="bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800 transition-colors transition-transform duration-150 hover:scale-105" fileInputRef.current?.click()}>
             <Plus className="w-4 h-4 mr-2" />
             Add Images
           </Button>
@@ -546,7 +610,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
       </div>
 
       {uploadSuccess && (
-        <Alert className="border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950/20">
+        <Alert className="border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950/20 rounded-xl shadow transition-opacity duration-300">
           <CheckCircle className="h-4 w-4 text-green-600" />
           <AlertDescription className="text-green-800 dark:text-green-200">
             Images uploaded successfully!
@@ -597,37 +661,64 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
         {/* Tab Content */}
         {activeTab === 'gallery' && (
           <div className="space-y-6">
+  {reorderSuccess && (
+    <Alert className="border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950/20 mb-2 rounded-xl shadow transition-opacity duration-300">
+      <CheckCircle className="h-4 w-4 text-green-600" />
+      <AlertDescription className="text-green-800 dark:text-green-200">
+        Reihenfolge erfolgreich gespeichert!
+      </AlertDescription>
+    </Alert>
+  )}
+  {reorderError && (
+    <Alert className="border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-950/20 mb-2 rounded-xl shadow transition-opacity duration-300">
+      <AlertCircle className="h-4 w-4 text-red-600" />
+      <AlertDescription className="text-red-800 dark:text-red-200">
+        {reorderError}
+      </AlertDescription>
+    </Alert>
+  )}
+
             {images.length === 0 ? (
               <EmptyState onUpload={() => setActiveTab('upload')} />
             ) : (
               <div className="space-y-6">
                 {/* Active Images */}
                 <div>
-                  <div className="flex items-center justify-between mb-4">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
+  Tipp: Du kannst die Reihenfolge per Maus, Touch oder Tastatur (Tab + Pfeiltasten + Leertaste) ändern.
+</p>
+<div className="flex items-center justify-between mb-4">
                     <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Active Images ({activeImages.length})</h2>
                     <Badge variant="default">Visible in Carousel</Badge>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {activeImages.map(image => (
-                      <ImageCard
-                        key={image.id}
-                        image={image}
-                        onDelete={handleImageDelete}
-                        onUpdate={onImageUpdate!}
-                        onPreview={handleImagePreview}
-                      />
-                    ))}
-                  </div>
+                  <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+  <SortableContext items={orderedImages.map(img => img.id)} strategy={verticalListSortingStrategy}>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
+      {orderedImages.map(image => (
+        <SortableImageCard
+          key={image.id}
+          image={image}
+          onDelete={handleImageDelete}
+          onUpdate={onImageUpdate!}
+          onPreview={handleImagePreview}
+        />
+      ))}
+    </div>
+  </SortableContext>
+</DndContext>
                 </div>
 
                 {/* Inactive Images */}
                 {inactiveImages.length > 0 && (
                   <div>
-                    <div className="flex items-center justify-between mb-4">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
+  Tipp: Du kannst die Reihenfolge per Maus, Touch oder Tastatur (Tab + Pfeiltasten + Leertaste) ändern.
+</p>
+<div className="flex items-center justify-between mb-4">
                       <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Inactive Images ({inactiveImages.length})</h2>
                       <Badge variant="secondary">Hidden from Carousel</Badge>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
                       {inactiveImages.map(image => (
                         <ImageCard
                           key={image.id}

@@ -42,87 +42,16 @@ const AdminDashboard = dynamic(() => import('@/components/ui/admin-dashboard'), 
   )
 })
 
-// Mock data for Hajila Bau
-const useHajilaBauDashboard = () => ({
-  images: [
-    {
-      id: 'hajila-1',
-      url: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=600&fit=crop',
-      title: 'Klinkerarbeiten Projekt',
-      description: 'Hochwertige Klinkerarbeiten an einem Wohngebäude in Osnabrück',
-      alt: 'Klinkerarbeiten an modernem Wohngebäude',
-      order: 1,
-      isActive: true,
-      uploadedAt: new Date('2024-01-20'),
-      size: 1856432,
-      dimensions: { width: 800, height: 600 }
-    },
-    {
-      id: 'hajila-2',
-      url: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&h=600&fit=crop',
-      title: 'Verblendmauerwerk',
-      description: 'Präzise Verblendmauerwerk-Arbeiten mit hochwertigen Materialien',
-      alt: 'Verblendmauerwerk in Ausführung',
-      order: 2,
-      isActive: true,
-      uploadedAt: new Date('2024-01-19'),
-      size: 2134567,
-      dimensions: { width: 800, height: 600 }
-    },
-    {
-      id: 'hajila-3',
-      url: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&h=600&fit=crop',
-      title: 'Betonbau Projekt',
-      description: 'Professionelle Betonbau-Arbeiten für Wohn- und Gewerbebau',
-      alt: 'Betonbau Konstruktion',
-      order: 3,
-      isActive: true,
-      uploadedAt: new Date('2024-01-18'),
-      size: 1923456,
-      dimensions: { width: 800, height: 600 }
-    },
-    {
-      id: 'hajila-4',
-      url: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop',
-      title: 'WDVS Installation',
-      description: 'Wärmedämmverbundsystem für optimale Energieeffizienz',
-      alt: 'WDVS Dämmung an Gebäudefassade',
-      order: 4,
-      isActive: false,
-      uploadedAt: new Date('2024-01-17'),
-      size: 2456789,
-      dimensions: { width: 800, height: 600 }
-    }
-  ],
-  isLoading: false,
-  error: null,
-  isUploading: false,
-  uploadProgress: 0,
-  activeImages: [],
-  totalSize: 0,
-  retry: async () => {},
-  uploadImages: async (files: FileList) => {
-    console.log('Hajila Bau upload:', files.length, 'files')
-  },
-  deleteImage: async (id: string) => {
-    console.log('Hajila Bau delete:', id)
-  },
-  updateImage: async (id: string, updates: Partial<CarouselImage>) => {
-    console.log('Hajila Bau update:', id, updates)
-  },
-  reorderImages: async (imageIds: string[]) => {
-    console.log('Hajila Bau reorder:', imageIds)
-  },
-  clearError: () => {}
-})
+import { useAdminImages } from '@/hooks/useAdminImages';
 
 import { useAuth } from '@/components/AuthProvider';
 import LoginForm from '@/components/LoginForm';
 import LogoutButton from '@/components/LogoutButton';
+import { APP_VERSION, APP_BUILD_DATE } from '@/version';
 
 export default function HajilaBauAdminPage() {
   const { user, loading } = useAuth();
-  const dashboard = useHajilaBauDashboard()
+  const dashboard = useAdminImages();
 
   if (loading) return <div>Lade...</div>;
   if (!user) return <LoginForm />;
@@ -365,6 +294,9 @@ export default function HajilaBauAdminPage() {
             <p className="mt-1">
               Gegründet 2016 • Qualität und Präzision seit über 8 Jahren
             </p>
+<p className="mt-2 text-xs text-slate-400 dark:text-slate-600">
+  Version {APP_VERSION} • Build {APP_BUILD_DATE}
+</p>
           </div>
         </div>
       </div>

@@ -3,6 +3,7 @@
   "version": "0.4.4",
   "private": true,
   "scripts": {
+    "prebuild": "node scripts/update-version.js",
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",

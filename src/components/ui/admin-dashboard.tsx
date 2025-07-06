@@ -101,6 +101,7 @@ const Label: React.FC<{ children: React.ReactNode; htmlFor?: string; className?:
 )
 
 // Simple Badge Component
+const Badge: React.FC<{ children: React.ReactNode; variant?: 'default' | 'secondary' }> = ({ children, variant = 'default' }) => {
 
 // Drag & Drop Imports
 import {
@@ -151,39 +152,6 @@ function SortableImageCard({ image, ...props }: SortableImageCardProps) {
       <ImageCard image={image} {...props} />
     </div>
   );
-}
-
-
-  const variantClasses = {
-    default: 'bg-blue-600 text-white',
-    secondary: 'bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-100'
-  }
-  
-  return (
-    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${variantClasses[variant]}`}>
-      {children}
-    </span>
-  )
-}
-
-// Simple Alert Component
-const Alert: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = '' }) => (
-  <div className={`relative w-full rounded-lg border p-4 ${className}`}>
-    {children}
-  </div>
-)
-
-const AlertDescription: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = '' }) => (
-  <div className={`text-sm ${className}`}>
-    {children}
-  </div>
-)
-
-const ImageUploadZone: React.FC<{
-  onFileUpload: (files: FileList) => void
-  maxFiles?: number
-  allowedFormats?: string[]
-  maxFileSize?: number
 }> = ({ onFileUpload, maxFiles = 10, allowedFormats = ['image/jpeg', 'image/png', 'image/webp'], maxFileSize = 5 * 1024 * 1024 }) => {
   const [isDragOver, setIsDragOver] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)

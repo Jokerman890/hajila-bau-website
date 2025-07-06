@@ -50,7 +50,7 @@ import LogoutButton from '@/components/LogoutButton';
 import { APP_VERSION, APP_BUILD_DATE } from '@/version';
 
 export default function HajilaBauAdminPage() {
-  const { user, loading } = useAuth();
+  const { user, loading } = useAuth() ?? { user: null, loading: false };
   const dashboard = useAdminImages();
 
   if (loading) return <div>Lade...</div>;

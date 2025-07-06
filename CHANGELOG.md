@@ -6,19 +6,24 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.4.3] - 2025-07-05
-### Changed
+
+### Changed in 0.4.3
+
 - Doppelte Überschrift im References-Bereich entfernt (nur noch Farbverlauf-Version sichtbar)
 - Versionierung, Memory-Bank und MCP aktualisiert
 
 ## [0.4.2] - 2025-07-05
-### Changed
+
+### Changed in 0.4.2
+
 - Logo im Header/Footer und Favicon auf transparentes hajila-bau.de/logo_2d.png gesetzt
 - Favicon als icon.png im App Router
 - Memorybank und Doku aktualisiert
 
 ## [0.4.1] - 2025-07-05
 
-### Changed
+### Changed in 0.4.1
+
 - Version auf 0.4.1 erhöht
 - Finales Logo- und Asset-Handling für GitHub Pages
 - AnimatedButton und Logo3D überall integriert
@@ -28,63 +33,90 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 ## [0.4.0] - 2025-07-03
 
-### 🎉 Neu hinzugefügt
+### 🎉 Neu hinzugefügt in 0.4.0
+
 - **Memory MCP Server Integration**: Hinzufügen von API-Endpunkten zur Interaktion mit dem Memory MCP Server für die Verwaltung von Karussell-Bildern.
 - **Power Bank System**: Implementierung eines erweiterten Speicherbank-Systems zur Sicherstellung der Kontinuität und des Kontexts zwischen Sitzungen.
 
-### 🐛 Behoben
+### 🐛 Behoben in 0.4.0
+
 - **ESLint-Fehler**: Behebung von ungenutzten Variablen und Funktionen in mehreren Dateien durch Entfernen ungenutzter Importe oder Hinzufügen von ESLint-Kommentaren zur Deaktivierung der Regel für ungenutzte Elemente.
 
 ## [0.3.6] - 2025-06-15
 
-### 🎉 Neu hinzugefügt
+### 🎉 Neu hinzugefügt in 0.3.6
+
 - Karussell zeigt jetzt automatisch alle Bilder aus dem Ordner `public/uploads/carousel/` an (dank JSON-Generierung per Skript).
 - Skript `scripts/generate-carousel-images.js` erstellt die Bildliste für das Karussell.
 
-### 🔧 Verbessert
+### 🔧 Verbessert in 0.3.6
+
 - MCP-Memory und Speicherbank aktualisiert.
 - Versionierung und Dokumentation angepasst.
 
 ## [0.4.4] - 2025-07-06
+
 ### Added
+
 - Supabase Social Auth: Google Login im Admin-Bereich (Button im Login-Formular)
 - Passwort-Reset-Funktion im Login-Formular
 
 ## [Unreleased]
 
-### 🎉 Neu hinzugefügt
+### 🎉 Neu hinzugefügt in Unreleased
+
 - Zukünftige Features werden hier dokumentiert
 
-### 🐛 Behoben
+### 🐛 Behoben in Unreleased
+
 - **ESLint-Fehler**: Behebung von ungenutzten Variablen und Funktionen in mehreren Dateien durch Umbenennen und Entfernen ungenutzter Elemente.
 
 ---
 
 ## [0.4.5] - 2024-06-09
 
-### 🎉 Neu hinzugefügt
+### 🎉 Neu hinzugefügt in 0.4.5
+
 - Komplettes Redesign des Admin-Dashboards im Stil der Hauptseite
 - Drag & Drop für Bilder mit Animationen, Touch- und Keyboard-Support
 - Visuelles und interaktives Feedback beim Sortieren und Bearbeiten
 - Zentrale Versionierung und Build-Info im Dashboard-Footer
 
-### 🔧 Verbessert
+### 🔧 Verbessert in 0.4.5
+
 - Einheitliches, modernes Design (Farben, Schatten, Buttons, Alerts)
 - Responsive Grid und optimierte Darstellung auf allen Geräten
 - Verbesserte Barrierefreiheit (Keyboard, Touch, Hinweise)
 - Fehler- und Erfolgsmeldungen mit sanften Animationen
 
-### 🐛 Behoben
+### 🐛 Behoben in 0.4.5
+
 - Diverse kleinere UI- und Usability-Probleme im Admin-Bereich
+
+## [0.4.6] - 2025-07-07
+
+### 🎉 Neu hinzugefügt in 0.4.6
+
+- Aktualisierung des Memory MCP Servers zur Verbesserung der Integration
+- Erweiterung der Memorybank zur besseren Kontextverwaltung
+
+### 🔧 Verbessert in 0.4.6
+
+- Optimierung der Interaktion zwischen Memory MCP und der Website
+- Verbesserung der Dokumentation und Struktur der Memorybank
+
+### 🐛 Behoben in 0.4.6
+
+- Behebung kleinerer Fehler in der Memory MCP Integration
 
 ---
 
-
 ## [0.3.0] - 2025-07-03
 
-### 🎉 Neu hinzugefügt
+### 🎉 Neu hinzugefügt in 0.3.0
 
 #### Supabase Integration
+
 - **Supabase Photo Storage System**
   - `src/lib/supabase/storage.ts` - Hauptfunktionen für Foto-Management
   - `src/lib/supabase/client.ts` - Supabase Client-Konfiguration
@@ -93,6 +125,7 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
   - `src/lib/supabase/mcp-integration.ts` - MCP-Server Integration
 
 #### API-Endpunkte
+
 - **POST** `/api/photos/upload` - Foto-Upload mit Validierung
 - **GET** `/api/photos/[userId]` - Benutzer-Fotos auflisten
 - **POST** `/api/photos/signed-url` - Sichere URL-Generierung
@@ -100,37 +133,43 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 - **POST** `/api/mcp/memory` - Memory-Bank Integration
 
 #### Testing & Qualitätssicherung
+
 - **Jest Test Framework** - Umfassende Test-Suite
 - **Mock Storage Tests** - 16 Unit-Tests für Storage-Funktionalität
 - **E2E-Tests** - End-to-End Workflow-Tests
 - **TypeScript Coverage** - 100% TypeScript-Abdeckung
 
 #### Dokumentation
+
 - **Supabase Storage Docs** (`docs/supabase_storage.md`) - Vollständige API-Dokumentation
 - **Memory Bank System** - Cline-Speicherbank für Projektkontext
 - **Code-Kommentare** - Umfassende Inline-Dokumentation
 
-### 🔧 Verbessert
+### 🔧 Verbessert in 0.3.0
 
 #### Performance & Optimierung
+
 - **Bundle-Optimierung** - Reduzierte JavaScript-Bundle-Größe
 - **Image-Optimierung** - Next.js Image-Komponente für bessere Performance
 - **Lazy Loading** - Komponenten werden bei Bedarf geladen
 - **Caching-Strategien** - Verbesserte Cache-Mechanismen
 
 #### Developer Experience
+
 - **TypeScript Strict Mode** - Strengere Typisierung für bessere Code-Qualität
 - **ESLint-Konfiguration** - Erweiterte Linting-Regeln
 - **Hot Reload** - Verbesserte Entwicklungsumgebung
 - **Error Boundaries** - Graceful Error Handling
 
 #### UI/UX Verbesserungen
+
 - **Loading States** - Bessere Feedback-Mechanismen
 - **Error Messages** - Benutzerfreundliche Fehlermeldungen
 - **Responsive Design** - Optimiert für alle Bildschirmgrößen
 - **Accessibility** - Verbesserte Barrierefreiheit
 
-### 🐛 Behoben
+### 🐛 Behoben in 0.3.0
+
 - **Memory Leaks** - Behebung von Speicherlecks in Animationen
 - **TypeScript Errors** - Alle TypeScript-Fehler behoben
 - **API Error Handling** - Robuste Fehlerbehandlung in API-Routen
@@ -140,9 +179,10 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 ## [0.2.0] - 2025-01-15
 
-### 🎉 Neu hinzugefügt
+### 🎉 Neu hinzugefügt in 0.2.0
 
 #### Content Management
+
 - **Bilder-Karussell** (`src/components/ui/bilder-karussel.tsx`)
   - Interaktive Bildergalerie mit Swipe-Funktionalität
   - Automatische Slideshow mit manueller Steuerung
@@ -150,6 +190,7 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
   - Smooth Transitions und Fade-Effekte
 
 #### Admin-Funktionalität
+
 - **Admin Dashboard** (`src/components/ui/admin-dashboard.tsx`)
   - Drag & Drop Bild-Upload
   - Bildersortierung per Drag & Drop
@@ -157,6 +198,7 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
   - Bulk-Upload-Funktionalität
 
 #### API-Integration
+
 - **Firebase Integration** (`src/lib/firebase.ts`)
   - Firebase Storage für Bildverwaltung
   - Firebase Admin SDK für Backend-Operationen
@@ -168,11 +210,13 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
   - `/api/admin/firebase/images` - Firebase-basierte Bildverwaltung
 
 #### Hooks & Utilities
+
 - **Custom Hooks**
   - `useAdminDashboard.ts` - Admin-Dashboard State Management
   - `useFirebaseAdminDashboard.ts` - Firebase-spezifische Admin-Funktionen
 
-### 🔧 Verbessert
+### 🔧 Verbessert in 0.2.0
+
 - **Performance** - Optimierte Bildladezeiten durch lazy loading
 - **SEO** - Verbesserte Meta-Tags und strukturierte Daten
 - **Accessibility** - ARIA-Labels und Keyboard-Navigation
@@ -184,12 +228,14 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 ### 🎉 Initiale Veröffentlichung
 
 #### Core Website
+
 - **Next.js 15 Framework** - Moderne React-basierte Website
 - **TypeScript Integration** - Vollständige Typisierung
 - **Tailwind CSS** - Utility-first CSS Framework
 - **App Router** - Next.js 13+ App Directory Struktur
 
 #### Design System
+
 - **Premium Glassmorphism Design**
   - Transparente Glaseffekte mit Blur
   - Moderne Farbpalette (Cyan/Türkis, Gold)
@@ -197,6 +243,7 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
   - Dark/Light Mode Toggle
 
 #### UI-Komponenten
+
 - **Hero Section** (`src/components/ui/construction-hero-section.tsx`)
   - Typewriter-Effekt für dynamischen Text
   - 3D-Logo-Animation mit Three.js
@@ -216,6 +263,7 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
   - Shadow-Effekte
 
 #### 3D & Animationen
+
 - **3D Logo** (`src/components/ui/logo-3d.tsx`)
   - Three.js Integration
   - Interaktive 3D-Rotation
@@ -229,6 +277,7 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
   - Staggered Animations
 
 #### Rechtliche Compliance
+
 - **Impressum** (`/impressum`)
   - TMG-konform
   - DL-InfoV-konform
@@ -248,6 +297,7 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
   - Externe Dienste-Information
 
 #### Performance & SEO
+
 - **Next.js Optimierungen**
   - Static Site Generation (SSG)
   - Image Optimization
@@ -261,6 +311,7 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
   - Structured Data (JSON-LD)
 
 #### Responsive Design
+
 - **Mobile-First Approach**
   - Breakpoints: 320px, 768px, 1024px, 1440px
   - Touch-optimierte Interaktionen
@@ -268,6 +319,7 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
   - Angepasste Layouts
 
 #### Technische Infrastruktur
+
 - **Build System**
   - Next.js Build Pipeline
   - TypeScript Compilation
@@ -281,6 +333,7 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
   - TypeScript Strict Mode
 
 #### Content & Branding
+
 - **Unternehmensinformationen**
   - Hajila Bau GmbH Profil
   - Dienstleistungsübersicht
@@ -298,6 +351,7 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 ## Technische Details
 
 ### Dependencies
+
 ```json
 {
   "next": "^15.3.4",
@@ -312,6 +366,7 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 ```
 
 ### Browser-Unterstützung
+
 - ✅ Chrome 90+
 - ✅ Firefox 88+
 - ✅ Safari 14+
@@ -320,6 +375,7 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 - ✅ Chrome Mobile (Android 10+)
 
 ### Performance-Metriken
+
 - **Lighthouse Score**: 95+ (Performance, Accessibility, Best Practices, SEO)
 - **Core Web Vitals**: Alle Metriken im grünen Bereich
 - **Bundle Size**: < 500KB (gzipped)
@@ -331,12 +387,14 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 ## Migration & Upgrade-Hinweise
 
 ### Von 0.2.0 zu 0.3.0
+
 - **Neue Dependencies**: `@supabase/supabase-js`, `jest`, `@testing-library/jest-dom`
 - **Umgebungsvariablen**: Supabase-Konfiguration in `.env.local` hinzufügen
 - **API-Änderungen**: Neue `/api/photos/*` Endpunkte verfügbar
 - **Testing**: `npm test` für Test-Suite ausführen
 
 ### Von 0.1.0 zu 0.2.0
+
 - **Neue Dependencies**: `firebase`, `firebase-admin`
 - **Umgebungsvariablen**: Firebase-Konfiguration erforderlich
 - **Admin-Zugang**: `/admin` Route für Content-Management
@@ -346,11 +404,13 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 ## Bekannte Probleme
 
 ### Version 0.3.0
+
 - **Browser-Kompatibilität**: Puppeteer-Tests funktionieren nicht in Codespace-Umgebung
 - **Supabase-Setup**: Echte Supabase-Verbindung erfordert gültige Umgebungsvariablen
 - **Mobile Performance**: 3D-Animationen können auf älteren Geräten langsam sein
 
 ### Workarounds
+
 - **Testing**: Mock-Storage für Demo-Zwecke implementiert
 - **Development**: Lokale Entwicklung mit Mock-Daten möglich
 - **Performance**: Fallback-Animationen für schwächere Geräte
@@ -360,12 +420,14 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 ## Roadmap
 
 ### Version 0.4.0 (Geplant)
+
 - **CMS-Integration** - Headless CMS für Content-Management
 - **Multi-Language** - Deutsch/Englisch Unterstützung
 - **PWA-Features** - Progressive Web App Funktionalität
 - **Analytics** - Google Analytics 4 Integration
 
 ### Version 1.0.0 (Geplant)
+
 - **E-Commerce** - Online-Kostenvoranschlag System
 - **Kundenbewertungen** - Bewertungssystem mit Moderation
 - **Live-Chat** - Kundenservice-Integration
@@ -386,9 +448,11 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 © 2025 Hajila Bau GmbH. Alle Rechte vorbehalten.
 
-Diese Website und ihr Quellcode sind Eigentum der Hajila Bau GmbH. 
+Diese Website und ihr Quellcode sind Eigentum der Hajila Bau GmbH.
 Unbefugte Nutzung, Vervielfältigung oder Verbreitung ist untersagt.
 
 ---
 
-*Letzte Aktualisierung: 05.07.2025*
+### Letzte Aktualisierung
+
+- 05.07.2025

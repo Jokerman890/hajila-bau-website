@@ -3,60 +3,49 @@
 import React, { useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react"
-// Importiere die generierte JSON-Liste mit allen Bildern, typisiere als ImageItem[]
-import carouselImages from '../../../data/carousel-images.json';
+// Import von carouselImages.json entfernt
 
-interface ImageItem {
-  id: string
-  src: string
-  alt: string
-  title?: string
-  description?: string
+// Interface für die Bilddaten, die vom Parent kommen (aus Supabase)
+// Dieses Interface sollte dem ähneln, was wir in admin-dashboard.tsx als CarouselDisplayImage haben
+// oder was die Datenbank direkt liefert.
+export interface CarouselSlideImage {
+  id: string; // UUID
+  public_url: string;
+  alt_text: string;
+  title?: string | null;
+  description?: string | null;
+  // order, is_active etc. werden hier nicht direkt benötigt, da die Parent-Komponente filtert/sortiert
 }
 
 interface ImageCarouselProps {
-  images?: ImageItem[]
-  autoPlay?: boolean
-  autoPlayInterval?: number
-  showControls?: boolean
-  showIndicators?: boolean
-  className?: string
+  images: CarouselSlideImage[]; // Images Prop ist jetzt erforderlich
+  autoPlay?: boolean;
+  autoPlayInterval?: number;
+  showControls?: boolean;
+  showIndicators?: boolean;
+  className?: string;
 }
 
-// Entferne window.__NEXT_DATA__ aus getBasePath und nutze nur process.env.NEXT_PUBLIC_BASE_PATH
-const getBasePath = () => {
-  return process.env.NEXT_PUBLIC_BASE_PATH || ''
-}
+// getBasePath und withBasePath werden nicht mehr benötigt, da URLs absolut sind.
 
-function withBasePath(path: string) {
-  const base = getBasePath()
-  if (!base || path.startsWith(base)) return path
-  return `${base}${path.startsWith('/') ? '' : '/'}${path}`
-}
-
-// defaultImages: alle Bilder aus JSON verwenden
-const defaultImages: ImageItem[] = (carouselImages as ImageItem[]).map((img) => ({
-  ...img,
-  src: withBasePath(img.src)
-}));
+// defaultImages wird entfernt, da images jetzt eine erforderliche Prop ist.
 
 export function ImageCarousel({
-  images = defaultImages,
+  images, // Keine Default-Images mehr, muss vom Parent kommen
   autoPlay = true,
   autoPlayInterval = 4000,
   showControls = true,
   showIndicators = true,
   className = ""
 }: ImageCarouselProps) {
-  const [loadedImages, setLoadedImages] = useState<ImageItem[]>([]);
+  // loadedImages wird direkt mit den übergebenen images initialisiert
+  const [loadedImages, setLoadedImages] = useState<CarouselSlideImage[]>(images);
 
   useEffect(() => {
-    if (images && images.length > 0) {
-      setLoadedImages(images.map(img => ({ ...img, src: withBasePath(img.src) })))
-    } else {
-      setLoadedImages(defaultImages)
-    }
+    // Wenn sich die images Prop ändert, aktualisiere den State
+    setLoadedImages(images);
   }, [images]);
+
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(autoPlay)
   const [direction, setDirection] = useState(0)
@@ -129,7 +118,7 @@ export function ImageCarousel({
     );
   }
 
-  console.log("Aktueller Bild-SRC:", loadedImages[currentIndex]?.src);
+  // console.log("Aktueller Bild-SRC:", loadedImages[currentIndex]?.public_url); // Angepasst an neues Interface
   return (
     <div className={`relative w-full max-w-6xl mx-auto ${className}`}>
       {/* Main Carousel */}
@@ -140,7 +129,7 @@ export function ImageCarousel({
         >
           <AnimatePresence initial={false} custom={direction}>
             <motion.div
-              key={currentIndex}
+              key={currentIndex} // Verwende currentIndex oder besser image.id falls stabil
               custom={direction}
               variants={slideVariants}
               initial="enter"
@@ -168,8 +157,8 @@ export function ImageCarousel({
             >
               <div className="relative h-full w-full">
                 <img
-                  src={loadedImages[currentIndex].src}
-                  alt={loadedImages[currentIndex].alt}
+                  src={loadedImages[currentIndex].public_url} // Angepasst
+                  alt={loadedImages[currentIndex].alt_text}  // Angepasst
                   className="w-full h-full object-cover transition-opacity duration-300 rounded-2xl"
                   style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
                 />
@@ -258,8 +247,8 @@ export function ImageCarousel({
             whileTap={{ scale: 0.95 }}
           >
             <img
-              src={image.src}
-              alt={image.alt}
+                src={image.public_url} // Angepasst
+                alt={image.alt_text}   // Angepasst
               className="w-full h-full object-cover transition-opacity duration-300 rounded-lg"
               style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
             />

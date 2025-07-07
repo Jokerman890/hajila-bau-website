@@ -6,9 +6,10 @@ import { ChevronDown, Sparkles, Zap, Cpu, Code, Layers, Building2, Hammer, Phone
 import { cn } from '@/lib/utils';
 import { GlassCard } from './glass-card';
 import GlowingServiceGrid from './glowing-service-grid';
-import BilderKarussel from './bilder-karussel';
+import BilderKarussel, { CarouselSlideImage } from './bilder-karussel'; // CarouselSlideImage importieren
 import { HeroSplineBackground } from './construction-hero-section';
 import AnimatedButton from './animated-button';
+import { supabase } from '@/lib/supabase/client'; // Supabase Client importieren
 
 // Typewriter Component
 interface TypewriterProps {
@@ -199,6 +200,33 @@ const Navigation: React.FC<{ items: NavItem[] }> = ({ items }) => (
 const PremiumWebsite: React.FC = () => {
   const [currentTheme, setCurrentTheme] = useState<'light' | 'dark'>('dark');
   const [cookieAccepted, setCookieAccepted] = useState(false);
+  const [carouselImages, setCarouselImages] = useState<CarouselSlideImage[]>([]);
+  const [isLoadingCarousel, setIsLoadingCarousel] = useState(true);
+
+  useEffect(() => {
+    const fetchCarouselImages = async () => {
+      setIsLoadingCarousel(true);
+      try {
+        const { data, error } = await supabase
+          .from('carousel_images_metadata')
+          .select('id, public_url, alt_text, title, description') // Nur benötigte Felder auswählen
+          .eq('is_active', true)
+          .order('order', { ascending: true });
+
+        if (error) throw error;
+        setCarouselImages(data || []);
+      } catch (error) {
+        console.error("Fehler beim Laden der Karussell-Bilder:", error);
+        // Fallback auf leere Liste oder Fehlerbehandlung
+        setCarouselImages([]);
+      } finally {
+        setIsLoadingCarousel(false);
+      }
+    };
+
+    fetchCarouselImages();
+  }, []);
+
 
   const toggleTheme = () => {
     const newTheme = currentTheme === 'light' ? 'dark' : 'light';
@@ -505,7 +533,15 @@ const PremiumWebsite: React.FC = () => {
               Erfolgreich abgeschlossene Projekte
             </p>
           </motion.div>
-          <BilderKarussel />
+          {isLoadingCarousel ? (
+            <div className="text-center py-10">Lade Karussell-Bilder...</div>
+          ) : carouselImages.length > 0 ? (
+            <BilderKarussel images={carouselImages} />
+          ) : (
+            <div className="text-center py-10 text-muted-foreground">
+              Momentan sind keine Referenzbilder verfügbar.
+            </div>
+          )}
         </div>
       </section>
 

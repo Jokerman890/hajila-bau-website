@@ -17,31 +17,32 @@ import {
   RefreshCw
 } from 'lucide-react'
 
-interface CarouselImage {
-  id: string
-  url: string
-  title: string
-  description?: string
-  alt: string
+// Anpassung an die Datenbankstruktur carousel_images_metadata
+export interface CarouselDisplayImage { // Umbenannt, um Konflikte zu vermeiden und Zweck zu verdeutlichen
+  id: string // UUID
+  public_url: string
+  title?: string | null
+  description?: string | null
+  alt_text: string
   order: number
-  isActive: boolean
-  uploadedAt: Date
-  size: number
-  dimensions: {
-    width: number
-    height: number
-  }
+  is_active: boolean
+  uploaded_at: string | Date // String von DB, Date-Objekt im Client
+  size_kb?: number | null
+  width?: number | null
+  height?: number | null
+  // Zusätzliche Felder, die für die Anzeige oder Bearbeitung nützlich sein könnten
+  file_name?: string | null
+  storage_path?: string | null
 }
 
 interface AdminDashboardProps {
-  images?: CarouselImage[]
+  images?: CarouselDisplayImage[]
   isLoading?: boolean
   hasError?: boolean
   onRetry?: () => void
-  onImageUpload?: (files: FileList) => void
-  onImageDelete?: (id: string) => void
-  onImageUpdate?: (id: string, updates: Partial<CarouselImage>) => void
-  // onImageReorder?: (imageIds: string[]) => Promise<void>
+  onImageUpload?: (files: FileList, metadata: Array<{width?: number, height?: number, size_kb: number, name: string, type: string }>) => Promise<void> // Nimmt jetzt auch Metadaten entgegen
+  onImageDelete?: (id: string) => Promise<void>
+  onImageUpdate?: (id: string, updates: Partial<CarouselDisplayImage>) => Promise<void>
   maxImages?: number
   allowedFormats?: string[]
   maxFileSize?: number
@@ -213,13 +214,13 @@ const ImageCard: React.FC<{
   image: CarouselImage
   onDelete: (id: string) => void
   onUpdate: (id: string, updates: Partial<CarouselImage>) => void
-  onPreview: (image: CarouselImage) => void
+  onPreview: (image: CarouselDisplayImage) => void
 }> = ({ image, onDelete, onUpdate, onPreview }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [editForm, setEditForm] = useState({
-    title: image.title,
+    title: image.title || '',
     description: image.description || '',
-    alt: image.alt
+    alt_text: image.alt_text || ''
   })
 
   const handleSave = () => {
@@ -229,9 +230,9 @@ const ImageCard: React.FC<{
 
   const handleCancel = () => {
     setEditForm({
-      title: image.title,
+      title: image.title || '',
       description: image.description || '',
-      alt: image.alt
+      alt_text: image.alt_text || ''
     })
     setIsEditing(false)
   }
@@ -248,10 +249,10 @@ const ImageCard: React.FC<{
     <Card className="group hover:shadow-lg transition-all duration-300">
       <div className="relative">
         <Image
-          src={image.url}
-          alt={image.alt}
-          width={800}
-          height={600}
+          src={image.public_url}
+          alt={image.alt_text}
+          width={image.width || 800} // Fallback, falls nicht vorhanden
+          height={image.height || 600} // Fallback, falls nicht vorhanden
           className="w-full h-48 object-cover rounded-t-lg"
         />
         <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -274,15 +275,15 @@ const ImageCard: React.FC<{
           <Button
             size="sm"
             variant="destructive"
-            onClick={() => onDelete(image.id)}
+            onClick={() => onDelete(image.id)} // onDelete ist jetzt async, aber Button onClick ist sync. Wird in page.tsx gehandhabt.
             className="h-8 w-8 p-0"
           >
             <Trash2 className="w-4 h-4" />
           </Button>
         </div>
         <div className="absolute top-2 left-2">
-          <Badge variant={image.isActive ? "default" : "secondary"}>
-            {image.isActive ? "Active" : "Inactive"}
+          <Badge variant={image.is_active ? "default" : "secondary"}>
+            {image.is_active ? "Active" : "Inactive"}
           </Badge>
         </div>
         <div className="absolute bottom-2 left-2">
@@ -317,13 +318,13 @@ const ImageCard: React.FC<{
               />
             </div>
             <div>
-              <Label htmlFor={`alt-${image.id}`} className="text-sm font-medium">
-                Alt Text
+              <Label htmlFor={`alt_text-${image.id}`} className="text-sm font-medium">
+                Alt Text (Required)
               </Label>
               <Input
-                id={`alt-${image.id}`}
-                value={editForm.alt}
-                onChange={(e) => setEditForm(prev => ({ ...prev, alt: e.target.value }))}
+                id={`alt_text-${image.id}`}
+                value={editForm.alt_text}
+                onChange={(e) => setEditForm(prev => ({ ...prev, alt_text: e.target.value }))}
                 className="mt-1"
               />
             </div>
@@ -340,15 +341,15 @@ const ImageCard: React.FC<{
           </div>
         ) : (
           <div>
-            <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-1">{image.title}</h3>
+            <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-1">{image.title || image.file_name}</h3>
             {image.description && (
               <p className="text-sm text-slate-600 dark:text-slate-400 mb-2 line-clamp-2">
                 {image.description}
               </p>
             )}
             <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-              <span>{image.dimensions.width} × {image.dimensions.height}</span>
-              <span>{formatFileSize(image.size)}</span>
+              <span>{image.width || 'N/A'} × {image.height || 'N/A'}</span>
+              <span>{image.size_kb ? `${image.size_kb} KB` : formatFileSize(0)}</span>
             </div>
             <div className="mt-2 flex items-center justify-between">
               <span className="text-xs text-slate-500 dark:text-slate-400">
@@ -357,9 +358,9 @@ const ImageCard: React.FC<{
               <Button
                 size="sm"
                 variant="outline"
-                onClick={() => onUpdate(image.id, { isActive: !image.isActive })}
+                onClick={() => onUpdate(image.id, { is_active: !image.is_active })}
               >
-                {image.isActive ? 'Deactivate' : 'Activate'}
+                {image.is_active ? 'Deactivate' : 'Activate'}
               </Button>
             </div>
           </div>
@@ -441,25 +442,65 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [uploadSuccess, setUploadSuccess] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const handleFileUpload = (files: FileList) => {
-    setUploadSuccess(true)
-    setTimeout(() => setUploadSuccess(false), 3000)
-    onImageUpload?.(files)
-  }
+  const handleFileUpload = async (files: FileList) => {
+    if (!onImageUpload) return;
 
-  const handleImageDelete = (id: string) => {
-    if (window.confirm('Are you sure you want to delete this image?')) {
-      onImageDelete?.(id)
+    const filesToUploadMetadata = await Promise.all(
+      Array.from(files).map(async (file) => {
+        let width, height;
+        try {
+          const objectUrl = URL.createObjectURL(file);
+          const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+            const i = new window.Image();
+            i.onload = () => resolve(i);
+            i.onerror = reject;
+            i.src = objectUrl;
+          });
+          width = img.width;
+          height = img.height;
+          URL.revokeObjectURL(objectUrl);
+        } catch (e) {
+          console.warn("Konnte Dimensionen nicht ermitteln für:", file.name, e);
+        }
+        return {
+          width,
+          height,
+          size_kb: Math.round(file.size / 1024),
+          name: file.name,
+          type: file.type
+        };
+      })
+    );
+
+    try {
+      await onImageUpload(files, filesToUploadMetadata);
+      setUploadSuccess(true);
+      setTimeout(() => setUploadSuccess(false), 3000);
+    } catch (error) {
+      console.error("Upload fehlgeschlagen in AdminDashboard:", error);
+      // Hier könnte eine Fehlermeldung für den User angezeigt werden
     }
   }
 
-  const handleImagePreview = (image: CarouselImage) => {
-    window.open(image.url, '_blank')
+  const handleImageDelete = async (id: string) => {
+    if (window.confirm('Are you sure you want to delete this image?')) {
+      if (onImageDelete) {
+        try {
+          await onImageDelete(id);
+        } catch (error) {
+          console.error("Löschen fehlgeschlagen in AdminDashboard:", error);
+        }
+      }
+    }
   }
 
-  const activeImages = images.filter(img => img.isActive)
-  const inactiveImages = images.filter(img => !img.isActive)
-  const totalSize = images.reduce((sum, img) => sum + img.size, 0)
+  const handleImagePreview = (image: CarouselDisplayImage) => {
+    window.open(image.public_url, '_blank')
+  }
+
+  const activeImages = images.filter(img => img.is_active)
+  const inactiveImages = images.filter(img => !img.is_active)
+  const totalSize = images.reduce((sum, img) => sum + (img.size_kb || 0), 0) // Summiere size_kb
 
   if (isLoading) {
     return <LoadingSkeleton />
@@ -527,7 +568,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             </div>
             <div>
               <p className="text-sm text-slate-600 dark:text-slate-400">Storage Used</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{(totalSize / 1024 / 1024).toFixed(1)}MB</p>
+              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{(totalSize / 1024).toFixed(1)}MB</p>
             </div>
           </div>
         </Card>
@@ -613,7 +654,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         key={image.id}
                         image={image}
                         onDelete={handleImageDelete}
-                        onUpdate={onImageUpdate!}
+                        onUpdate={onImageUpdate!} // onImageUpdate ist async, wird in page.tsx gehandhabt
                         onPreview={handleImagePreview}
                       />
                     ))}
@@ -633,7 +674,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                           key={image.id}
                           image={image}
                           onDelete={handleImageDelete}
-                          onUpdate={onImageUpdate!}
+                          onUpdate={onImageUpdate!} // onImageUpdate ist async, wird in page.tsx gehandhabt
                           onPreview={handleImagePreview}
                         />
                       ))}
@@ -648,7 +689,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
         {activeTab === 'upload' && (
           <div className="space-y-6">
             <ImageUploadZone
-              onFileUpload={handleFileUpload}
+              onFileUpload={handleFileUpload} // handleFileUpload ist jetzt async
               maxFiles={maxImages}
               allowedFormats={allowedFormats}
               maxFileSize={maxFileSize}
@@ -667,10 +708,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 {activeImages.slice(0, 6).map(image => (
                   <div key={image.id} className="relative group">
                     <Image
-                      src={image.url}
-                      alt={image.alt}
-                      width={800}
-                      height={600}
+                      src={image.public_url}
+                      alt={image.alt_text}
+                      width={image.width || 800}
+                      height={image.height || 600}
                       className="w-full h-32 object-cover rounded-lg"
                     />
                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">

@@ -9,5 +9,10 @@ module.exports = {
   output: 'export',
   basePath: isProd ? '/hajila-bau-website' : '',
   assetPrefix: isProd ? '/hajila-bau-website/' : '',
-  trailingSlash: true
+  trailingSlash: true,
+  experimental: { externalDir: true },
+  webpack(config) {
+    config.cache = { type: 'filesystem' };
+    return config;
+  },
 };

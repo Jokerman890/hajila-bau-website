@@ -9,7 +9,7 @@ import GlowingServiceGrid from './glowing-service-grid';
 import BilderKarussel, { CarouselSlideImage } from './bilder-karussel'; // CarouselSlideImage importieren
 import { HeroSplineBackground } from './construction-hero-section';
 import AnimatedButton from './animated-button';
-import { supabase } from '@/lib/supabase/client'; // Supabase Client importieren
+import Image from 'next/image';
 
 // Typewriter Component
 interface TypewriterProps {
@@ -400,7 +400,13 @@ const PremiumWebsite: React.FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               {/* Direktes Bild statt Logo3D-Komponente */}
-              <img src="https://hajila-bau.de/logo_2d.png" alt="Hajila Bau Logo" width="48" height="48" style={{borderRadius: '8px'}} />
+              <Image
+                src="https://hajila-bau.de/logo_2d.png"
+                alt="Hajila Bau Logo"
+                width={48}
+                height={48}
+                style={{ borderRadius: '8px' }}
+              />
             </div>
 
             <Navigation items={menuItems} />
@@ -656,7 +662,14 @@ const PremiumWebsite: React.FC = () => {
       <footer className="relative z-10 py-12 px-6 border-t border-border/50 bg-background/80 backdrop-blur-md">
         <div className="mx-auto max-w-7xl text-center text-sm text-muted-foreground font-['Open_Sans']">
           <div className="flex justify-center items-center mb-4">
-            <img src="https://hajila-bau.de/logo_2d.png" alt="Hajila Bau Logo" width="48" height="48" className="mr-2" style={{borderRadius: '8px'}} />
+            <Image
+              src="https://hajila-bau.de/logo_2d.png"
+              alt="Hajila Bau Logo"
+              width={48}
+              height={48}
+              className="mr-2"
+              style={{ borderRadius: '8px' }}
+            />
             <span className="text-xl font-bold bg-gradient-to-r from-[var(--blue-start)] to-[var(--blue-end)] bg-clip-text text-transparent font-['Merriweather']">
               Hajila Bau GmbH
             </span>

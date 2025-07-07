@@ -1,12 +1,13 @@
 "use client";
 import '../lib/polyfills';
-import { createContext, useContext, useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase/client";
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { User } from '@supabase/supabase-js';
+import { supabase } from '@/lib/supabase/client';
 
-const AuthContext = createContext<{ user: any; loading: boolean } | null>(null);
+const AuthContext = createContext<{ user: User | null; loading: boolean } | null>(null);
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState<any>(null);
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

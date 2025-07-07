@@ -128,11 +128,11 @@ export function getPublicImageUrl(storagePath: string): string {
  * Kann nützlich sein, um Größe, Mime-Typ etc. nach dem Upload zu verifizieren.
  * Verwendet den Admin-Client.
  */
-export async function getCarouselImageMetadata(storagePath: string): Promise<{ data: any; error: Error | null }> {
+export async function getCarouselImageMetadata(storagePath: string): Promise<{ data: unknown; error: Error | null }> {
   if (!supabaseAdmin) {
     return { data: null, error: new Error('Supabase Admin Client nicht initialisiert.') }
   }
-  const { data, error } = await supabaseAdmin.storage
+  const { error } = await supabaseAdmin.storage
     .from(CAROUSEL_BUCKET_NAME)
     .getProperties(storagePath) // Diese Methode gibt es so nicht direkt, list() mit path als prefix wäre eine Option oder HEAD request
 

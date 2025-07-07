@@ -52,8 +52,9 @@ export async function DELETE(request: NextRequest) {
     }
 
     return NextResponse.json({ success: true, message: 'Bild erfolgreich gelöscht.' }, { status: 200 })
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Delete API Fehler:', error)
-    return NextResponse.json({ error: error.message || 'Interner Serverfehler beim Löschen.' }, { status: 500 })
+    const message = error instanceof Error ? error.message : 'Interner Serverfehler beim Löschen.'
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }

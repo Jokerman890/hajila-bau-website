@@ -14,17 +14,6 @@ import {
 } from 'lucide-react'
 
 import { useState, useEffect, useCallback } from 'react' // Hinzugefügt
-import dynamic from 'next/dynamic'
-import {
-  Image as ImageIcon,
-  Settings,
-  BarChart3,
-  Phone,
-  Mail,
-  MapPin,
-  Users,
-  Globe
-} from 'lucide-react'
 import { useAuth } from '@/components/AuthProvider' // Korrekter Pfad
 import LoginForm from '@/components/LoginForm' // Korrekter Pfad
 import LogoutButton from '@/components/LogoutButton' // Korrekter Pfad

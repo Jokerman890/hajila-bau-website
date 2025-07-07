@@ -207,17 +207,25 @@ const PremiumWebsite: React.FC = () => {
     const fetchCarouselImages = async () => {
       setIsLoadingCarousel(true);
       try {
-        const { data, error } = await supabase
-          .from('carousel_images_metadata')
-          .select('id, public_url, alt_text, title, description') // Nur benötigte Felder auswählen
-          .eq('is_active', true)
-          .order('order', { ascending: true });
+        const res = await fetch('/api/admin/images', { cache: 'no-store' });
 
-        if (error) throw error;
-        setCarouselImages(data || []);
-      } catch (error) {
-        console.error("Fehler beim Laden der Karussell-Bilder:", error);
-        // Fallback auf leere Liste oder Fehlerbehandlung
+        if (!res.ok) {
+          console.error('Fehler beim Laden der Bilder:', res.status);
+          setCarouselImages([]);
+          return; // Verhindert .json() auf null
+        }
+
+        const data = await res.json();
+
+        if (!data?.length) {
+          console.warn('Keine Bilddaten erhalten.');
+          setCarouselImages([]);
+          return; // Verhindert .from() auf null-Array
+        }
+
+        setCarouselImages(data);
+      } catch (err) {
+        console.error('Unbekannter Fehler:', err);
         setCarouselImages([]);
       } finally {
         setIsLoadingCarousel(false);

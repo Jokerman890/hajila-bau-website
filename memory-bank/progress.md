@@ -3,31 +3,19 @@
 ## Was funktioniert
 - Die grundlegende Struktur der Speicherbank wurde erstellt.
 - Alle Kern-Dateien sind vorhanden und enthalten grundlegende Informationen zur Hajila Bau Webseite.
-- Die Website wurde mehrfach aktualisiert und deployed, um Probleme mit der Bildanzeige zu beheben.
-- Die Versionsnummer wurde auf 0.3.6 aktualisiert.
-- Das Karussell zeigt jetzt automatisch alle Bilder aus dem Ordner `public/uploads/carousel/` an (dank JSON-Generierung per Skript).
+- Der "null.from" Fehler in `premium-website.tsx` wurde behoben.
+- Der "Cannot read properties of null (reading 'auth')" Fehler in `AuthProvider.tsx` wurde behoben.
+- Ein Buffer-Polyfill wurde in `polyfills.ts` erstellt und in `AuthProvider.tsx` importiert.
+- Der Changelog wurde auf Version 0.4.5 aktualisiert.
 
 ## Was noch zu bauen ist
-- Weitere inhaltliche und UI-Optimierungen nach Bedarf.
+- Überprüfung der Funktionalität der Webseite nach den letzten Änderungen.
+- Weitere Optimierungen und Fehlerbehebungen basierend auf Benutzerfeedback.
 - Hinzufügen von zusätzlichen Kontextdateien für komplexe Aspekte des Projekts.
 
 ## Aktueller Status
-Die Speicherbank ist eingerichtet. Das Problem mit der Bildanzeige im Karussell ist gelöst: Alle Bilder werden jetzt automatisch angezeigt. Die Versionsnummer wurde auf 0.3.6 aktualisiert.
+Die Speicherbank ist aktualisiert und die letzten Fehler wurden behoben. Die Webseite sollte nun funktional sein, aber es sind noch Überprüfungen und mögliche Optimierungen erforderlich.
 
 ## Bekannte Probleme
 - Keine Cloud-Synchronisation oder Backup-Funktion integriert.
-- Die Inhalte sind noch teilweise generisch und müssen vollständig auf die Hajila Bau Webseite zugeschnitten werden.
-
-## Stand 0.4.1 (2025-07-05)
-- Version 0.4.1, alle Hauptfeatures für statisches GitHub Pages Deployment umgesetzt
-- AnimatedButton und Logo3D überall integriert
-- Karussell dynamisch, basePath/assetPrefix überall korrekt
-- MCP-Memorybank gepflegt
-
-## Stand 0.4.2 (2025-07-05)
-- Logo und Favicon jetzt transparent (logo_2d.png)
-- Version 0.4.2, Memorybank und Changelog gepflegt
-
-## Stand 0.4.3 (2025-07-05)
-- Doppelte Überschrift im References-Bereich entfernt (nur noch Farbverlauf)
-- Changelog, Versionierung und MCP-Memory aktualisiert
+- Mögliche weitere Fehler oder Optimierungspotenziale, die nach den letzten Änderungen auftreten könnten.

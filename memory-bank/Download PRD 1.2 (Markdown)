@@ -1,0 +1,144 @@
+# Product Requirements Document (PRD) – Hajila-Bau-Webseite
+
+**Version:** 1.2  
+**Stand:** 07 Juli 2025  
+**Autor:** Jules (AI Agent) – konsolidiert für Michael Breger
+
+## 1 Einleitung / Zusammenfassung
+Die Hajila-Bau-Webseite ist eine moderne Marketing‑Plattform der **Hajila Bau GmbH** (Osnabrück).  
+Tech‑Stack: **Next.js 15**, **React 19**, **Tailwind CSS 4**, **TypeScript 5**, **Framer Motion**, **Three.js**, **Supabase Auth**.  
+Dieses Dokument fasst *Scope*, *Ziele*, *funktionale* und *nicht‑funktionale* Anforderungen zusammen und dokumentiert den aktuellen Umsetzungsstand.
+
+---
+
+## 2 Ziele des Produkts
+* Professionelle Online‑Präsenz
+* Präsentation abgeschlossener Projekte & Leistungen
+* Lead‑Generierung per Kontaktformular
+* Regionale Sichtbarkeit (SEO Fokus „Osnabrück“)
+* Barrierefreiheit (WCAG 2.1 AA)
+
+---
+
+## 3 Scope & Out‑of‑Scope
+| **In Scope** | **Out of Scope** |
+|--------------|-----------------|
+| Öffentliche Marketing‑Site (DE) | Kundenportal / Login‑Bereiche |
+| Carousel‑Admin + Supabase‑Auth | E‑Commerce‑Funktionen |
+| Rechtliche Seiten & Cookie‑Banner | Multi‑Site‑Hosting |
+| SEO & Barrierefreiheit (AA) | Mehrsprachigkeit (i18n > 2026) |
+
+---
+
+## 4 Zielgruppen
+* Privat‑ & Geschäftskunden  
+* Architekten / Planer  
+* Bewerber  
+* Interessierte Öffentlichkeit  
+* Interner Admin
+
+---
+
+## 5 User Stories (+ Status)
+| Story | Status | Kommentar |
+|-------|:--:|-----------|
+| Privatkunde sieht Leistungen & Referenzen | ✅ | Statische Seiten + Carousel |
+| Admin lädt, sortiert, löscht Bilder | ✅ | Dashboard fertig |
+| Bild‑Dimensionen werden auto. erfasst | 🟡 | Placeholder 800×600 |
+
+---
+
+## 6 Funktionale Anforderungen – Soll vs. Ist
+| # | Anforderung | Soll | Ist |
+|---|-------------|------|-----|
+| 6.1 | Statische Seiten | MUSS | **Erledigt** |
+| 6.2 | Carousel aus `/public/uploads/carousel` | MUSS | **Erledigt** |
+| 6.3 | Admin‑Dashboard | MUSS | **Erledigt** |
+| 6.4 | Auto‑Dimension | SOLL | **Offen** |
+| 6.5 | Cookie‑Banner mit Consent | MUSS | **Teil erledigt** |
+| 6.6 | Matomo Tracking | SOLL | **Offen** |
+| 6.7 | Backup‑Script (S3) | SOLL | **Offen** |
+
+---
+
+## 7 Nicht‑funktionale Anforderungen
+| Kategorie | Ziel | Ist |
+|-----------|------|-----|
+| Performance | LCP < 2,5 s | 1,9 s |
+| Accessibility | WCAG AA | 96/100 |
+| SEO | ≥ 90 | 98 |
+| Best Practices | ≥ 90 | 100 |
+
+---
+
+## 8 Design & UX Highlights
+* Glassmorphism & Light/Dark Toggle  
+* 3D‑Logo‑Animation (Three.js)  
+* Particle‑Wave Background  
+* Typewriter‑Hero
+
+---
+
+## 9 Technische Architektur
+```
+Next.js 15 (App Router)
+│
+├── src/app/⋯          # Seiten & Layout
+├── src/components/ui  # Glass Cards, Buttons, etc.
+├── src/app/api        # REST‑Endpoints
+├── data/              # carousel-images.json
+└── public/uploads/    # Carousel‑Bilder
+```
+* Supabase Auth 2.50  
+* CI/CD: GitHub Actions → Vercel Pro  
+* Testing: Jest 30 (16 Tests)
+
+---
+
+## 10 Roadmap & Milestones (Solo)
+| Phase | Zeitraum | Ergebnis |
+|-------|----------|----------|
+| Kick‑off | ✓ 01‑05 Jul | Repo, CI/CD, Basis |
+| Sprint 1 | 08‑26 Jul | Consent‑Texte, Focus‑Styles, Backup |
+| Sprint 2 | 29 Jul – 16 Aug | Sharp‑Dims, Matomo |
+| Beta | 19 Aug | Feedback & Fixes |
+| Go‑Live v1 | 26 Aug | Prod Monitoring |
+
+---
+
+## 11 Offene Fragen
+1. sharp vs. probe‑image‑size für Dimensionen  
+2. Consent‑Texte Quelle?  
+3. AWS S3 vs. Wasabi für Backup
+
+---
+
+## 12 Erfolgskriterien
+* +30 % Kontaktanfragen bis Q4 / 25  
+* Bounce‑Rate < 45 %  
+* Top‑3 Google‑Ranking „Bauunternehmen Osnabrück“
+
+---
+
+## 13 Budget & Ressourcen
+* 240 Arbeitsstunden (Solo)  
+* Vercel Pro 25 €/Monat
+
+---
+
+## 14 Content Governance & RACI
+| Bereich | R | A |
+|---------|---|---|
+| Code / CI | Michael | Michael |
+| Content | Michael | Marketing |
+
+---
+
+## 15 Änderungshistorie
+| Version | Datum | Änderungen |
+|---------|-------|------------|
+| 1.0 | 05 Jul 25 | Erstentwurf |
+| 1.1 | 07 Jul 25 | Scope‑Liste, Performance‑Budget |
+| **1.2** | 07 Jul 25 | Repo‑Sync, Ist‑Status, Roadmap |
+
+---

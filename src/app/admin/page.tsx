@@ -13,24 +13,31 @@ import {
   Globe
 } from 'lucide-react'
 
-// Dynamically import the dashboard to avoid SSR issues
-interface CarouselImage {
-  id: string
-  url: string
-  title: string
-  description?: string
-  alt: string
-  order: number
-  isActive: boolean
-  uploadedAt: Date
-  size: number
-  dimensions: {
-    width: number
-    height: number
-  }
-}
+import { useState, useEffect, useCallback } from 'react' // Hinzugefügt
+import dynamic from 'next/dynamic'
+import {
+  Image as ImageIcon,
+  Settings,
+  BarChart3,
+  Phone,
+  Mail,
+  MapPin,
+  Users,
+  Globe
+} from 'lucide-react'
+import { useAuth } from '@/components/AuthProvider' // Korrekter Pfad
+import LoginForm from '@/components/LoginForm' // Korrekter Pfad
+import LogoutButton from '@/components/LogoutButton' // Korrekter Pfad
+import { supabase } from '@/lib/supabase/client' // Supabase Client importieren
 
-const AdminDashboard = dynamic(() => import('@/components/ui/admin-dashboard'), {
+// AdminDashboard und sein Interface importieren
+import AdminDashboard, { CarouselDisplayImage } from '@/components/ui/admin-dashboard'
+
+
+// Dynamically import the dashboard to avoid SSR issues
+// Das CarouselImage Interface wird nicht mehr hier definiert, sondern aus admin-dashboard.tsx importiert
+
+const DynamicAdminDashboard = dynamic(() => import('@/components/ui/admin-dashboard'), {
   ssr: false,
   loading: () => (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center">
@@ -42,90 +49,150 @@ const AdminDashboard = dynamic(() => import('@/components/ui/admin-dashboard'), 
   )
 })
 
-// Mock data for Hajila Bau
-const useHajilaBauDashboard = () => ({
-  images: [
-    {
-      id: 'hajila-1',
-      url: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=600&fit=crop',
-      title: 'Klinkerarbeiten Projekt',
-      description: 'Hochwertige Klinkerarbeiten an einem Wohngebäude in Osnabrück',
-      alt: 'Klinkerarbeiten an modernem Wohngebäude',
-      order: 1,
-      isActive: true,
-      uploadedAt: new Date('2024-01-20'),
-      size: 1856432,
-      dimensions: { width: 800, height: 600 }
-    },
-    {
-      id: 'hajila-2',
-      url: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&h=600&fit=crop',
-      title: 'Verblendmauerwerk',
-      description: 'Präzise Verblendmauerwerk-Arbeiten mit hochwertigen Materialien',
-      alt: 'Verblendmauerwerk in Ausführung',
-      order: 2,
-      isActive: true,
-      uploadedAt: new Date('2024-01-19'),
-      size: 2134567,
-      dimensions: { width: 800, height: 600 }
-    },
-    {
-      id: 'hajila-3',
-      url: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&h=600&fit=crop',
-      title: 'Betonbau Projekt',
-      description: 'Professionelle Betonbau-Arbeiten für Wohn- und Gewerbebau',
-      alt: 'Betonbau Konstruktion',
-      order: 3,
-      isActive: true,
-      uploadedAt: new Date('2024-01-18'),
-      size: 1923456,
-      dimensions: { width: 800, height: 600 }
-    },
-    {
-      id: 'hajila-4',
-      url: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop',
-      title: 'WDVS Installation',
-      description: 'Wärmedämmverbundsystem für optimale Energieeffizienz',
-      alt: 'WDVS Dämmung an Gebäudefassade',
-      order: 4,
-      isActive: false,
-      uploadedAt: new Date('2024-01-17'),
-      size: 2456789,
-      dimensions: { width: 800, height: 600 }
-    }
-  ],
-  isLoading: false,
-  error: null,
-  isUploading: false,
-  uploadProgress: 0,
-  activeImages: [],
-  totalSize: 0,
-  retry: async () => {},
-  uploadImages: async (files: FileList) => {
-    console.log('Hajila Bau upload:', files.length, 'files')
-  },
-  deleteImage: async (id: string) => {
-    console.log('Hajila Bau delete:', id)
-  },
-  updateImage: async (id: string, updates: Partial<CarouselImage>) => {
-    console.log('Hajila Bau update:', id, updates)
-  },
-  reorderImages: async (imageIds: string[]) => {
-    console.log('Hajila Bau reorder:', imageIds)
-  },
-  clearError: () => {}
-})
+// Mock-Daten und useHajilaBauDashboard Hook entfernt
 
-import { useAuth } from '@/components/AuthProvider';
-import LoginForm from '@/components/LoginForm';
-import LogoutButton from '@/components/LogoutButton';
 
 export default function HajilaBauAdminPage() {
-  const { user, loading } = useAuth();
-  const dashboard = useHajilaBauDashboard()
+  const { user, loading: authLoading } = useAuth()
+  const [images, setImages] = useState<CarouselDisplayImage[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  if (loading) return <div>Lade...</div>;
+  const fetchImages = useCallback(async () => {
+    setIsLoading(true)
+    setError(null)
+    try {
+      // Da RLS für SELECT auf carousel_images_metadata für 'anon' und 'authenticated' freigegeben ist,
+      // können wir den normalen Supabase-Client verwenden.
+      // Für eine sicherere Implementierung in der Zukunft könnte man eine dedizierte
+      // serverseitige Funktion erstellen, die nur Admins aufrufen dürfen.
+      const { data, error: fetchError } = await supabase
+        .from('carousel_images_metadata')
+        .select('*')
+        .order('order', { ascending: true })
+
+      if (fetchError) throw fetchError
+      setImages(data || [])
+    } catch (e: any) {
+      console.error("Fehler beim Laden der Bilder:", e)
+      setError(e.message || 'Fehler beim Laden der Bilder.')
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (user) { // Nur Bilder laden, wenn der Benutzer angemeldet ist
+      fetchImages()
+    }
+  }, [user, fetchImages])
+
+  const handleImageUpload = async (
+    files: FileList,
+    metadataArray: Array<{width?: number, height?: number, size_kb: number, name: string, type: string}>
+  ) => {
+    // Da wir mehrere Dateien gleichzeitig hochladen könnten, iterieren wir hier.
+    // Die AdminDashboard Komponente ist aktuell so ausgelegt, dass sie mehrere Dateien auf einmal annimmt.
+    // Die API-Route /api/admin/carousel/upload verarbeitet aktuell nur eine Datei pro Request (formData.get('file')).
+    // Dies muss konsistent gemacht werden. Fürs Erste: Upload einzeln.
+
+    setIsLoading(true) // Global loading state
+    let uploadError = null;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      // const meta = metadataArray[i]; // Metadaten für diese Datei
+
+      const formData = new FormData()
+      formData.append('file', file)
+      // Die Metadaten (width, height, size_kb) werden jetzt in der API-Route selbst ermittelt oder könnten hier mitgesendet werden.
+      // formData.append('width', meta.width?.toString() || '');
+      // formData.append('height', meta.height?.toString() || '');
+      // formData.append('size_kb', meta.size_kb.toString());
+      // formData.append('alt_text', meta.name.split('.').slice(0, -1).join('.') || 'Neues Bild');
+      // formData.append('title', meta.name.split('.').slice(0, -1).join('.') || 'Neues Bild');
+
+
+      try {
+        const response = await fetch('/api/admin/carousel/upload', {
+          method: 'POST',
+          body: formData,
+          // Authentifizierungstoken mitsenden, falls die API-Route es erfordert/prüft
+          // headers: { 'Authorization': `Bearer ${user?.token}` },
+        })
+        const result = await response.json()
+        if (!response.ok || result.error) {
+          throw new Error(result.error || `Fehler beim Upload von ${file.name}`)
+        }
+        // Erfolgreich: UI aktualisieren
+        // setImages(prev => [...prev, result.image].sort((a,b) => a.order - b.order)) // Besser: fetchImages() neu aufrufen
+      } catch (e: any) {
+        console.error('Upload-Fehler für Datei:', file.name, e)
+        uploadError = e.message; // Letzten Fehler speichern
+        // Hier könnte man überlegen, ob man bei einem Fehler abbricht oder weitermacht
+      }
+    }
+    await fetchImages() // Daten neu laden, um alle Änderungen zu sehen
+    setIsLoading(false)
+    if(uploadError) {
+        alert(`Einige Uploads sind fehlgeschlagen: ${uploadError}`);
+    }
+  }
+
+  const handleImageDelete = async (id: string) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`/api/admin/carousel/delete?id=${id}`, {
+        method: 'DELETE',
+      })
+      const result = await response.json()
+      if (!response.ok || result.error) {
+        throw new Error(result.error || 'Fehler beim Löschen des Bildes')
+      }
+      // Erfolgreich: UI aktualisieren
+      // setImages(prev => prev.filter(img => img.id !== id)) // Besser: fetchImages() neu aufrufen
+      await fetchImages()
+    } catch (e: any) {
+      console.error('Lösch-Fehler:', e)
+      alert(e.message)
+    }
+    setIsLoading(false);
+  }
+
+  const handleImageUpdate = async (id: string, updates: Partial<CarouselDisplayImage>) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/admin/carousel/update', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, ...updates }),
+      })
+      const result = await response.json()
+      if (!response.ok || result.error) {
+        throw new Error(result.error || 'Fehler beim Aktualisieren des Bildes')
+      }
+      // Erfolgreich: UI aktualisieren
+      // setImages(prev => prev.map(img => img.id === id ? result.image : img).sort((a,b) => a.order - b.order) ); // Besser: fetchImages()
+      await fetchImages()
+    } catch (e: any) {
+      console.error('Update-Fehler:', e)
+      alert(e.message);
+    }
+    setIsLoading(false);
+  }
+
+
+  if (authLoading) return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div>Authentifizierung wird geladen...</div>
+    </div>
+  );
   if (!user) return <LoginForm />;
+
+  // Die Stats-Sektion verwendet noch dashboard.images.length etc. Muss angepasst werden.
+  // Fürs Erste, die Werte auf Basis des neuen `images` State setzen.
+  const imageCount = images.length;
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
@@ -153,7 +220,7 @@ export default function HajilaBauAdminPage() {
               <div>
                 <p className="text-sm text-slate-600 dark:text-slate-400">Projekt Bilder</p>
                 <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
-                  {dashboard.images.length}
+                  {imageCount} {/* Angepasst */}
                 </p>
               </div>
             </div>
@@ -166,7 +233,7 @@ export default function HajilaBauAdminPage() {
               </div>
               <div>
                 <p className="text-sm text-slate-600 dark:text-slate-400">Aktive Projekte</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">12</p>
+                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">12</p> {/* Mock-Wert, anpassen falls nötig */}
               </div>
             </div>
           </div>
@@ -178,7 +245,7 @@ export default function HajilaBauAdminPage() {
               </div>
               <div>
                 <p className="text-sm text-slate-600 dark:text-slate-400">Team Mitglieder</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">8</p>
+                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">8</p> {/* Mock-Wert, anpassen falls nötig */}
               </div>
             </div>
           </div>
@@ -190,7 +257,7 @@ export default function HajilaBauAdminPage() {
               </div>
               <div>
                 <p className="text-sm text-slate-600 dark:text-slate-400">Jahre Erfahrung</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">8+</p>
+                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">8+</p> {/* Mock-Wert, anpassen falls nötig */}
               </div>
             </div>
           </div>
@@ -218,19 +285,20 @@ export default function HajilaBauAdminPage() {
           </div>
 
           {/* Admin Dashboard Component */}
-<AdminDashboard
-  images={dashboard.images}
-  isLoading={dashboard.isLoading}
-  hasError={!!dashboard.error}
-  onRetry={dashboard.retry}
-  onImageUpload={dashboard.uploadImages}
-  onImageDelete={dashboard.deleteImage}
-  onImageUpdate={dashboard.updateImage}
-  maxImages={20}
-  allowedFormats={['image/jpeg', 'image/png', 'image/webp']}
-  maxFileSize={5 * 1024 * 1024}
-/>
-</div>
+          <DynamicAdminDashboard
+            images={images}
+            isLoading={isLoading}
+            hasError={!!error}
+            onRetry={fetchImages}
+            onImageUpload={handleImageUpload}
+            onImageDelete={handleImageDelete}
+            onImageUpdate={handleImageUpdate}
+            maxImages={50} // Erhöhtes Limit
+            allowedFormats={['image/jpeg', 'image/png', 'image/webp', 'image/jpg']}
+            maxFileSize={5 * 1024 * 1024} // 5MB
+          />
+          {error && <p className="text-red-500 mt-4">Fehler: {error}</p>}
+        </div>
 
         {/* Company Information Section */}
         <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8">

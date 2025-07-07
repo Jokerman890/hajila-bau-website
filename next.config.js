@@ -13,6 +13,10 @@ module.exports = {
   experimental: { externalDir: true },
   webpack(config) {
     config.cache = { type: 'filesystem' };
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      buffer: require.resolve('buffer/')
+    };
     return config;
   },
 };

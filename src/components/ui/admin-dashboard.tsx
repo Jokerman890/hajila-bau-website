@@ -211,9 +211,9 @@ const ImageUploadZone: React.FC<{
 }
 
 const ImageCard: React.FC<{
-  image: CarouselImage
+  image: CarouselDisplayImage
   onDelete: (id: string) => void
-  onUpdate: (id: string, updates: Partial<CarouselImage>) => void
+  onUpdate: (id: string, updates: Partial<CarouselDisplayImage>) => void
   onPreview: (image: CarouselDisplayImage) => void
 }> = ({ image, onDelete, onUpdate, onPreview }) => {
   const [isEditing, setIsEditing] = useState(false)
@@ -446,7 +446,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     if (!onImageUpload) return;
 
     const filesToUploadMetadata = await Promise.all(
-      Array.from(files).map(async (file) => {
+      Array.from(files || []).map(async (file) => {
         let width, height;
         try {
           const objectUrl = URL.createObjectURL(file);

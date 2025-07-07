@@ -114,16 +114,16 @@ export async function POST(request: NextRequest) {
       
       // Datei speichern
       const bytes = await file.arrayBuffer()
-      const buffer = Buffer.from(bytes)
+      const uint8 = new Uint8Array(bytes)
       
       const fileExtension = path.extname(file.name)
       const filename = `${uuidv4()}${fileExtension}`
       const filepath = path.join(UPLOAD_DIR, filename)
       
-      await writeFile(filepath, buffer)
+      await writeFile(filepath, Buffer.from(bytes))
       
       // Bildmetadaten erstellen
-      const dimensions = await getImageDimensions(buffer)
+      const dimensions = await getImageDimensions(Buffer.from(bytes))
       const maxOrder = images.length > 0 ? Math.max(...images.map(img => img.order)) : 0
       
       const newImage: CarouselImage = {

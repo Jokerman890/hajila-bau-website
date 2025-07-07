@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase/client'
 import { uploadCarouselImage, CAROUSEL_BUCKET_NAME } from '@/lib/supabase/carousel-storage'
-import { getImageSize } from 'image-size' // Dependency, muss ggf. installiert werden
+import sizeOf from 'image-size' // Dependency, muss ggf. installiert werden
 
 // Dependency: npm install image-size @types/image-size
 // Diese Route ist für das Admin-Panel gedacht und sollte entsprechend geschützt sein.
@@ -28,8 +28,9 @@ export async function POST(request: NextRequest) {
     const fileSizeKb = Math.round(file.size / 1024)
 
     try {
-      const fileBuffer = Buffer.from(await file.arrayBuffer())
-      const dimensions = getImageSize(fileBuffer)
+      const bytes = await file.arrayBuffer()
+      const fileBuffer = Buffer.from(bytes)
+      const dimensions = sizeOf(fileBuffer)
       width = dimensions.width
       height = dimensions.height
     } catch (e) {

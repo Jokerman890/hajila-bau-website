@@ -20,7 +20,7 @@ import LogoutButton from '@/components/LogoutButton' // Korrekter Pfad
 import { supabase } from '@/lib/supabase/client' // Supabase Client importieren
 
 // AdminDashboard und sein Interface importieren
-import AdminDashboard, { CarouselDisplayImage } from '@/components/ui/admin-dashboard'
+import type { CarouselDisplayImage } from '@/components/ui/admin-dashboard'
 
 
 // Dynamically import the dashboard to avoid SSR issues
@@ -62,9 +62,9 @@ export default function HajilaBauAdminPage() {
 
       if (fetchError) throw fetchError
       setImages(data || [])
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error("Fehler beim Laden der Bilder:", e)
-      setError(e.message || 'Fehler beim Laden der Bilder.')
+      setError(e instanceof Error ? e.message : 'Fehler beim Laden der Bilder.')
     } finally {
       setIsLoading(false)
     }
@@ -77,8 +77,7 @@ export default function HajilaBauAdminPage() {
   }, [user, fetchImages])
 
   const handleImageUpload = async (
-    files: FileList,
-    metadataArray: Array<{width?: number, height?: number, size_kb: number, name: string, type: string}>
+    files: FileList
   ) => {
     // Da wir mehrere Dateien gleichzeitig hochladen könnten, iterieren wir hier.
     // Die AdminDashboard Komponente ist aktuell so ausgelegt, dass sie mehrere Dateien auf einmal annimmt.
@@ -90,7 +89,6 @@ export default function HajilaBauAdminPage() {
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      // const meta = metadataArray[i]; // Metadaten für diese Datei
 
       const formData = new FormData()
       formData.append('file', file)
@@ -115,9 +113,9 @@ export default function HajilaBauAdminPage() {
         }
         // Erfolgreich: UI aktualisieren
         // setImages(prev => [...prev, result.image].sort((a,b) => a.order - b.order)) // Besser: fetchImages() neu aufrufen
-      } catch (e: any) {
+      } catch (e: unknown) {
         console.error('Upload-Fehler für Datei:', file.name, e)
-        uploadError = e.message; // Letzten Fehler speichern
+        uploadError = e instanceof Error ? e.message : String(e) // Letzten Fehler speichern
         // Hier könnte man überlegen, ob man bei einem Fehler abbricht oder weitermacht
       }
     }
@@ -141,9 +139,9 @@ export default function HajilaBauAdminPage() {
       // Erfolgreich: UI aktualisieren
       // setImages(prev => prev.filter(img => img.id !== id)) // Besser: fetchImages() neu aufrufen
       await fetchImages()
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error('Lösch-Fehler:', e)
-      alert(e.message)
+      alert(e instanceof Error ? e.message : String(e))
     }
     setIsLoading(false);
   }
@@ -163,9 +161,9 @@ export default function HajilaBauAdminPage() {
       // Erfolgreich: UI aktualisieren
       // setImages(prev => prev.map(img => img.id === id ? result.image : img).sort((a,b) => a.order - b.order) ); // Besser: fetchImages()
       await fetchImages()
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error('Update-Fehler:', e)
-      alert(e.message);
+      alert(e instanceof Error ? e.message : String(e));
     }
     setIsLoading(false);
   }

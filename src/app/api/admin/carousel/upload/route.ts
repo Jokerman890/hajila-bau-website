@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase/client'
-import { uploadCarouselImage, CAROUSEL_BUCKET_NAME } from '@/lib/supabase/carousel-storage'
+import { uploadCarouselImage } from '@/lib/supabase/carousel-storage'
 import sizeOf from 'image-size' // Dependency, muss ggf. installiert werden
 
 // Dependency: npm install image-size @types/image-size
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Metadaten in der Datenbank speichern
-    const { path: storage_path, publicUrl: public_url } = uploadResult.data
+    const { path: storage_path } = uploadResult.data
     const file_name = storage_path // Da UUID verwendet wird, ist path = Dateiname
 
     const { data: dbData, error: dbError } = await supabaseAdmin
@@ -82,8 +82,9 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({ success: true, image: dbData }, { status: 201 })
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Upload API Fehler:', error)
-    return NextResponse.json({ error: error.message || 'Interner Serverfehler beim Upload.' }, { status: 500 })
+    const message = error instanceof Error ? error.message : 'Interner Serverfehler beim Upload.'
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }

@@ -5,11 +5,13 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-// Check if Supabase is properly configured
-export const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey && supabaseServiceKey)
+// Public client requires only the URL and anon key
+export const isSupabaseClientConfigured = !!(supabaseUrl && supabaseAnonKey)
+// Admin client additionally requires the service role key
+export const isSupabaseConfigured = isSupabaseClientConfigured && !!supabaseServiceKey
 
 // Public client for frontend operations (only if configured)
-export const supabase = isSupabaseConfigured 
+export const supabase = isSupabaseClientConfigured
   ? createClient(supabaseUrl!, supabaseAnonKey!)
   : null
 
@@ -38,3 +40,4 @@ export const ALLOWED_FILE_TYPES = [
 ]
 
 export default supabase
+

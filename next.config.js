@@ -4,6 +4,7 @@
  */
 
 const isProd = process.env.NODE_ENV === 'production';
+const { ProvidePlugin } = require('webpack');
 
 module.exports = {
   output: 'export',
@@ -17,7 +18,6 @@ module.exports = {
       ...config.resolve.fallback,
       buffer: require.resolve('buffer')
     };
-    const { ProvidePlugin } = require('webpack');
     config.plugins.push(
       new ProvidePlugin({
         Buffer: ['buffer', 'Buffer'],

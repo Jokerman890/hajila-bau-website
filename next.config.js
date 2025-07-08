@@ -15,8 +15,14 @@ module.exports = {
     config.cache = { type: 'filesystem' };
     config.resolve.fallback = {
       ...config.resolve.fallback,
-      buffer: require.resolve('buffer/')
+      buffer: require.resolve('buffer')
     };
+    const { ProvidePlugin } = require('webpack');
+    config.plugins.push(
+      new ProvidePlugin({
+        Buffer: ['buffer', 'Buffer'],
+      })
+    );
     return config;
   },
 };

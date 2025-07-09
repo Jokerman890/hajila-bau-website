@@ -38,7 +38,6 @@ const DynamicAdminDashboard = dynamic(() => import('@/components/ui/admin-dashbo
   )
 })
 
-// Mock-Daten und useHajilaBauDashboard Hook entfernt
 
 
 export default function HajilaBauAdminPage() {
@@ -226,7 +225,7 @@ export default function HajilaBauAdminPage() {
               </div>
               <div>
                 <p className="text-sm text-slate-600 dark:text-slate-400">Aktive Projekte</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">12</p> {/* Mock-Wert, anpassen falls nötig */}
+                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">12</p>
               </div>
             </div>
           </div>
@@ -238,7 +237,7 @@ export default function HajilaBauAdminPage() {
               </div>
               <div>
                 <p className="text-sm text-slate-600 dark:text-slate-400">Team Mitglieder</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">8</p> {/* Mock-Wert, anpassen falls nötig */}
+                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">8</p>
               </div>
             </div>
           </div>
@@ -250,7 +249,7 @@ export default function HajilaBauAdminPage() {
               </div>
               <div>
                 <p className="text-sm text-slate-600 dark:text-slate-400">Jahre Erfahrung</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">8+</p> {/* Mock-Wert, anpassen falls nötig */}
+                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">8+</p>
               </div>
             </div>
           </div>

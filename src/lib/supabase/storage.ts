@@ -1,13 +1,11 @@
 import { supabaseAdmin, STORAGE_BUCKET, MAX_FILE_SIZE, SIGNED_URL_EXPIRES_IN, ALLOWED_FILE_TYPES } from './client'
-import { 
-  PhotoMetadata, 
-  UploadOptions, 
-  UploadResult, 
-  BucketInfo, 
-  SignedUrlOptions, 
-  DeleteResult,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  StorageError 
+import {
+  PhotoMetadata,
+  UploadOptions,
+  UploadResult,
+  BucketInfo,
+  SignedUrlOptions,
+  DeleteResult
 } from './types'
 
 /**

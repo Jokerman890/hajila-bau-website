@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { GlassCard } from './glass-card';
 import GlowingServiceGrid from './glowing-service-grid';
 import BilderKarussel, { CarouselSlideImage } from './bilder-karussel'; // CarouselSlideImage importieren
+import { supabase, isSupabaseConfigured } from '@/lib/supabase/client';
 import { HeroSplineBackground } from './construction-hero-section';
 import AnimatedButton from './animated-button';
 import Image from 'next/image';
@@ -206,26 +207,25 @@ const PremiumWebsite: React.FC = () => {
   useEffect(() => {
     const fetchCarouselImages = async () => {
       setIsLoadingCarousel(true);
+
+      if (!isSupabaseConfigured || !supabase) {
+        console.error('Supabase ist nicht konfiguriert.');
+        setIsLoadingCarousel(false);
+        return;
+      }
+
       try {
-        const res = await fetch('/api/admin/images', { cache: 'no-store' });
+        const { data, error } = await supabase
+          .from('carousel_images_metadata')
+          .select('id, public_url, alt_text, title, description')
+          .eq('is_active', true)
+          .order('order', { ascending: true });
 
-        if (!res.ok) {
-          console.error('Fehler beim Laden der Bilder:', res.status);
-          setCarouselImages([]);
-          return; // Verhindert .json() auf null
-        }
+        if (error) throw error;
 
-        const data = await res.json();
-
-        if (!data?.length) {
-          console.warn('Keine Bilddaten erhalten.');
-          setCarouselImages([]);
-          return; // Verhindert .from() auf null-Array
-        }
-
-        setCarouselImages(data);
+        setCarouselImages(data || []);
       } catch (err) {
-        console.error('Unbekannter Fehler:', err);
+        console.error('Fehler beim Laden der Bilder:', err);
         setCarouselImages([]);
       } finally {
         setIsLoadingCarousel(false);

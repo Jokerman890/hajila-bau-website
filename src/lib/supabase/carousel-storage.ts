@@ -52,16 +52,12 @@ export async function uploadCarouselImage(
   }
 
   // Generiere die öffentliche URL für das hochgeladene Bild
+  if (!supabase) {
+    return { data: null, error: new Error('Supabase Client nicht initialisiert.') }
+  }
   const publicUrlResult = supabase.storage
     .from(CAROUSEL_BUCKET_NAME)
     .getPublicUrl(data.path)
-
-  if (publicUrlResult.error) {
-    console.error('Fehler beim Abrufen der publicURL nach Upload:', publicUrlResult.error)
-    // Hier könnte man überlegen, das Bild wieder zu löschen, wenn die URL nicht geholt werden kann.
-    // Fürs Erste geben wir einen Fehler zurück, aber das Bild ist hochgeladen.
-    return { data: null, error: new Error('Bild hochgeladen, aber Public URL konnte nicht erstellt werden.')}
-  }
 
 
   return {
@@ -128,38 +124,13 @@ export function getPublicImageUrl(storagePath: string): string {
  * Kann nützlich sein, um Größe, Mime-Typ etc. nach dem Upload zu verifizieren.
  * Verwendet den Admin-Client.
  */
-export async function getCarouselImageMetadata(storagePath: string): Promise<{ data: any; error: Error | null }> {
+export async function getCarouselImageMetadata(): Promise<{ data: unknown; error: Error | null }> {
   if (!supabaseAdmin) {
     return { data: null, error: new Error('Supabase Admin Client nicht initialisiert.') }
   }
-  const { data, error } = await supabaseAdmin.storage
-    .from(CAROUSEL_BUCKET_NAME)
-    .getProperties(storagePath) // Diese Methode gibt es so nicht direkt, list() mit path als prefix wäre eine Option oder HEAD request
-
-  // Korrektur: Supabase JS v2 hat keine direkte getProperties Methode.
-  // Man kann stattdessen `list` mit dem genauen Pfad verwenden oder einen HEAD Request machen.
-  // Für eine einfache Lösung, die Metadaten des Buckets/Objekts abzurufen:
-  // Oft ist es besser, diese Metadaten (Größe, Typ) clientseitig vor dem Upload zu ermitteln
-  // oder serverseitig direkt nach dem Upload, wenn die Datei noch als Buffer/Stream vorliegt.
-  // Da Supabase Storage die Metadaten (wie Größe, Mimetype) beim Upload speichert,
-  // sind diese normalerweise in der `storage.objects` Tabelle verfügbar, wenn man sie dort abfragt.
-  // Diese Funktion ist daher eher konzeptionell für "get properties".
-
-  // Workaround: list() kann verwendet werden, um Metadaten für ein einzelnes Objekt zu erhalten, wenn der Pfad als Prefix dient
-  // und wir dann das eine Ergebnis filtern. Nicht ideal, aber eine Möglichkeit.
-  // Besser ist es, die Metadaten aus der `carousel_images_metadata` Tabelle zu lesen,
-  // wo sie beim Upload gespeichert werden sollten.
-
-  // Da wir `size_kb`, `width`, `height` in unserer DB-Tabelle haben,
-  // ist diese Funktion hier eventuell nicht zwingend nötig für den Kern-Workflow.
-  // Ich lasse sie als Platzhalter oder für potenzielle zukünftige Verwendung.
-
-  if (error) {
-    console.error('Supabase Storage Get Metadata Fehler:', error);
-    return { data: null, error: new Error(error.message) };
-  }
-  // data würde hier ein Array sein, wenn list() verwendet wird.
-  // const metadata = data && data.length > 0 ? data[0] : null;
-  // return { data: metadata, error: null };
-  return { data: null, error: new Error("getProperties ist nicht direkt verfügbar. Metadaten sollten beim Upload erfasst werden.")}
+  // In der aktuellen Supabase JS Version gibt es keine direkte Methode, um Metadaten
+  // eines einzelnen Objekts abzurufen. Diese Funktion dient daher nur als Platzhalter
+  // und gibt einen Fehler zurück. Metadaten sollten beim Upload in einer Datenbank
+  // gespeichert oder über die `list` Methode ermittelt werden.
+  return { data: null, error: new Error('getProperties ist nicht implementiert') }
 }

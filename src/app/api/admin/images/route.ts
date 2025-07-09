@@ -114,7 +114,6 @@ export async function POST(request: NextRequest) {
       
       // Datei speichern
       const bytes = await file.arrayBuffer()
-      const uint8 = new Uint8Array(bytes)
       
       const fileExtension = path.extname(file.name)
       const filename = `${uuidv4()}${fileExtension}`

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { listUserPhotos as mockListUserPhotos } from '@/lib/supabase/mock-storage'
+import { listUserPhotos } from '@/lib/supabase/storage'
 
 export const dynamic = 'force-static'
 
@@ -21,8 +21,7 @@ export async function GET(
       )
     }
 
-    // Verwende Mock-Storage für Demo
-    const result = await mockListUserPhotos(userId)
+    const result = await listUserPhotos(userId)
 
     if (!result.success) {
       return NextResponse.json(

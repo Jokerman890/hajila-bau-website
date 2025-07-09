@@ -20,7 +20,7 @@ import LogoutButton from '@/components/LogoutButton' // Korrekter Pfad
 import { supabase } from '@/lib/supabase/client' // Supabase Client importieren
 
 // AdminDashboard und sein Interface importieren
-import AdminDashboard, { CarouselDisplayImage } from '@/components/ui/admin-dashboard'
+import { CarouselDisplayImage } from '@/components/ui/admin-dashboard'
 
 
 // Dynamically import the dashboard to avoid SSR issues
@@ -38,11 +38,12 @@ const DynamicAdminDashboard = dynamic(() => import('@/components/ui/admin-dashbo
   )
 })
 
-// Mock-Daten und useHajilaBauDashboard Hook entfernt
 
 
 export default function HajilaBauAdminPage() {
-  const { user, loading: authLoading } = useAuth()
+  const auth = useAuth()
+  const user = auth?.user ?? null
+  const authLoading = auth?.loading ?? true
   const [images, setImages] = useState<CarouselDisplayImage[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -55,6 +56,7 @@ export default function HajilaBauAdminPage() {
       // können wir den normalen Supabase-Client verwenden.
       // Für eine sicherere Implementierung in der Zukunft könnte man eine dedizierte
       // serverseitige Funktion erstellen, die nur Admins aufrufen dürfen.
+      if (!supabase) throw new Error('Supabase nicht konfiguriert')
       const { data, error: fetchError } = await supabase
         .from('carousel_images_metadata')
         .select('*')
@@ -62,9 +64,10 @@ export default function HajilaBauAdminPage() {
 
       if (fetchError) throw fetchError
       setImages(data || [])
-    } catch (e: any) {
-      console.error("Fehler beim Laden der Bilder:", e)
-      setError(e.message || 'Fehler beim Laden der Bilder.')
+    } catch (e: unknown) {
+      console.error('Fehler beim Laden der Bilder:', e)
+      const message = e instanceof Error ? e.message : 'Fehler beim Laden der Bilder.'
+      setError(message)
     } finally {
       setIsLoading(false)
     }
@@ -76,17 +79,14 @@ export default function HajilaBauAdminPage() {
     }
   }, [user, fetchImages])
 
-  const handleImageUpload = async (
-    files: FileList,
-    metadataArray: Array<{width?: number, height?: number, size_kb: number, name: string, type: string}>
-  ) => {
+  const handleImageUpload = async (files: FileList) => {
     // Da wir mehrere Dateien gleichzeitig hochladen könnten, iterieren wir hier.
     // Die AdminDashboard Komponente ist aktuell so ausgelegt, dass sie mehrere Dateien auf einmal annimmt.
     // Die API-Route /api/admin/carousel/upload verarbeitet aktuell nur eine Datei pro Request (formData.get('file')).
     // Dies muss konsistent gemacht werden. Fürs Erste: Upload einzeln.
 
     setIsLoading(true) // Global loading state
-    let uploadError = null;
+    let uploadError: string | null = null;
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
@@ -115,9 +115,10 @@ export default function HajilaBauAdminPage() {
         }
         // Erfolgreich: UI aktualisieren
         // setImages(prev => [...prev, result.image].sort((a,b) => a.order - b.order)) // Besser: fetchImages() neu aufrufen
-      } catch (e: any) {
+      } catch (e: unknown) {
         console.error('Upload-Fehler für Datei:', file.name, e)
-        uploadError = e.message; // Letzten Fehler speichern
+        const message = e instanceof Error ? e.message : 'Unbekannter Fehler'
+        uploadError = message // Letzten Fehler speichern
         // Hier könnte man überlegen, ob man bei einem Fehler abbricht oder weitermacht
       }
     }
@@ -141,9 +142,10 @@ export default function HajilaBauAdminPage() {
       // Erfolgreich: UI aktualisieren
       // setImages(prev => prev.filter(img => img.id !== id)) // Besser: fetchImages() neu aufrufen
       await fetchImages()
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error('Lösch-Fehler:', e)
-      alert(e.message)
+      const message = e instanceof Error ? e.message : 'Unbekannter Fehler'
+      alert(message)
     }
     setIsLoading(false);
   }
@@ -163,9 +165,10 @@ export default function HajilaBauAdminPage() {
       // Erfolgreich: UI aktualisieren
       // setImages(prev => prev.map(img => img.id === id ? result.image : img).sort((a,b) => a.order - b.order) ); // Besser: fetchImages()
       await fetchImages()
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error('Update-Fehler:', e)
-      alert(e.message);
+      const message = e instanceof Error ? e.message : 'Unbekannter Fehler'
+      alert(message)
     }
     setIsLoading(false);
   }
@@ -222,7 +225,7 @@ export default function HajilaBauAdminPage() {
               </div>
               <div>
                 <p className="text-sm text-slate-600 dark:text-slate-400">Aktive Projekte</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">12</p> {/* Mock-Wert, anpassen falls nötig */}
+                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">12</p>
               </div>
             </div>
           </div>
@@ -234,7 +237,7 @@ export default function HajilaBauAdminPage() {
               </div>
               <div>
                 <p className="text-sm text-slate-600 dark:text-slate-400">Team Mitglieder</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">8</p> {/* Mock-Wert, anpassen falls nötig */}
+                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">8</p>
               </div>
             </div>
           </div>
@@ -246,7 +249,7 @@ export default function HajilaBauAdminPage() {
               </div>
               <div>
                 <p className="text-sm text-slate-600 dark:text-slate-400">Jahre Erfahrung</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">8+</p> {/* Mock-Wert, anpassen falls nötig */}
+                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">8+</p>
               </div>
             </div>
           </div>

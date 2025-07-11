@@ -42,7 +42,9 @@ const DynamicAdminDashboard = dynamic(() => import('@/components/ui/admin-dashbo
 
 
 export default function HajilaBauAdminPage() {
-  const { user, loading: authLoading } = useAuth()
+  const auth = useAuth()
+  const user = auth?.user || null
+  const authLoading = auth?.loading ?? true
   const [images, setImages] = useState<CarouselDisplayImage[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -55,7 +57,7 @@ export default function HajilaBauAdminPage() {
       // können wir den normalen Supabase-Client verwenden.
       // Für eine sicherere Implementierung in der Zukunft könnte man eine dedizierte
       // serverseitige Funktion erstellen, die nur Admins aufrufen dürfen.
-      const { data, error: fetchError } = await supabase
+      const { data, error: fetchError } = await supabase!
         .from('carousel_images_metadata')
         .select('*')
         .order('order', { ascending: true })
@@ -85,7 +87,7 @@ export default function HajilaBauAdminPage() {
     // Dies muss konsistent gemacht werden. Fürs Erste: Upload einzeln.
 
     setIsLoading(true) // Global loading state
-    let uploadError = null;
+    let uploadError: string | null = null;
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];

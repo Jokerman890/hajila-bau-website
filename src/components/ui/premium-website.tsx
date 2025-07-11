@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
 import React, { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
@@ -9,7 +10,6 @@ import GlowingServiceGrid from './glowing-service-grid';
 import BilderKarussel, { CarouselSlideImage } from './bilder-karussel'; // CarouselSlideImage importieren
 import { HeroSplineBackground } from './construction-hero-section';
 import AnimatedButton from './animated-button';
-import { supabase } from '@/lib/supabase/client'; // Supabase Client importieren
 
 // Typewriter Component
 interface TypewriterProps {

@@ -52,23 +52,16 @@ export async function uploadCarouselImage(
   }
 
   // Generiere die öffentliche URL für das hochgeladene Bild
-  const publicUrlResult = supabase.storage
+  const { data: publicUrlData } = supabase!.storage
     .from(CAROUSEL_BUCKET_NAME)
     .getPublicUrl(data.path)
-
-  if (publicUrlResult.error) {
-    console.error('Fehler beim Abrufen der publicURL nach Upload:', publicUrlResult.error)
-    // Hier könnte man überlegen, das Bild wieder zu löschen, wenn die URL nicht geholt werden kann.
-    // Fürs Erste geben wir einen Fehler zurück, aber das Bild ist hochgeladen.
-    return { data: null, error: new Error('Bild hochgeladen, aber Public URL konnte nicht erstellt werden.')}
-  }
 
 
   return {
     data: {
       path: data.path, // z.B. "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.jpg"
       fullPath: data.path, // In diesem Fall ist der von upload zurückgegebene `path` bereits der vollständige Pfad im Bucket.
-      publicUrl: publicUrlResult.data.publicUrl,
+      publicUrl: publicUrlData.publicUrl,
     },
     error: null,
   }
@@ -116,7 +109,7 @@ export function getPublicImageUrl(storagePath: string): string {
     console.error('Supabase Client nicht initialisiert für getPublicImageUrl.')
     return `/placeholder-image.jpg?error=supabase-not-init&path=${storagePath}` // Fallback-URL
   }
-  const { data } = supabase.storage
+  const { data } = supabase!.storage
     .from(CAROUSEL_BUCKET_NAME)
     .getPublicUrl(storagePath)
 
@@ -134,7 +127,7 @@ export async function getCarouselImageMetadata(storagePath: string): Promise<{ d
   }
   const { error } = await supabaseAdmin.storage
     .from(CAROUSEL_BUCKET_NAME)
-    .getProperties(storagePath) // Diese Methode gibt es so nicht direkt, list() mit path als prefix wäre eine Option oder HEAD request
+    .list(storagePath) // Workaround: list() auf dem Pfad verwenden
 
   // Korrektur: Supabase JS v2 hat keine direkte getProperties Methode.
   // Man kann stattdessen `list` mit dem genauen Pfad verwenden oder einen HEAD Request machen.

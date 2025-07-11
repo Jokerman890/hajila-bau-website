@@ -14,7 +14,7 @@ export default function LoginForm() {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const { error } = await supabase.auth.signInWithPassword({ email, password: pw });
+    const { error } = await supabase!.auth.signInWithPassword({ email, password: pw });
     if (error) setError(error.message);
     setLoading(false);
   }
@@ -24,7 +24,7 @@ export default function LoginForm() {
     setLoading(true);
     setError("");
     setResetMsg("");
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    const { error } = await supabase!.auth.resetPasswordForEmail(email, {
       redirectTo: window.location.origin + "/admin"
     });
     if (error) setError(error.message);
@@ -40,7 +40,7 @@ export default function LoginForm() {
         onClick={async () => {
           setLoading(true);
           setError("");
-          const { error } = await supabase.auth.signInWithOAuth({
+          const { error } = await supabase!.auth.signInWithOAuth({
             provider: "google",
             options: {
               redirectTo: window.location.origin + "/admin"

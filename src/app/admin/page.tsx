@@ -1,29 +1,20 @@
-"use client"
+'use client'
 
-import React, { useState, useEffect, useCallback } from "react"
-import dynamic from "next/dynamic"
-import {
-  Image as ImageIcon,
-  Settings,
-  BarChart3,
-  Phone,
-  Mail,
-  MapPin,
-  Users,
-  Globe,
-} from "lucide-react"
+import React, { useState, useEffect, useCallback } from 'react'
+import dynamic from 'next/dynamic'
+// Lucide icons can be reintroduced when the stats section is implemented
 
-import { useAuth } from "@/components/AuthProvider"
-import LoginForm from "@/components/LoginForm"
-import LogoutButton from "@/components/LogoutButton"
-import { supabase } from "@/lib/supabase/client"
+import { useAuth } from '@/components/AuthProvider'
+import LoginForm from '@/components/LoginForm'
+import LogoutButton from '@/components/LogoutButton'
+import { supabase } from '@/lib/supabase/client'
 
 // **Nur Typ-Import – kein Laufzeit-Bundle nötig**
-import type { CarouselDisplayImage } from "@/components/ui/admin-dashboard"
+import type { CarouselDisplayImage } from '@/components/ui/admin-dashboard'
 
 // Dashboard wird client-seitig dynamisch nachgeladen (kein SSR)
 const DynamicAdminDashboard = dynamic(
-  () => import("@/components/ui/admin-dashboard"),
+  () => import('@/components/ui/admin-dashboard'),
   {
     ssr: false,
     loading: () => (
@@ -56,18 +47,18 @@ export default function HajilaBauAdminPage() {
     setIsLoading(true)
     setError(null)
     try {
-      if (!supabase) throw new Error("Supabase nicht konfiguriert")
+      if (!supabase) throw new Error('Supabase nicht konfiguriert')
 
       const { data, error: fetchError } = await supabase
-        .from("carousel_images_metadata")
-        .select("*")
-        .order("order", { ascending: true })
+        .from('carousel_images_metadata')
+        .select('*')
+        .order('order', { ascending: true })
 
       if (fetchError) throw fetchError
       setImages(data ?? [])
     } catch (e: unknown) {
       const message =
-        e instanceof Error ? e.message : "Fehler beim Laden der Bilder."
+        e instanceof Error ? e.message : 'Fehler beim Laden der Bilder.'
       console.error(message)
       setError(message)
     } finally {
@@ -90,18 +81,18 @@ export default function HajilaBauAdminPage() {
     for (const file of Array.from(files)) {
       try {
         const formData = new FormData()
-        formData.append("file", file)
+        formData.append('file', file)
 
-        const res = await fetch("/api/admin/carousel/upload", {
-          method: "POST",
+        const res = await fetch('/api/admin/carousel/upload', {
+          method: 'POST',
           body: formData,
         })
         const result = await res.json()
         if (!res.ok || result.error)
           throw new Error(result.error ?? `Upload-Fehler: ${file.name}`)
       } catch (e: unknown) {
-        const msg = e instanceof Error ? e.message : "Unbekannter Fehler"
-        console.error("Upload-Fehler:", file.name, msg)
+        const msg = e instanceof Error ? e.message : 'Unbekannter Fehler'
+        console.error('Upload-Fehler:', file.name, msg)
         uploadError = msg
       }
     }
@@ -115,14 +106,14 @@ export default function HajilaBauAdminPage() {
     setIsLoading(true)
     try {
       const res = await fetch(`/api/admin/carousel/delete?id=${id}`, {
-        method: "DELETE",
+        method: 'DELETE',
       })
       const result = await res.json()
       if (!res.ok || result.error) throw new Error(result.error)
       await fetchImages()
     } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : "Unbekannter Fehler"
-      console.error("Lösch-Fehler:", msg)
+      const msg = e instanceof Error ? e.message : 'Unbekannter Fehler'
+      console.error('Lösch-Fehler:', msg)
       alert(msg)
     } finally {
       setIsLoading(false)
@@ -135,17 +126,17 @@ export default function HajilaBauAdminPage() {
   ) => {
     setIsLoading(true)
     try {
-      const res = await fetch("/api/admin/carousel/update", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/admin/carousel/update', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, ...updates }),
       })
       const result = await res.json()
       if (!res.ok || result.error) throw new Error(result.error)
       await fetchImages()
     } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : "Unbekannter Fehler"
-      console.error("Update-Fehler:", msg)
+      const msg = e instanceof Error ? e.message : 'Unbekannter Fehler'
+      console.error('Update-Fehler:', msg)
       alert(msg)
     } finally {
       setIsLoading(false)
@@ -164,7 +155,6 @@ export default function HajilaBauAdminPage() {
 
   /* ------------------------------------------------------------------ */
   /* UI */
-  const imageCount = images.length
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
@@ -197,7 +187,12 @@ export default function HajilaBauAdminPage() {
           onImageDelete={handleImageDelete}
           onImageUpdate={handleImageUpdate}
           maxImages={50}
-          allowedFormats={["image/jpeg", "image/png", "image/webp", "image/jpg"]}
+          allowedFormats={[
+            'image/jpeg',
+            'image/png',
+            'image/webp',
+            'image/jpg',
+          ]}
           maxFileSize={5 * 1024 * 1024}
         />
         {error && <p className="text-red-500 mt-4">Fehler: {error}</p>}

@@ -65,6 +65,8 @@ Die Website ist dann unter `http://localhost:3000` erreichbar.
 # Production Build + statischer Export ("out/" wird automatisch erstellt)
 npm run build
 
+# Der statische Ordner `/out` wird dank `output: 'export'` automatisch erzeugt
+
 # Production Server starten
 npm start
 ```

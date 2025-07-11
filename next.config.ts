@@ -11,6 +11,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'hajila-bau.de',
+        port: '',
+        pathname: '/**',
+      },
     ],
     unoptimized: true,
   },

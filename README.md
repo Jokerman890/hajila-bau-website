@@ -62,7 +62,7 @@ Die Website ist dann unter `http://localhost:3000` erreichbar.
 
 ### Build für Produktion
 ```bash
-# Production Build erstellen
+# Production Build + statischer Export ("out/" wird automatisch erstellt)
 npm run build
 
 # Production Server starten

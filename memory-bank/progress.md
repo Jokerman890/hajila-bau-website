@@ -7,6 +7,10 @@
 - Der "Cannot read properties of null (reading 'auth')" Fehler in `AuthProvider.tsx` wurde behoben.
 - Ein Buffer-Polyfill wurde in `polyfills.ts` erstellt und in `AuthProvider.tsx` importiert.
 - Der Changelog wurde auf Version 0.4.5 aktualisiert.
+- Die Abhängigkeit `buffer` wurde aufgenommen und `ProvidePlugin` stellt den Polyfill bereit.
+- Tests (`npm test`) und Build (`npm run build`) laufen fehlerfrei durch.
+- Supabase-Zugriff via cURL bestätigt, Speicher-Buckets derzeit leer.
+- Zwei Testnutzer (Michael und Erko) erfolgreich per Admin-API angelegt.
 
 ## Was noch zu bauen ist
 - Überprüfung der Funktionalität der Webseite nach den letzten Änderungen.

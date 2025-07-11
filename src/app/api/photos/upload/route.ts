@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server'
-import { uploadUserPhoto as mockUploadUserPhoto, initializeStorage as mockInitializeStorage } from '@/lib/supabase/mock-storage'
+import { uploadUserPhoto, initializeStorage } from '@/lib/supabase/storage'
 
 export async function POST(request: Request) {
   try {
     // Initialisiere Storage (Bucket + RLS) falls noch nicht geschehen
-    const initResult = await mockInitializeStorage()
+    const initResult = await initializeStorage()
     if (!initResult.success) {
       return NextResponse.json(
         { error: `Storage-Initialisierung fehlgeschlagen: ${initResult.error}` },
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     }
 
     // Upload durchführen
-    const result = await mockUploadUserPhoto(file, userId)
+    const result = await uploadUserPhoto({ userId, file })
 
     if (!result.success) {
       return NextResponse.json(

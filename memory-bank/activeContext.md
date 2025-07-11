@@ -9,6 +9,8 @@ Derzeit wird an der Behebung von Fehlern und der Versionierung des Projekts gear
 - Hinzufügung eines Buffer-Polyfills in `polyfills.ts` und Import in `AuthProvider.tsx`.
 - Aktualisierung des Changelogs auf Version 0.4.5.
 - Aktualisierung der Memory Bank Dateien.
+- Aufnahme der `buffer`-Abhängigkeit und Korrektur der Webpack-Konfiguration mit `ProvidePlugin`.
+- Erfolgreiche Ausführung von `npm test` und `npm run build`.
 
 ## Nächste Schritte
 - Überprüfung der Funktionalität der Webseite nach den letzten Änderungen.

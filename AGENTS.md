@@ -26,11 +26,8 @@ run: tsc -p tsconfig.json --noEmit
 # 3) Unit‑Tests
 run: npm test -- --runInBand
 
-# 4) Produktions‑Build
+# 4) Produktions‑Build inkl. statischem Export (output: 'export')
 run: npm run build
-
-# 5) Statischer Export (für gh‑pages)
-run: npm run export
 ```
 
 ---

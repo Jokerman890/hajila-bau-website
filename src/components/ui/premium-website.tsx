@@ -1,9 +1,8 @@
-"use client";
-/* eslint-disable @next/next/no-img-element */
+'use client'
 
-import React, { useEffect, useState, useMemo } from "react";
-import Image from "next/image";
-import { motion, AnimatePresence, Variants } from "framer-motion";
+import React, { useEffect, useState, useMemo } from 'react'
+import Image from 'next/image'
+import { motion, AnimatePresence, Variants } from 'framer-motion'
 import {
   ChevronDown,
   Sparkles,
@@ -23,35 +22,35 @@ import {
   User,
   FileText,
   Lock,
-} from "lucide-react";
+} from 'lucide-react'
 
-import { cn } from "@/lib/utils";
-import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
-import { HeroSplineBackground } from "./construction-hero-section";
-import { GlassCard } from "./glass-card";
-import GlowingServiceGrid from "./glowing-service-grid";
-import BilderKarussel, { type CarouselSlideImage } from "./bilder-karussel";
-import AnimatedButton from "./animated-button";
+import { cn } from '@/lib/utils'
+import { supabase, isSupabaseConfigured } from '@/lib/supabase/client'
+import { HeroSplineBackground } from './construction-hero-section'
+import { GlassCard } from './glass-card'
+import GlowingServiceGrid from './glowing-service-grid'
+import BilderKarussel, { type CarouselSlideImage } from './bilder-karussel'
+import AnimatedButton from './animated-button'
 
 /* ------------------------------------------------------------------ */
 /* Typewriter Komponente                                              */
 /* ------------------------------------------------------------------ */
 interface TypewriterProps {
-  text: string | string[];
-  speed?: number;
-  initialDelay?: number;
-  waitTime?: number;
-  deleteSpeed?: number;
-  loop?: boolean;
-  className?: string;
-  showCursor?: boolean;
-  hideCursorOnType?: boolean;
-  cursorChar?: string | React.ReactNode;
+  text: string | string[]
+  speed?: number
+  initialDelay?: number
+  waitTime?: number
+  deleteSpeed?: number
+  loop?: boolean
+  className?: string
+  showCursor?: boolean
+  hideCursorOnType?: boolean
+  cursorChar?: string | React.ReactNode
   cursorAnimationVariants?: {
-    initial: Variants["initial"];
-    animate: Variants["animate"];
-  };
-  cursorClassName?: string;
+    initial: Variants['initial']
+    animate: Variants['animate']
+  }
+  cursorClassName?: string
 }
 
 const Typewriter: React.FC<TypewriterProps> = ({
@@ -64,8 +63,8 @@ const Typewriter: React.FC<TypewriterProps> = ({
   className,
   showCursor = true,
   hideCursorOnType = false,
-  cursorChar = "|",
-  cursorClassName = "ml-1",
+  cursorChar = '|',
+  cursorClassName = 'ml-1',
   cursorAnimationVariants = {
     initial: { opacity: 0 },
     animate: {
@@ -74,53 +73,53 @@ const Typewriter: React.FC<TypewriterProps> = ({
         duration: 0.01,
         repeat: Infinity,
         repeatDelay: 0.4,
-        repeatType: "reverse",
+        repeatType: 'reverse',
       },
     },
   },
 }) => {
-  const [displayText, setDisplayText] = useState("");
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [currentTextIndex, setCurrentTextIndex] = useState(0);
+  const [displayText, setDisplayText] = useState('')
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [currentTextIndex, setCurrentTextIndex] = useState(0)
 
-  const texts = useMemo(() => (Array.isArray(text) ? text : [text]), [text]);
+  const texts = useMemo(() => (Array.isArray(text) ? text : [text]), [text])
 
   useEffect(() => {
-    let timeout: NodeJS.Timeout;
-    const currentText = texts[currentTextIndex];
+    let timeout: NodeJS.Timeout
+    const currentText = texts[currentTextIndex]
 
     const startTyping = () => {
       if (isDeleting) {
-        if (displayText === "") {
-          setIsDeleting(false);
-          if (currentTextIndex === texts.length - 1 && !loop) return;
-          setCurrentTextIndex((prev) => (prev + 1) % texts.length);
-          setCurrentIndex(0);
-          timeout = setTimeout(() => {}, waitTime);
+        if (displayText === '') {
+          setIsDeleting(false)
+          if (currentTextIndex === texts.length - 1 && !loop) return
+          setCurrentTextIndex((prev) => (prev + 1) % texts.length)
+          setCurrentIndex(0)
+          timeout = setTimeout(() => {}, waitTime)
         } else {
           timeout = setTimeout(
             () => setDisplayText((prev) => prev.slice(0, -1)),
-            deleteSpeed
-          );
+            deleteSpeed,
+          )
         }
       } else {
         if (currentIndex < currentText.length) {
           timeout = setTimeout(() => {
-            setDisplayText((prev) => prev + currentText[currentIndex]);
-            setCurrentIndex((prev) => prev + 1);
-          }, speed);
+            setDisplayText((prev) => prev + currentText[currentIndex])
+            setCurrentIndex((prev) => prev + 1)
+          }, speed)
         } else if (texts.length > 1) {
-          timeout = setTimeout(() => setIsDeleting(true), waitTime);
+          timeout = setTimeout(() => setIsDeleting(true), waitTime)
         }
       }
-    };
+    }
 
-    if (currentIndex === 0 && !isDeleting && displayText === "") {
-      timeout = setTimeout(startTyping, initialDelay);
-    } else startTyping();
+    if (currentIndex === 0 && !isDeleting && displayText === '') {
+      timeout = setTimeout(startTyping, initialDelay)
+    } else startTyping()
 
-    return () => clearTimeout(timeout);
+    return () => clearTimeout(timeout)
   }, [
     currentIndex,
     displayText,
@@ -132,7 +131,7 @@ const Typewriter: React.FC<TypewriterProps> = ({
     currentTextIndex,
     loop,
     initialDelay,
-  ]);
+  ])
 
   return (
     <div className={`inline whitespace-pre-wrap tracking-tight ${className}`}>
@@ -144,8 +143,8 @@ const Typewriter: React.FC<TypewriterProps> = ({
             cursorClassName,
             hideCursorOnType &&
               (currentIndex < texts[currentTextIndex].length || isDeleting)
-              ? "hidden"
-              : ""
+              ? 'hidden'
+              : '',
           )}
           initial="initial"
           animate="animate"
@@ -154,20 +153,20 @@ const Typewriter: React.FC<TypewriterProps> = ({
         </motion.span>
       )}
     </div>
-  );
-};
+  )
+}
 
 /* ------------------------------------------------------------------ */
 /* Navigation                                                         */
 /* ------------------------------------------------------------------ */
 interface NavItem {
-  text: string;
+  text: string
   items?: {
-    icon?: React.ReactNode;
-    text: string;
-    description?: string;
-    to: string;
-  }[];
+    icon?: React.ReactNode
+    text: string
+    description?: string
+    to: string
+  }[]
 }
 
 const Navigation: React.FC<{ items: NavItem[] }> = ({ items }) => (
@@ -177,8 +176,8 @@ const Navigation: React.FC<{ items: NavItem[] }> = ({ items }) => (
         <li
           key={index}
           className={cn(
-            "relative [perspective:2000px]",
-            items?.length && "group"
+            'relative [perspective:2000px]',
+            items?.length && 'group',
           )}
         >
           <button className="flex items-center gap-x-1 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors font-['Open_Sans']">
@@ -220,108 +219,106 @@ const Navigation: React.FC<{ items: NavItem[] }> = ({ items }) => (
       ))}
     </ul>
   </nav>
-);
+)
 
 /* ------------------------------------------------------------------ */
 /* Hauptkomponente                                                    */
 /* ------------------------------------------------------------------ */
 const PremiumWebsite: React.FC = () => {
-  const [currentTheme, setCurrentTheme] = useState<"light" | "dark">("dark");
-  const [cookieAccepted, setCookieAccepted] = useState(false);
-  const [carouselImages, setCarouselImages] = useState<CarouselSlideImage[]>(
-    []
-  );
-  const [isLoadingCarousel, setIsLoadingCarousel] = useState(true);
+  const [currentTheme, setCurrentTheme] = useState<'light' | 'dark'>('dark')
+  const [cookieAccepted, setCookieAccepted] = useState(false)
+  const [carouselImages, setCarouselImages] = useState<CarouselSlideImage[]>([])
+  const [isLoadingCarousel, setIsLoadingCarousel] = useState(true)
 
   /* Bilder laden */
   useEffect(() => {
     const fetchCarouselImages = async () => {
-      setIsLoadingCarousel(true);
+      setIsLoadingCarousel(true)
       if (!isSupabaseConfigured || !supabase) {
-        console.error("Supabase ist nicht konfiguriert.");
-        setIsLoadingCarousel(false);
-        return;
+        console.error('Supabase ist nicht konfiguriert.')
+        setIsLoadingCarousel(false)
+        return
       }
       try {
         const { data, error } = await supabase
-          .from("carousel_images_metadata")
-          .select("id, public_url, alt_text, title, description")
-          .eq("is_active", true)
-          .order("order", { ascending: true });
+          .from('carousel_images_metadata')
+          .select('id, public_url, alt_text, title, description')
+          .eq('is_active', true)
+          .order('order', { ascending: true })
 
-        if (error) throw error;
-        setCarouselImages(data ?? []);
+        if (error) throw error
+        setCarouselImages(data ?? [])
       } catch (err) {
-        console.error("Fehler beim Laden der Bilder:", err);
-        setCarouselImages([]);
+        console.error('Fehler beim Laden der Bilder:', err)
+        setCarouselImages([])
       } finally {
-        setIsLoadingCarousel(false);
+        setIsLoadingCarousel(false)
       }
-    };
-    fetchCarouselImages();
-  }, []);
+    }
+    fetchCarouselImages()
+  }, [])
 
   /* Theme toggeln */
   const toggleTheme = () => {
-    const newTheme = currentTheme === "light" ? "dark" : "light";
-    setCurrentTheme(newTheme);
-    document.documentElement.classList.toggle("dark", newTheme === "dark");
-  };
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light'
+    setCurrentTheme(newTheme)
+    document.documentElement.classList.toggle('dark', newTheme === 'dark')
+  }
 
-  const handleAcceptCookies = () => setCookieAccepted(true);
+  const handleAcceptCookies = () => setCookieAccepted(true)
 
   /* Menü-Konfiguration */
   const menuItems: NavItem[] = [
     {
-      text: "Leistungen",
+      text: 'Leistungen',
       items: [
         {
           icon: <Building2 className="h-4 w-4" />,
-          text: "Klinkerarbeiten & Verblendmauerwerk",
-          description: "Hochwertige Klinkerfassaden",
-          to: "/leistungen/klinkerarbeiten",
+          text: 'Klinkerarbeiten & Verblendmauerwerk',
+          description: 'Hochwertige Klinkerfassaden',
+          to: '/leistungen/klinkerarbeiten',
         },
         {
           icon: <Hammer className="h-4 w-4" />,
-          text: "Klinker-Detailarbeiten",
-          description: "Bögen, Gesimse, Pfeiler",
-          to: "/leistungen/klinker-detailarbeiten",
+          text: 'Klinker-Detailarbeiten',
+          description: 'Bögen, Gesimse, Pfeiler',
+          to: '/leistungen/klinker-detailarbeiten',
         },
         {
           icon: <Layers className="h-4 w-4" />,
-          text: "WDVS mit Klinkeroptik",
-          description: "Energieeffiziente Lösungen",
-          to: "/leistungen/wdvs",
+          text: 'WDVS mit Klinkeroptik',
+          description: 'Energieeffiziente Lösungen',
+          to: '/leistungen/wdvs',
         },
         {
           icon: <Zap className="h-4 w-4" />,
-          text: "Schornstein- & Kaminverkleidungen",
-          description: "Verkleidungen mit Klinker",
-          to: "/leistungen/schornstein-kamin",
+          text: 'Schornstein- & Kaminverkleidungen',
+          description: 'Verkleidungen mit Klinker',
+          to: '/leistungen/schornstein-kamin',
         },
         {
           icon: <Cpu className="h-4 w-4" />,
-          text: "Betonbau",
-          description: "Fundamente, Bodenplatten",
-          to: "/leistungen/betonbau",
+          text: 'Betonbau',
+          description: 'Fundamente, Bodenplatten',
+          to: '/leistungen/betonbau',
         },
         {
           icon: <Code className="h-4 w-4" />,
-          text: "Eisenflechterarbeiten",
-          description: "Bewehrung binden",
-          to: "/leistungen/eisenflechterarbeiten",
+          text: 'Eisenflechterarbeiten',
+          description: 'Bewehrung binden',
+          to: '/leistungen/eisenflechterarbeiten',
         },
         {
           icon: <Hammer className="h-4 w-4" />,
-          text: "Bauausführung im Rohbau",
-          description: "Komplette Rohbauten",
-          to: "/leistungen/rohbau",
+          text: 'Bauausführung im Rohbau',
+          description: 'Komplette Rohbauten',
+          to: '/leistungen/rohbau',
         },
       ],
     },
-    { text: "Über uns" },
-    { text: "Kontakt" },
-  ];
+    { text: 'Über uns' },
+    { text: 'Kontakt' },
+  ]
 
   /* ------------------------------------------------------------------ */
   /* Render                                                              */
@@ -329,11 +326,11 @@ const PremiumWebsite: React.FC = () => {
   return (
     <div
       className={`min-h-screen overflow-hidden relative font-['Open_Sans'] ${
-        currentTheme === "dark" ? "dark" : "light"
+        currentTheme === 'dark' ? 'dark' : 'light'
       }`}
       style={{
-        backgroundColor: currentTheme === "dark" ? "#0A1E33" : "#F8FAFC",
-        color: currentTheme === "dark" ? "#F8FAFC" : "#0A1E33",
+        backgroundColor: currentTheme === 'dark' ? '#0A1E33' : '#F8FAFC',
+        color: currentTheme === 'dark' ? '#F8FAFC' : '#0A1E33',
       }}
     >
       {/* Dynamische CSS-Variablen */}
@@ -383,7 +380,7 @@ const PremiumWebsite: React.FC = () => {
                 alt="Hajila Bau Logo"
                 width={48}
                 height={48}
-                style={{ borderRadius: "8px" }}
+                style={{ borderRadius: '8px' }}
               />
             </div>
 
@@ -394,11 +391,11 @@ const PremiumWebsite: React.FC = () => {
                 onClick={toggleTheme}
                 className="p-2 rounded-lg bg-muted hover:bg-muted/80 transition-colors"
               >
-                {currentTheme === "dark" ? "🌞" : "🌙"}
+                {currentTheme === 'dark' ? '🌞' : '🌙'}
               </button>
               <AnimatedButton
                 onClick={() => {
-                  window.location.hash = "contact";
+                  window.location.hash = 'contact'
                 }}
               >
                 Jetzt Angebot anfragen
@@ -435,12 +432,7 @@ const PremiumWebsite: React.FC = () => {
                   </span>
                   <br />
                   <Typewriter
-                    text={[
-                      "& Vertrauen",
-                      "Hochbau",
-                      "Klinkerarbeiten",
-                      "WDVS"
-                    ]}
+                    text={['& Vertrauen', 'Hochbau', 'Klinkerarbeiten', 'WDVS']}
                     speed={80}
                     className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent"
                     waitTime={2000}
@@ -456,15 +448,19 @@ const PremiumWebsite: React.FC = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <AnimatedButton 
-                  onClick={() => { window.location.hash = 'contact'; }}
+                <AnimatedButton
+                  onClick={() => {
+                    window.location.hash = 'contact'
+                  }}
                   variant="primary"
                   size="md"
                 >
                   Jetzt Angebot anfragen
                 </AnimatedButton>
-                <AnimatedButton 
-                  onClick={() => { window.location.hash = 'services'; }}
+                <AnimatedButton
+                  onClick={() => {
+                    window.location.hash = 'services'
+                  }}
                   variant="ghost"
                   size="md"
                 >
@@ -569,11 +565,23 @@ const PremiumWebsite: React.FC = () => {
               viewport={{ once: true }}
               className="p-8 rounded-2xl bg-card/50 border border-border/50 backdrop-blur-sm"
             >
-              <h3 className="text-2xl font-bold mb-4 text-foreground font-['Merriweather']">Unsere Mission</h3>
+              <h3 className="text-2xl font-bold mb-4 text-foreground font-['Merriweather']">
+                Unsere Mission
+              </h3>
               <ul className="space-y-3 text-muted-foreground font-['Open_Sans']">
-                <li className="flex items-start gap-2"><Sparkles className="h-5 w-5 text-[var(--gold)] shrink-0 mt-1" /> Qualität ohne Kompromisse</li>
-                <li className="flex items-start gap-2"><Clock className="h-5 w-5 text-[var(--blue-start)] shrink-0 mt-1" /> Strikte Termintreue</li>
-                <li className="flex items-start gap-2"><User className="h-5 w-5 text-[var(--blue-end)] shrink-0 mt-1" /> Persönliche Betreuung vom ersten Gespräch bis zur Schlüsselübergabe</li>
+                <li className="flex items-start gap-2">
+                  <Sparkles className="h-5 w-5 text-[var(--gold)] shrink-0 mt-1" />{' '}
+                  Qualität ohne Kompromisse
+                </li>
+                <li className="flex items-start gap-2">
+                  <Clock className="h-5 w-5 text-[var(--blue-start)] shrink-0 mt-1" />{' '}
+                  Strikte Termintreue
+                </li>
+                <li className="flex items-start gap-2">
+                  <User className="h-5 w-5 text-[var(--blue-end)] shrink-0 mt-1" />{' '}
+                  Persönliche Betreuung vom ersten Gespräch bis zur
+                  Schlüsselübergabe
+                </li>
               </ul>
             </motion.div>
 
@@ -584,13 +592,31 @@ const PremiumWebsite: React.FC = () => {
               viewport={{ once: true }}
               className="p-8 rounded-2xl bg-card/50 border border-border/50 backdrop-blur-sm"
             >
-              <h3 className="text-2xl font-bold mb-4 text-foreground font-['Merriweather']">Unternehmensprofil</h3>
+              <h3 className="text-2xl font-bold mb-4 text-foreground font-['Merriweather']">
+                Unternehmensprofil
+              </h3>
               <ul className="space-y-3 text-muted-foreground font-['Open_Sans']">
-                <li className="flex items-center gap-2"><CalendarDays className="h-5 w-5 text-[var(--gold)] shrink-0" /> Gegründet: 03.08.2016</li>
-                <li className="flex items-center gap-2"><Landmark className="h-5 w-5 text-[var(--blue-start)] shrink-0" /> Handelsregister: HRB 210702 (AG Osnabrück)</li>
-                <li className="flex items-center gap-2"><User className="h-5 w-5 text-[var(--blue-end)] shrink-0" /> Geschäftsführerin: <strong className="text-foreground">Samia Omerovic</strong></li>
-                <li className="flex items-center gap-2"><Scale className="h-5 w-5 text-[var(--gold)] shrink-0" /> USt-ID: DE401804294</li>
-                <li className="flex items-center gap-2"><Clock className="h-5 w-5 text-[var(--blue-start)] shrink-0" /> Öffnungszeiten: Montag – Samstag 06:00 – 18:00 Uhr</li>
+                <li className="flex items-center gap-2">
+                  <CalendarDays className="h-5 w-5 text-[var(--gold)] shrink-0" />{' '}
+                  Gegründet: 03.08.2016
+                </li>
+                <li className="flex items-center gap-2">
+                  <Landmark className="h-5 w-5 text-[var(--blue-start)] shrink-0" />{' '}
+                  Handelsregister: HRB 210702 (AG Osnabrück)
+                </li>
+                <li className="flex items-center gap-2">
+                  <User className="h-5 w-5 text-[var(--blue-end)] shrink-0" />{' '}
+                  Geschäftsführerin:{' '}
+                  <strong className="text-foreground">Samia Omerovic</strong>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Scale className="h-5 w-5 text-[var(--gold)] shrink-0" />{' '}
+                  USt-ID: DE401804294
+                </li>
+                <li className="flex items-center gap-2">
+                  <Clock className="h-5 w-5 text-[var(--blue-start)] shrink-0" />{' '}
+                  Öffnungszeiten: Montag – Samstag 06:00 – 18:00 Uhr
+                </li>
               </ul>
             </motion.div>
           </div>
@@ -616,20 +642,33 @@ const PremiumWebsite: React.FC = () => {
               Wir freuen uns auf Ihre Anfrage und beraten Sie gerne persönlich.
             </p>
             <div className="space-y-4 mb-8 text-foreground font-['Open_Sans']">
-              <p className="flex items-center justify-center gap-2"><MapPin className="h-5 w-5 text-[var(--gold)]" /> Wildeshauser Straße 3, 49088 Osnabrück</p>
-              <p className="flex items-center justify-center gap-2"><Phone className="h-5 w-5 text-[var(--blue-start)]" /> Büro 0541 44026213 · Mobil 0152 23000800 · Fax 0541 44097451</p>
-              <p className="flex items-center justify-center gap-2"><Mail className="h-5 w-5 text-[var(--blue-end)]" /> E-Mail info@hajila-bau.de</p>
+              <p className="flex items-center justify-center gap-2">
+                <MapPin className="h-5 w-5 text-[var(--gold)]" /> Wildeshauser
+                Straße 3, 49088 Osnabrück
+              </p>
+              <p className="flex items-center justify-center gap-2">
+                <Phone className="h-5 w-5 text-[var(--blue-start)]" /> Büro 0541
+                44026213 · Mobil 0152 23000800 · Fax 0541 44097451
+              </p>
+              <p className="flex items-center justify-center gap-2">
+                <Mail className="h-5 w-5 text-[var(--blue-end)]" /> E-Mail
+                info@hajila-bau.de
+              </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <AnimatedButton 
-                onClick={() => { window.location.href = 'mailto:info@hajila-bau.de'; }}
+              <AnimatedButton
+                onClick={() => {
+                  window.location.href = 'mailto:info@hajila-bau.de'
+                }}
                 variant="primary"
                 size="md"
               >
                 E-Mail senden
               </AnimatedButton>
-              <AnimatedButton 
-                onClick={() => { window.location.href = 'tel:+4915223000800'; }}
+              <AnimatedButton
+                onClick={() => {
+                  window.location.href = 'tel:+4915223000800'
+                }}
                 variant="ghost"
                 size="md"
               >
@@ -656,18 +695,38 @@ const PremiumWebsite: React.FC = () => {
               Hajila Bau GmbH
             </span>
           </div>
-                <p className="mb-2">Hajila Bau GmbH · Geschäftsführerin Samia Omerovic · HRB 210702, Amtsgericht Osnabrück</p>
+          <p className="mb-2">
+            Hajila Bau GmbH · Geschäftsführerin Samia Omerovic · HRB 210702,
+            Amtsgericht Osnabrück
+          </p>
           <p className="mb-4">USt-ID: DE401804294</p>
-          <p className="mb-4">© 2025 Hajila Bau GmbH – Alle Rechte vorbehalten.</p>
+          <p className="mb-4">
+            © 2025 Hajila Bau GmbH – Alle Rechte vorbehalten.
+          </p>
           <div className="flex justify-center gap-x-6">
-            <a href="/impressum" className="hover:text-foreground transition-colors flex items-center gap-1"><FileText className="h-4 w-4" /> Impressum</a>
-            <a href="/datenschutz" className="hover:text-foreground transition-colors flex items-center gap-1"><Lock className="h-4 w-4" /> Datenschutz</a>
-            <a href="/cookies" className="hover:text-foreground transition-colors flex items-center gap-1">🍪 Cookie-Hinweis</a>
+            <a
+              href="/impressum"
+              className="hover:text-foreground transition-colors flex items-center gap-1"
+            >
+              <FileText className="h-4 w-4" /> Impressum
+            </a>
+            <a
+              href="/datenschutz"
+              className="hover:text-foreground transition-colors flex items-center gap-1"
+            >
+              <Lock className="h-4 w-4" /> Datenschutz
+            </a>
+            <a
+              href="/cookies"
+              className="hover:text-foreground transition-colors flex items-center gap-1"
+            >
+              🍪 Cookie-Hinweis
+            </a>
           </div>
         </div>
       </footer>
     </div>
-  );
-};
+  )
+}
 
-export default PremiumWebsite;
+export default PremiumWebsite

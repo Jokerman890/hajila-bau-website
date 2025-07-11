@@ -1,31 +1,30 @@
-"use client"
-/* eslint-disable @next/next/no-img-element */
+'use client'
 
-import React, { useState, useEffect, useCallback } from "react"
+import React, { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
-import { motion, AnimatePresence } from "framer-motion"
-import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react"
+import { motion, AnimatePresence } from 'framer-motion'
+import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react'
 // Import von carouselImages.json entfernt
 
 // Interface für die Bilddaten, die vom Parent kommen (aus Supabase)
 // Dieses Interface sollte dem ähneln, was wir in admin-dashboard.tsx als CarouselDisplayImage haben
 // oder was die Datenbank direkt liefert.
 export interface CarouselSlideImage {
-  id: string; // UUID
-  public_url: string;
-  alt_text: string;
-  title?: string | null;
-  description?: string | null;
+  id: string // UUID
+  public_url: string
+  alt_text: string
+  title?: string | null
+  description?: string | null
   // order, is_active etc. werden hier nicht direkt benötigt, da die Parent-Komponente filtert/sortiert
 }
 
 interface ImageCarouselProps {
-  images: CarouselSlideImage[]; // Images Prop ist jetzt erforderlich
-  autoPlay?: boolean;
-  autoPlayInterval?: number;
-  showControls?: boolean;
-  showIndicators?: boolean;
-  className?: string;
+  images: CarouselSlideImage[] // Images Prop ist jetzt erforderlich
+  autoPlay?: boolean
+  autoPlayInterval?: number
+  showControls?: boolean
+  showIndicators?: boolean
+  className?: string
 }
 
 // getBasePath und withBasePath werden nicht mehr benötigt, da URLs absolut sind.
@@ -38,15 +37,15 @@ export function ImageCarousel({
   autoPlayInterval = 4000,
   showControls = true,
   showIndicators = true,
-  className = ""
+  className = '',
 }: ImageCarouselProps) {
   // loadedImages wird direkt mit den übergebenen images initialisiert
-  const [loadedImages, setLoadedImages] = useState<CarouselSlideImage[]>(images);
+  const [loadedImages, setLoadedImages] = useState<CarouselSlideImage[]>(images)
 
   useEffect(() => {
     // Wenn sich die images Prop ändert, aktualisiere den State
-    setLoadedImages(images);
-  }, [images]);
+    setLoadedImages(images)
+  }, [images])
 
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(autoPlay)
@@ -59,13 +58,19 @@ export function ImageCarousel({
 
   const prevSlide = useCallback(() => {
     setDirection(-1)
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + loadedImages.length) % loadedImages.length)
+    setCurrentIndex(
+      (prevIndex) =>
+        (prevIndex - 1 + loadedImages.length) % loadedImages.length,
+    )
   }, [loadedImages.length])
 
-  const goToSlide = useCallback((index: number) => {
-    setDirection(index > currentIndex ? 1 : -1)
-    setCurrentIndex(index)
-  }, [currentIndex])
+  const goToSlide = useCallback(
+    (index: number) => {
+      setDirection(index > currentIndex ? 1 : -1)
+      setCurrentIndex(index)
+    },
+    [currentIndex],
+  )
 
   const togglePlayPause = useCallback(() => {
     setIsPlaying(!isPlaying)
@@ -86,29 +91,28 @@ export function ImageCarousel({
       x: direction > 0 ? 1000 : -1000,
       opacity: 0,
       scale: 0.8,
-      rotateY: direction > 0 ? 25 : -25
+      rotateY: direction > 0 ? 25 : -25,
     }),
     center: {
       zIndex: 1,
       x: 0,
       opacity: 1,
       scale: 1,
-      rotateY: 0
+      rotateY: 0,
     },
     exit: (direction: number) => ({
       zIndex: 0,
       x: direction < 0 ? 1000 : -1000,
       opacity: 0,
       scale: 0.8,
-      rotateY: direction < 0 ? 25 : -25
-    })
+      rotateY: direction < 0 ? 25 : -25,
+    }),
   }
 
   const swipeConfidenceThreshold = 10000
   const swipePower = (offset: number, velocity: number) => {
     return Math.abs(offset) * velocity
   }
-
 
   if (loadedImages.length === 0) {
     return (
@@ -117,18 +121,18 @@ export function ImageCarousel({
           <p>Keine Bilder zum Anzeigen.</p>
         </div>
       </div>
-    );
+    )
   }
 
   // console.log("Aktueller Bild-SRC:", loadedImages[currentIndex]?.public_url); // Angepasst an neues Interface
   return (
     <div className={`relative w-full max-w-6xl mx-auto ${className}`}>
       {/* Main Carousel */}
-      <div className="relative h-[500px] md:h-[600px] overflow-hidden rounded-2xl bg-background border border-border shadow-lg" style={{ minHeight: '500px', position: 'relative' }}>
-        <div 
-          className="relative h-full"
-          style={{ perspective: "1000px" }}
-        >
+      <div
+        className="relative h-[500px] md:h-[600px] overflow-hidden rounded-2xl bg-background border border-border shadow-lg"
+        style={{ minHeight: '500px', position: 'relative' }}
+      >
+        <div className="relative h-full" style={{ perspective: '1000px' }}>
           <AnimatePresence initial={false} custom={direction}>
             <motion.div
               key={currentIndex} // Verwende currentIndex oder besser image.id falls stabil
@@ -138,10 +142,10 @@ export function ImageCarousel({
               animate="center"
               exit="exit"
               transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
+                x: { type: 'spring', stiffness: 300, damping: 30 },
                 opacity: { duration: 0.4 },
                 scale: { duration: 0.4 },
-                rotateY: { duration: 0.6 }
+                rotateY: { duration: 0.6 },
               }}
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
@@ -164,10 +168,10 @@ export function ImageCarousel({
                   fill
                   className="object-cover transition-opacity duration-300 rounded-2xl"
                 />
-                
+
                 {/* Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                
+
                 {/* Content Overlay entfernt */}
               </div>
             </motion.div>
@@ -201,7 +205,11 @@ export function ImageCarousel({
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
             >
-              {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+              {isPlaying ? (
+                <Pause className="w-5 h-5" />
+              ) : (
+                <Play className="w-5 h-5" />
+              )}
             </motion.button>
           </>
         )}
@@ -215,8 +223,8 @@ export function ImageCarousel({
               key={index}
               onClick={() => goToSlide(index)}
               className={`relative h-3 rounded-full transition-all ${
-                index === currentIndex 
-                  ? 'w-8 bg-primary' 
+                index === currentIndex
+                  ? 'w-8 bg-primary'
                   : 'w-3 bg-muted-foreground/30 hover:bg-muted-foreground/50'
               }`}
               whileHover={{ scale: 1.2 }}
@@ -226,7 +234,7 @@ export function ImageCarousel({
                 <motion.div
                   className="absolute inset-0 bg-primary rounded-full"
                   layoutId="activeIndicator"
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                 />
               )}
             </motion.button>
@@ -241,8 +249,8 @@ export function ImageCarousel({
             key={image.id}
             onClick={() => goToSlide(index)}
             className={`relative flex-shrink-0 w-20 h-16 rounded-lg overflow-hidden border-2 transition-all ${
-              index === currentIndex 
-                ? 'border-primary shadow-lg' 
+              index === currentIndex
+                ? 'border-primary shadow-lg'
                 : 'border-border hover:border-muted-foreground'
             }`}
             whileHover={{ scale: 1.05 }}
@@ -258,7 +266,7 @@ export function ImageCarousel({
               <motion.div
                 className="absolute inset-0 bg-primary/20"
                 layoutId="activeThumbnail"
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
               />
             )}
           </motion.button>
@@ -269,4 +277,4 @@ export function ImageCarousel({
 }
 
 // Exportiere das Karussell direkt als Default-Export
-export default ImageCarousel;
+export default ImageCarousel

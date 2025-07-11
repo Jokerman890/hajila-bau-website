@@ -11,6 +11,8 @@ Derzeit wird an der Behebung von Fehlern und der Versionierung des Projekts gear
 - Aktualisierung der Memory Bank Dateien.
 - Aufnahme der `buffer`-Abhängigkeit und Korrektur der Webpack-Konfiguration mit `ProvidePlugin`.
 - Erfolgreiche Ausführung von `npm test` und `npm run build`.
+- Supabase-Verbindung per cURL getestet, Node-Fetch scheiterte wegen Proxy-Einschränkungen.
+- Zwei Testnutzer (Michael und Erko) über die Admin-API angelegt; Zugangsdaten separat bereitgestellt.
 
 ## Nächste Schritte
 - Überprüfung der Funktionalität der Webseite nach den letzten Änderungen.

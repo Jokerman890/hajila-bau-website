@@ -18,6 +18,8 @@ Die folgenden Dateien sind relevant für das Projekt:
 - Implementierung neuer API-Endpoints in `src/app/api/...`
 - Aufnahme der `buffer`-Abhängigkeit und Anpassung der Webpack-Konfiguration.
 - Erfolgreicher Test- und Build-Lauf sichert die Funktionalität.
+- Supabase-Verbindung per cURL getestet; Node-basierte Tests scheiterten am Proxy.
+- Zwei Testnutzer (Michael und Erko) wurden in Supabase angelegt.
 
 ## Nächste Schritte
 1. Überprüfung der Barrierefreiheit und SEO-Optimierung

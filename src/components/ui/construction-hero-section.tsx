@@ -301,7 +301,7 @@ function HeroContent() {
     <div className="text-white px-4 max-w-screen-xl mx-auto w-full flex flex-col lg:flex-row justify-between items-start lg:items-center py-16 relative z-40">
       <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center pointer-events-none z-50">
         <Logo3D
-          imageUrl="https://hajila-bau.de/3d%20logo%20ohne%20bg.png"
+          imageUrl="/uploads/3d%20logo%20ohne%20bg.png"
           size="lg"
           primaryColor="#00C3E3"
           secondaryColor="#005B9F"
@@ -401,7 +401,7 @@ function Navbar() {
             transition={{ duration: 0.5 }}
           >
             <Logo3D
-              imageUrl="https://hajila-bau.de/3d%20logo%20ohne%20bg.png"
+              imageUrl="/uploads/3d%20logo%20ohne%20bg.png"
               size="md"
               primaryColor="#00C3E3"
               secondaryColor="#005B9F"

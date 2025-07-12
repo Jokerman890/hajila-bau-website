@@ -64,7 +64,6 @@ export default function RootLayout({
         <AuthProvider>
           {children}
         </AuthProvider>
-        <link rel="icon" type="image/jpeg" href="/uploads/Hexagon-logo.jpg" />
       </body>
     </html>
   );

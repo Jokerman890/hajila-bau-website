@@ -1,6 +1,8 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
-const isExport = process.env.NODE_ENV === 'production' || process.env.NEXT_PUBLIC_GITHUB_PAGES === 'true';
+const isExport =
+  process.env.NODE_ENV === 'production' ||
+  process.env.NEXT_PUBLIC_GITHUB_PAGES === 'true'
 
 const nextConfig: NextConfig = {
   images: {
@@ -14,6 +16,12 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'hajila-bau.de',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.github.io',
         port: '',
         pathname: '/**',
       },
@@ -33,6 +41,6 @@ const nextConfig: NextConfig = {
     'http://localhost',
     'http://127.0.0.1',
   ],
-};
+}
 
-export default nextConfig;
+export default nextConfig

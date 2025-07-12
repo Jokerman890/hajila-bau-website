@@ -376,7 +376,7 @@ const PremiumWebsite: React.FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Image
-                src="https://hajila-bau.de/logo_2d.png"
+                src="/uploads/Hexagon-logo.jpg"
                 alt="Hajila Bau Logo"
                 width={48}
                 height={48}
@@ -684,7 +684,7 @@ const PremiumWebsite: React.FC = () => {
         <div className="mx-auto max-w-7xl text-center text-sm text-muted-foreground font-['Open_Sans']">
           <div className="flex justify-center items-center mb-4">
             <Image
-              src="https://hajila-bau.de/logo_2d.png"
+              src="/uploads/Hexagon-logo.jpg"
               alt="Hajila Bau Logo"
               width={48}
               height={48}

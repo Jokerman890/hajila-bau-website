@@ -372,7 +372,7 @@ const PremiumWebsite: React.FC = () => {
       </AnimatePresence>
 
       {/* Header / Navigation */}
-      <header className="relative z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-md">
+      <header className="relative z-50 w-full border-b border-border/50 bg-[#0A1E33]/80 backdrop-blur-md">
         <div className="mx-auto max-w-7xl px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -675,7 +675,7 @@ const PremiumWebsite: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 py-12 px-6 border-t border-border/50 bg-background/80 backdrop-blur-md">
+      <footer className="relative z-10 py-12 px-6 border-t border-border/50 bg-[#0A1E33]/80 backdrop-blur-md">
         <div className="mx-auto max-w-7xl text-center text-sm text-muted-foreground font-['Open_Sans']">
           <div className="flex justify-center items-center mb-4">
             <HexagonLogo size={48} className="mr-2" />

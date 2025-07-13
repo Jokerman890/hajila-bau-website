@@ -265,7 +265,7 @@ const GlowingServiceGrid = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background p-8">
+    <div className="min-h-screen bg-[#0A1E33] p-8">
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4">
           {services.map((service, index) => (

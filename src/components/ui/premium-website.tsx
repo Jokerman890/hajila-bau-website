@@ -31,6 +31,7 @@ import { GlassCard } from './glass-card'
 import GlowingServiceGrid from './glowing-service-grid'
 import BilderKarussel, { type CarouselSlideImage } from './bilder-karussel'
 import AnimatedButton from './animated-button'
+import HexagonLogo from './hexagon-logo'
 
 /* ------------------------------------------------------------------ */
 /* Typewriter Komponente                                              */
@@ -375,13 +376,7 @@ const PremiumWebsite: React.FC = () => {
         <div className="mx-auto max-w-7xl px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Image
-                src="/uploads/Hexagon-logo.jpg"
-                alt="Hajila Bau Logo"
-                width={48}
-                height={48}
-                style={{ borderRadius: '8px' }}
-              />
+              <HexagonLogo size={48} />
             </div>
 
             <Navigation items={menuItems} />
@@ -683,14 +678,7 @@ const PremiumWebsite: React.FC = () => {
       <footer className="relative z-10 py-12 px-6 border-t border-border/50 bg-background/80 backdrop-blur-md">
         <div className="mx-auto max-w-7xl text-center text-sm text-muted-foreground font-['Open_Sans']">
           <div className="flex justify-center items-center mb-4">
-            <Image
-              src="/uploads/Hexagon-logo.jpg"
-              alt="Hajila Bau Logo"
-              width={48}
-              height={48}
-              className="mr-2"
-              style={{ borderRadius: '8px' }}
-            />
+            <HexagonLogo size={48} className="mr-2" />
             <span className="text-xl font-bold bg-gradient-to-r from-[var(--blue-start)] to-[var(--blue-end)] bg-clip-text text-transparent font-['Merriweather']">
               Hajila Bau GmbH
             </span>

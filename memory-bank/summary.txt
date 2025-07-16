@@ -16,6 +16,10 @@ Die folgenden Dateien sind relevant für das Projekt:
 - Aktualisierung der Regeln in `memory-bank/rules.md`
 - Weiterentwicklung der Komponenten in `src/components/ui/...`
 - Implementierung neuer API-Endpoints in `src/app/api/...`
+- Behebung des ESLint-Fehlers "A `require()` style import is forbidden." durch Migration der Next.js-Konfiguration von `next.config.js` nach `next.config.ts` und Korrektur des `ProvidePlugin`-Imports.
+- Behebung des Fehlers "Doppelter Objektschlüssel" in `package.json` durch Entfernen des doppelten "buffer"-Eintrags.
+- Aktualisierung der Version in `package.json` auf 0.4.5.
+- Aktualisierung des Changelogs auf Version 0.4.5.
 - Aufnahme der `buffer`-Abhängigkeit und Anpassung der Webpack-Konfiguration.
 - Erfolgreicher Test- und Build-Lauf sichert die Funktionalität.
 - Supabase-Verbindung per cURL getestet; Node-basierte Tests scheiterten am Proxy.

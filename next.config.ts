@@ -1,11 +1,13 @@
 import type { NextConfig } from 'next'
 
-const isExport =
-  process.env.NODE_ENV === 'production' ||
-  process.env.NEXT_PUBLIC_GITHUB_PAGES === 'true'
+
+
+const isProd = process.env.NODE_ENV === 'production';
 
 const nextConfig: NextConfig = {
+  output: 'export',
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -26,14 +28,11 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
-    unoptimized: true,
   },
-  // Nur für Production export verwenden, nicht für Development
-  ...(isExport && {
-    output: 'export',
-    basePath: '/hajila-bau-website',
-    assetPrefix: '/hajila-bau-website/',
-  }),
+  basePath: isProd ? '/hajila-bau-website' : '',
+  assetPrefix: isProd ? '/hajila-bau-website/' : '',
+  trailingSlash: true,
+  experimental: { externalDir: true },
   // Cross-Origin-Requests im Dev-Modus explizit erlauben (Next.js 14+)
   allowedDevOrigins: [
     'http://localhost:3000',
@@ -41,6 +40,19 @@ const nextConfig: NextConfig = {
     'http://localhost',
     'http://127.0.0.1',
   ],
+  webpack(config) {
+    config.cache = { type: 'filesystem' };
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      buffer: require.resolve('buffer')
+    };
+    config.plugins.push(
+      new config.webpack.ProvidePlugin({
+        Buffer: ['buffer', 'Buffer'],
+      })
+    );
+    return config;
+  },
 }
 
 export default nextConfig

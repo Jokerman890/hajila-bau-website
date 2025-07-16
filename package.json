@@ -1,9 +1,9 @@
 {
   "name": "hajila-website",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "export": "NEXT_PUBLIC_GITHUB_PAGES=true next export",
     "start": "next start",
@@ -41,8 +41,7 @@
     "react-dom": "^19.0.0",
     "tailwind-merge": "^3.3.1",
     "three": "^0.177.0",
-    "uuid": "^11.1.0",
-    "buffer": "^6.0.3"
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

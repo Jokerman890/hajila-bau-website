@@ -5,6 +5,7 @@ Eine moderne, professionelle Website für Hajila Bau GmbH - Ihr Partner für Hoc
 ## 🏗️ Über Hajila Bau GmbH
 
 Hajila Bau GmbH ist ein etabliertes Bauunternehmen in Osnabrück, spezialisiert auf:
+
 - Klinkerarbeiten & Verblendmauerwerk
 - Klinker-Detailarbeiten (z. B. Bögen, Gesimse, Pfeiler)
 - Wärmedämmverbundsysteme mit Klinkeroptik
@@ -18,6 +19,7 @@ Seit 2016 steht die Hajila Bau GmbH für zuverlässige Bauleistungen im Raum Osn
 ## ✨ Website Features
 
 ### Design & UX
+
 - **Premium Glassmorphism-Design** mit 3D-Effekten
 - **Responsive Design** für alle Bildschirmgrößen
 - **Dark/Light Mode Toggle** mit vollständiger Theme-Unterstützung
@@ -26,6 +28,7 @@ Seit 2016 steht die Hajila Bau GmbH für zuverlässige Bauleistungen im Raum Osn
 - **Particle Wave Background** für moderne Optik
 
 ### Technische Features
+
 - **Next.js 15** mit TypeScript
 - **Tailwind CSS** für modernes Styling
 - **Framer Motion** für flüssige Animationen
@@ -34,6 +37,7 @@ Seit 2016 steht die Hajila Bau GmbH für zuverlässige Bauleistungen im Raum Osn
 - **DSGVO-konform** mit rechtlichen Seiten
 
 ### Rechtliche Compliance
+
 - ✅ **Impressum** (/impressum) - TMG/DL-InfoV-konform
 - ✅ **Datenschutzerklärung** (/datenschutz) - DSGVO-konform
 - ✅ **Cookie-Hinweis** (/cookies) - Detaillierte Cookie-Informationen
@@ -42,13 +46,15 @@ Seit 2016 steht die Hajila Bau GmbH für zuverlässige Bauleistungen im Raum Osn
 ## 🚀 Installation & Setup
 
 ### Voraussetzungen
-- Node.js 18+ 
+
+- Node.js 18+
 - npm oder yarn
 
 ### Installation
+
 ```bash
 # Repository klonen
-git clone https://github.com/[username]/hajila-bau-website.git
+git clone [https://github.com/[username]/hajila-bau-website.git](https://github.com/[username]/hajila-bau-website.git)
 cd hajila-bau-website
 
 # Dependencies installieren
@@ -61,19 +67,22 @@ npm run dev
 Die Website ist dann unter `http://localhost:3000` erreichbar.
 
 ### Build für Produktion
+
 ```bash
 # Production Build + statischer Export ("out/" wird automatisch erstellt)
 npm run build
+```
 
-# Der statische Ordner `/out` wird dank `output: 'export'` automatisch erzeugt
+Der statische Ordner `/out` wird dank `output: 'export'` automatisch erzeugt
 
+```bash
 # Production Server starten
 npm start
 ```
 
 ## 📁 Projektstruktur
 
-```
+```treeview
 hajila-website/
 ├── public/                 # Statische Assets
 │   ├── favicon.ico        # Favicon (Hajila Logo)
@@ -102,16 +111,19 @@ hajila-website/
 ## 🎨 Design System
 
 ### Farben
+
 - **Primary**: Cyan/Türkis (#00bcd4)
 - **Secondary**: Gold/Gelb (#ffd700)
 - **Background**: Dunkle Gradienten
 - **Glass Effects**: Transparente Overlays mit Blur
 
 ### Typografie
+
 - **Headlines**: Merriweather (Serif)
 - **Body Text**: Open Sans (Sans-serif)
 
 ### Animationen
+
 - **Framer Motion** für Seitenübergänge
 - **CSS Animations** für Hover-Effekte
 - **Three.js** für 3D-Logo-Animation
@@ -119,6 +131,7 @@ hajila-website/
 ## 📱 Responsive Design
 
 Die Website ist vollständig responsive und optimiert für:
+
 - 📱 Mobile (320px+)
 - 📱 Tablet (768px+)
 - 💻 Desktop (1024px+)
@@ -136,21 +149,34 @@ Die Website ist vollständig responsive und optimiert für:
 
 ## 🛠️ Entwicklungsrichtlinien
 
-- **Branching-Strategie**: Für jede neue Funktion, die für die Seite generiert wird, soll ein extra Branch erstellt werden. Dies ermöglicht eine isolierte Entwicklung und Überprüfung neuer Features vor der Integration in den Haupt-Branch.
+### Branching-Strategie
+
+- Für jede neue Funktion, die für die Seite generiert wird, soll ein extra Branch erstellt werden. Dies ermöglicht eine isolierte Entwicklung und Überprüfung neuer Features vor der Integration in den Haupt-Branch.
 
 ## 📜 Changelog
 
+### Version 0.4.5 (2025-07-16)
+
+- Behebung des "null.from" Fehlers in `premium-website.tsx` durch robustere API-Abfrage.
+- Behebung des "Cannot read properties of null (reading 'auth')" Fehlers in `AuthProvider.tsx` durch Prüfung auf `supabase`.
+- Hinzufügung eines Buffer-Polyfills in `polyfills.ts` und Import in `AuthProvider.tsx`.
+- Behebung des ESLint-Fehlers "A `require()` style import is forbidden." durch Migration der Next.js-Konfiguration von `next.config.js` nach `next.config.ts` und Korrektur des `ProvidePlugin`-Imports.
+- Behebung des Fehlers "Doppelter Objektschlüssel" in `package.json` durch Entfernen des doppelten "buffer"-Eintrags.
+
+### Version 0.4.2 (2025-07-05)
+
+- Logo und Favicon auf transparentes logo_2d.png gesetzt
+- Memorybank und Changelog gepflegt
+
 ### Version 0.4.1 (2025-07-05)
+
 - Statischer Export für GitHub Pages, basePath/assetPrefix überall korrekt
 - AnimatedButton und Logo3D überall integriert
 - Karussell zeigt alle Bilder aus Upload-Ordner automatisch
 - MCP-Memorybank und Changelog gepflegt
 
-### Version 0.4.2 (2025-07-05)
-- Logo und Favicon auf transparentes logo_2d.png gesetzt
-- Memorybank und Changelog gepflegt
-
 ### Version 0.3.0 (03.07.2025) - Aktuelle Version
+
 - **Supabase Photo Storage System** - Vollständiges Foto-Management mit API-Endpunkten
 - **Mock Storage System** - Demo-Funktionalität ohne externe Abhängigkeiten  
 - **Jest Testing Framework** - 16 Unit-Tests und E2E-Workflows
@@ -160,11 +186,13 @@ Die Website ist vollständig responsive und optimiert für:
 - **Dokumentation** - Vollständige API-Docs und Supabase-Integration-Guide
 
 ### Version 0.2.0 (15.01.2025)
+
 - **Content Management System** - Bilder-Karussell und Admin-Dashboard
 - **Firebase Integration** - Storage und Admin SDK für Bildverwaltung
 - **Drag & Drop Upload** - Intuitive Bildverwaltung mit Sortierung
 
 ### Version 0.1.0 (02.01.2025)
+
 - **Initiale Website-Erstellung** - Next.js 15 mit TypeScript und Tailwind CSS
 - **Premium Glassmorphism-Design** - 3D-Effekte und moderne Optik
 - **Responsive Design** - Optimiert für alle Bildschirmgrößen
@@ -184,6 +212,7 @@ Die Website ist vollständig responsive und optimiert für:
 ## 📞 Kontakt
 
 **Hajila Bau GmbH**
+
 - 📍 Wildeshauser Straße 3, 49088 Osnabrück
 - 📞 Büro: 0541 44026213
 - 📱 Mobil: 0152 23000800
@@ -193,6 +222,6 @@ Die Website ist vollständig responsive und optimiert für:
 
 © 2025 Hajila Bau GmbH. Alle Rechte vorbehalten.
 
----
+## Entwicklung
 
-*Entwickelt mit ❤️ für professionelle Baudienstleistungen in Osnabrück*
+### Entwickelt mit ❤️ für professionelle Baudienstleistungen in Osnabrück

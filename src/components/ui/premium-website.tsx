@@ -329,7 +329,7 @@ const PremiumWebsite: React.FC = () => {
         currentTheme === 'dark' ? 'dark' : 'light'
       }`}
       style={{
-        backgroundColor: currentTheme === 'dark' ? '#0A1E33' : '#F8FAFC',
+        backgroundColor: currentTheme === 'dark' ? '#000080' : '#F8FAFC', // Dunkelblau
         color: currentTheme === 'dark' ? '#F8FAFC' : '#0A1E33',
       }}
     >
@@ -371,16 +371,16 @@ const PremiumWebsite: React.FC = () => {
       </AnimatePresence>
 
       {/* Header / Navigation */}
-      <header className="relative z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-md">
+      <header className="relative z-50 w-full border-b border-border/50">
         <div className="mx-auto max-w-7xl px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Image
-                src="/uploads/Hexagon-logo.jpg"
+                src="/uploads/logo_2d.png"
                 alt="Hajila Bau Logo"
                 width={48}
                 height={48}
-                style={{ borderRadius: '8px' }}
+                style={{ borderRadius: '0px' }}
               />
             </div>
 
@@ -487,11 +487,11 @@ const PremiumWebsite: React.FC = () => {
       <section id="services" className="relative z-10 py-20 px-6">
         <div className="mx-auto max-w-7xl">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="fixed bottom-0 left-0 right-0 z-[100] p-4 border-t border-border/50 flex flex-col sm:flex-row items-center justify-between gap-4"
           >
             <h2 className="text-4xl lg:text-5xl font-bold mb-6 font-['Merriweather']">
               <span className="bg-gradient-to-r from-[var(--blue-start)] to-[var(--blue-end)] bg-clip-text text-transparent">
@@ -680,16 +680,16 @@ const PremiumWebsite: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 py-12 px-6 border-t border-border/50 bg-background/80 backdrop-blur-md">
+      <footer className="relative z-10 py-12 px-6 border-t border-border/50">
         <div className="mx-auto max-w-7xl text-center text-sm text-muted-foreground font-['Open_Sans']">
           <div className="flex justify-center items-center mb-4">
             <Image
-              src="/uploads/Hexagon-logo.jpg"
+              src="/uploads/logo_2d.png"
               alt="Hajila Bau Logo"
               width={48}
               height={48}
               className="mr-2"
-              style={{ borderRadius: '8px' }}
+              style={{ borderRadius: '0px' }}
             />
             <span className="text-xl font-bold bg-gradient-to-r from-[var(--blue-start)] to-[var(--blue-end)] bg-clip-text text-transparent font-['Merriweather']">
               Hajila Bau GmbH

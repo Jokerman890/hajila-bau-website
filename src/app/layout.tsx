@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Merriweather, Open_Sans } from "next/font/google";
 import "./globals.css";
-import { TwentyFirstToolbar } from "@21st-extension/toolbar-next";
-import { ReactPlugin } from "@21st-extension/react";
+// import { TwentyFirstToolbar } from "@21st-extension/toolbar-next"; // Commented out for debugging
+// import { ReactPlugin } from "@21st-extension/react"; // Commented out for debugging
 import { AuthProvider } from "@/components/AuthProvider";
 
 const merriweather = Merriweather({
@@ -60,7 +60,7 @@ export default function RootLayout({
       <body
         className={`${merriweather.variable} ${openSans.variable} antialiased`}
       >
-        <TwentyFirstToolbar config={{ plugins: [ReactPlugin] }} />
+        {/* <TwentyFirstToolbar config={{ plugins: [ReactPlugin] }} /> */}
         <AuthProvider>
           {children}
         </AuthProvider>
@@ -68,4 +68,3 @@ export default function RootLayout({
     </html>
   );
 }
-

@@ -170,7 +170,7 @@ export default function HajilaBauAdminPage() {
           </h1>
           <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
             Verwalten Sie Website-Inhalte, Projektbilder und
-            Unternehmens­darstellung
+            Unternehmensdarstellung
           </p>
         </div>
 
@@ -202,3 +202,4 @@ export default function HajilaBauAdminPage() {
     </div>
   )
 }
+

@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS public.carousel_images_metadata (
     storage_path TEXT NOT NULL UNIQUE, -- z.B. public/mein-bild.jpg oder direkt mein-bild.jpg wenn im Root des Buckets
     public_url TEXT GENERATED ALWAYS AS (
         concat(
-            'https://csrsbihrqlejyrjndrkz.supabase.co/storage/v1/object/public/carousel_gallery/', -- Ersetzen Sie YOUR_PROJECT_REF mit Ihrer Supabase Projekt Referenz
+            'https://csrsbihrqlejyrjndrkz.supabase.co/storage/v1/object/public/carousel-gallery/', -- Ersetzen Sie YOUR_PROJECT_REF mit Ihrer Supabase Projekt Referenz
             storage_path
         )
     ) STORED,

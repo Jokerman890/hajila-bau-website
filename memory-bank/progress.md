@@ -2,28 +2,24 @@
 
 ## Was funktioniert
 
-- Die grundlegende Struktur der Speicherbank wurde erstellt.
-- Alle Kern-Dateien sind vorhanden und enthalten grundlegende Informationen zur Hajila Bau Webseite.
-- Der "null.from" Fehler in `premium-website.tsx` wurde behoben.
-- Der "Cannot read properties of null (reading 'auth')" Fehler in `AuthProvider.tsx` wurde behoben.
-- Ein Buffer-Polyfill wurde in `polyfills.ts` erstellt und in `AuthProvider.tsx` importiert.
-- Der Changelog wurde auf Version 0.4.5 aktualisiert.
-- Die Abhängigkeit `buffer` wurde aufgenommen und `ProvidePlugin` stellt den Polyfill bereit.
-- Tests (`npm test`) und Build (`npm run build`) laufen fehlerfrei durch.
-- Supabase-Zugriff via cURL bestätigt, Speicher-Buckets derzeit leer.
-- Zwei Testnutzer (Michael und Erko) erfolgreich per Admin-API angelegt.
+- Die grundlegende Struktur der Next.js-Anwendung ist vorhanden.
+- Wichtige UI-Komponenten sind implementiert.
+- Die Verbindung zu Supabase wurde getestet (obwohl die Autorisierung für MCP-Server problematisch ist).
+- Grundlegende Seiten wie Impressum, Datenschutz und Cookies sind vorhanden.
+- Die Memory Bank wurde aktualisiert, mit den Dateien `activeContext.md`, `productContext.md`, `projectbrief.md`, `systemPatterns.md`, `techContext.md` und `progress.md`.
 
-## Was noch zu bauen ist
+## Was noch zu tun ist
 
-- Überprüfung der Funktionalität der Webseite nach den letzten Änderungen.
-- Weitere Optimierungen und Fehlerbehebungen basierend auf Benutzerfeedback.
-- Hinzufügen von zusätzlichen Kontextdateien für komplexe Aspekte des Projekts.
+- **Supabase-Autorisierung:** Behebung des Problems, dass der Supabase-MCP-Server nicht autorisiert ist, um Datenbankoperationen durchzuführen. Dies ist entscheidend für die Aktualisierung der Datenbank.
+- **Submodul-Commits:** Lösung des Problems, dass Änderungen im `hajila-bau-website`-Submodul aufgrund von Verzeichnisbeschränkungen nicht committet werden können.
+- **Speicherbank-Vollständigkeit:** Alle Kern-Speicherbank-Dateien wurden erstellt.
 
 ## Aktueller Status
 
-Die Speicherbank ist aktualisiert und die letzten Fehler wurden behoben. Die Webseite sollte nun funktional sein, aber es sind noch Überprüfungen und mögliche Optimierungen erforderlich.
+- Die Entwicklung schreitet voran, aber es gibt kritische Blocker bei der Supabase-Integration und der Versionskontrolle.
+- Die Dokumentation in der Speicherbank ist nun vollständiger.
 
 ## Bekannte Probleme
 
-- Keine Cloud-Synchronisation oder Backup-Funktion integriert.
-- Mögliche weitere Fehler oder Optimierungspotenziale, die nach den letzten Änderungen auftreten könnten.
+- Supabase MCP Server Autorisierungsfehler.
+- Unfähigkeit, Submodul-Änderungen aufgrund von Verzeichnisbeschränkungen zu committen.

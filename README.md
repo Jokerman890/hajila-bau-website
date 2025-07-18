@@ -155,6 +155,12 @@ Die Website ist vollständig responsive und optimiert für:
 
 ## 📜 Changelog
 
+### Version 0.4.6 (2025-07-18)
+
+- Erstellung der fehlenden Memory-Bank-Dateien (`projectbrief.md`, `systemPatterns.md`, `techContext.md`, `progress.md`).
+- Behebung von Markdown-Linting-Fehlern (MD022, MD032, MD036, MD034) in allen Memory-Bank-Dateien und der `README.md`.
+- Aktualisierung der Memory-Bank-Dateien mit aktuellen Informationen zu ungelösten Problemen (Supabase-Autorisierung, Submodul-Commits).
+
 ### Version 0.4.5 (2025-07-16)
 
 - Behebung des "null.from" Fehlers in `premium-website.tsx` durch robustere API-Abfrage.
@@ -211,12 +217,12 @@ Die Website ist vollständig responsive und optimiert für:
 
 ## 📞 Kontakt
 
-**Hajila Bau GmbH**
+### Hajila Bau GmbH
 
 - 📍 Wildeshauser Straße 3, 49088 Osnabrück
 - 📞 Büro: 0541 44026213
 - 📱 Mobil: 0152 23000800
-- 📧 E-Mail: info@hajila-bau.de
+- 📧 E-Mail: <info@hajila-bau.de>
 
 ## 📄 Lizenz
 

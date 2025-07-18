@@ -40,14 +40,14 @@ const nextConfig: NextConfig = {
     'http://localhost',
     'http://127.0.0.1',
   ],
-  webpack(config) {
+  webpack(config, { webpack }) {
     config.cache = { type: 'filesystem' };
     config.resolve.fallback = {
       ...config.resolve.fallback,
       buffer: require.resolve('buffer')
     };
     config.plugins.push(
-      new config.webpack.ProvidePlugin({
+      new webpack.ProvidePlugin({
         Buffer: ['buffer', 'Buffer'],
       })
     );

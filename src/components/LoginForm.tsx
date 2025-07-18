@@ -1,6 +1,6 @@
 /**
  * src/components/LoginForm.tsx
- * Client-seitiges Login / Pass­wort-Reset für das Admin-Dashboard.
+ * Client-seitiges Login / Passwort-Reset für das Admin-Dashboard.
  */
 "use client"
 
@@ -174,3 +174,4 @@ export default function LoginForm() {
     </form>
   )
 }
+

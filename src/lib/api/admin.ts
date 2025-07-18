@@ -245,3 +245,4 @@ export const validateImageFiles = (files: FileList): { valid: File[]; invalid: {
   
   return { valid, invalid }
 }
+

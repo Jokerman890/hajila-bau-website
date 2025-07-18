@@ -5,6 +5,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
+
 // Public client requires only the URL and anon key
 export const isSupabaseClientConfigured = !!(supabaseUrl && supabaseAnonKey)
 // Admin client additionally requires the service role key
@@ -26,7 +27,7 @@ export const supabaseAdmin = isSupabaseConfigured
   : null
 
 // Storage bucket configuration
-export const STORAGE_BUCKET = 'user-photos'
+export const STORAGE_BUCKET = 'carousel-gallery'
 export const MAX_FILE_SIZE = 6 * 1024 * 1024 // 6MB
 export const SIGNED_URL_EXPIRES_IN = 3600 // 60 minutes
 

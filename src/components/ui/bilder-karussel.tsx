@@ -278,3 +278,4 @@ export function ImageCarousel({
 
 // Exportiere das Karussell direkt als Default-Export
 export default ImageCarousel
+

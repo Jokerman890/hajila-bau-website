@@ -11,3 +11,4 @@ if (typeof globalThis.Buffer === 'undefined') {
   // (reicht für Base64-Encoding/Decoding)
   globalThis.Buffer = NodeBuffer;
 }
+

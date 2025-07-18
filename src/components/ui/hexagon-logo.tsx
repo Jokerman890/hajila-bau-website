@@ -52,3 +52,4 @@ const HexagonLogo: React.FC<HexagonLogoProps> = ({
 );
 
 export default HexagonLogo;
+

@@ -8,6 +8,8 @@ import {
   DeleteResult
 } from './types'
 
+import { createClient } from '@supabase/supabase-js'
+
 /**
  * Step 1: Prüfe, ob Bucket "user-photos" existiert
  * Confidence Score: 9/10
@@ -229,6 +231,32 @@ export async function uploadUserPhoto(options: UploadOptions): Promise<UploadRes
  * Step 5: Gib eine signed URL (60 min) zurück
  * Confidence Score: 9/10
  */
+export async function getStorageUrl(
+  bucketName: string, 
+  filePath: string, 
+  isPublic: boolean = true
+): Promise<string> { // Rückgabetyp auf string geändert
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!, 
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+
+  // Bereinige den filePath: Entferne führende Schrägstriche und den Bucket-Namen, falls vorhanden
+  let cleanedFilePath = filePath.startsWith('/') ? filePath.substring(1) : filePath;
+  if (cleanedFilePath.startsWith(bucketName + '/')) {
+    cleanedFilePath = cleanedFilePath.substring(bucketName.length + 1);
+  }
+
+  if (isPublic) {
+    const { data } = supabase.storage.from(bucketName).getPublicUrl(cleanedFilePath);
+    return data.publicUrl;
+  } else {
+    // For signed URLs with expiration
+    const { data } = await supabase.storage.from(bucketName).createSignedUrl(cleanedFilePath, 3600);
+    return data?.signedUrl || ''; // Sicherstellen, dass ein String zurückgegeben wird
+  }
+}
+
 export async function getSignedUrl(
   path: string, 
   options: SignedUrlOptions = {}
@@ -244,16 +272,21 @@ export async function getSignedUrl(
       .from(STORAGE_BUCKET)
       .createSignedUrl(path, expiresIn, {
         transform: transform
-      })
+      });
 
     if (error) {
-      return { success: false, error: error.message }
+      return { success: false, error: error.message };
     }
 
-    return { success: true, signedUrl: data.signedUrl }
+    // Überprüfen, ob data.signedUrl vorhanden ist, bevor darauf zugegriffen wird
+    if (!data || !data.signedUrl) {
+      return { success: false, error: 'Signed URL konnte nicht generiert werden.' };
+    }
+
+    return { success: true, signedUrl: data.signedUrl };
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Signed URL Fehler'
-    return { success: false, error: errorMessage }
+    const errorMessage = error instanceof Error ? error.message : 'Signed URL Fehler';
+    return { success: false, error: errorMessage };
   }
 }
 
@@ -360,3 +393,4 @@ export async function initializeStorage(): Promise<{ success: boolean; error?: s
     return { success: false, error: errorMessage }
   }
 }
+

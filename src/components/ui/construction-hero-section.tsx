@@ -522,3 +522,4 @@ const ConstructionHeroSection: React.FC<Record<string, never>> = ({}) => {
 };
 
 export default ConstructionHeroSection;
+

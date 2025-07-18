@@ -25,7 +25,8 @@ import {
 } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
-import { supabase, isSupabaseConfigured } from '@/lib/supabase/client'
+import { supabase, isSupabaseClientConfigured, STORAGE_BUCKET } from '@/lib/supabase/client'
+import { getStorageUrl } from '@/lib/supabase/storage'
 import { HeroSplineBackground } from './construction-hero-section'
 import { GlassCard } from './glass-card'
 import GlowingServiceGrid from './glowing-service-grid'
@@ -171,7 +172,7 @@ interface NavItem {
 
 const Navigation: React.FC<{ items: NavItem[] }> = ({ items }) => (
   <nav className="hidden lg:block">
-    <ul className="flex gap-x-8">
+<ul className="flex gap-x-8 list-none">
       {items.map(({ text, items }, index) => (
         <li
           key={index}
@@ -180,14 +181,14 @@ const Navigation: React.FC<{ items: NavItem[] }> = ({ items }) => (
             items?.length && 'group',
           )}
         >
-          <button className="flex items-center gap-x-1 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors font-['Open_Sans']">
+<button className="flex items-center gap-2 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors font-['Open_Sans']">
             {text}
             {items?.length ? <ChevronDown className="h-3 w-3" /> : null}
           </button>
 
           {items?.length && (
             <div className="absolute -left-5 top-full w-[280px] pt-4 pointer-events-none opacity-0 origin-top-left transition-[opacity,transform] duration-200 [transform:rotateX(-12deg)_scale(0.9)] group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100 group-hover:[transform:none]">
-              <ul className="relative flex flex-col gap-y-1 rounded-xl border border-border bg-background/95 backdrop-blur-sm p-2 shadow-lg">
+<ul className="relative flex flex-col gap-y-1 rounded-xl border border-border bg-background/95 backdrop-blur-sm py-2 px-4 shadow-lg">
                 {items.map(({ icon, text, description, to }, itemIndex) => (
                   <li key={itemIndex}>
                     <a
@@ -234,20 +235,29 @@ const PremiumWebsite: React.FC = () => {
   useEffect(() => {
     const fetchCarouselImages = async () => {
       setIsLoadingCarousel(true)
-      if (!isSupabaseConfigured || !supabase) {
-        console.error('Supabase ist nicht konfiguriert.')
+      if (!isSupabaseClientConfigured || !supabase) {
+        console.error('Supabase ist nicht konfiguriert.');
         setIsLoadingCarousel(false)
         return
       }
       try {
         const { data, error } = await supabase
           .from('carousel_images_metadata')
-          .select('id, public_url, alt_text, title, description')
+          .select('id, file_name, alt_text, title, description') // Select file_name instead of public_url
           .eq('is_active', true)
           .order('order', { ascending: true })
 
         if (error) throw error
-        setCarouselImages(data ?? [])
+
+        // Generiere public_url mit getStorageUrl und warte auf alle Promises
+        const imagesWithPublicUrlsPromises = (data ?? []).map(
+          async (image) => ({
+            ...image,
+            public_url: await getStorageUrl(STORAGE_BUCKET, image.file_name), // Verwende file_name und warte
+          }),
+        )
+        const imagesWithPublicUrls = await Promise.all(imagesWithPublicUrlsPromises);
+        setCarouselImages(imagesWithPublicUrls as CarouselSlideImage[]);
       } catch (err) {
         console.error('Fehler beim Laden der Bilder:', err)
         setCarouselImages([])

@@ -156,3 +156,4 @@ const Logo3D: React.FC<Logo3DProps> = ({
 };
 
 export default Logo3D;
+

@@ -96,3 +96,4 @@ export interface StorageInitResult {
   policiesSet?: boolean
   error?: string
 }
+

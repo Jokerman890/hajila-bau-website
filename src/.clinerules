@@ -99,3 +99,4 @@ Before committing code, verify:
 3. ✅ All interface properties are implemented
 4. ✅ Mock types match real function signatures
 5. ✅ No `any` types used
+

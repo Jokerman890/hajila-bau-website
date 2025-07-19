@@ -25,7 +25,11 @@ import {
 } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
-import { supabase, isSupabaseClientConfigured, STORAGE_BUCKET } from '@/lib/supabase/client'
+import {
+  supabase,
+  isSupabaseClientConfigured,
+  STORAGE_BUCKET,
+} from '@/lib/supabase/client'
 import { getStorageUrl } from '@/lib/supabase/storage'
 import { HeroSplineBackground } from './construction-hero-section'
 import { GlassCard } from './glass-card'
@@ -172,7 +176,7 @@ interface NavItem {
 
 const Navigation: React.FC<{ items: NavItem[] }> = ({ items }) => (
   <nav className="hidden lg:block">
-<ul className="flex gap-x-8 list-none">
+    <ul className="flex gap-x-8 list-none">
       {items.map(({ text, items }, index) => (
         <li
           key={index}
@@ -181,14 +185,14 @@ const Navigation: React.FC<{ items: NavItem[] }> = ({ items }) => (
             items?.length && 'group',
           )}
         >
-<button className="flex items-center gap-2 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors font-['Open_Sans']">
+          <button className="flex items-center gap-2 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors font-['Open_Sans']">
             {text}
             {items?.length ? <ChevronDown className="h-3 w-3" /> : null}
           </button>
 
           {items?.length && (
             <div className="absolute -left-5 top-full w-[280px] pt-4 pointer-events-none opacity-0 origin-top-left transition-[opacity,transform] duration-200 [transform:rotateX(-12deg)_scale(0.9)] group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100 group-hover:[transform:none]">
-<ul className="relative flex flex-col gap-y-1 rounded-xl border border-border bg-background/95 backdrop-blur-sm py-2 px-4 shadow-lg">
+              <ul className="relative flex flex-col gap-y-1 rounded-xl border border-border bg-background/95 backdrop-blur-sm py-2 px-4 shadow-lg">
                 {items.map(({ icon, text, description, to }, itemIndex) => (
                   <li key={itemIndex}>
                     <a
@@ -236,7 +240,7 @@ const PremiumWebsite: React.FC = () => {
     const fetchCarouselImages = async () => {
       setIsLoadingCarousel(true)
       if (!isSupabaseClientConfigured || !supabase) {
-        console.error('Supabase ist nicht konfiguriert.');
+        console.error('Supabase ist nicht konfiguriert.')
         setIsLoadingCarousel(false)
         return
       }
@@ -256,8 +260,10 @@ const PremiumWebsite: React.FC = () => {
             public_url: await getStorageUrl(STORAGE_BUCKET, image.file_name), // Verwende file_name und warte
           }),
         )
-        const imagesWithPublicUrls = await Promise.all(imagesWithPublicUrlsPromises);
-        setCarouselImages(imagesWithPublicUrls as CarouselSlideImage[]);
+        const imagesWithPublicUrls = await Promise.all(
+          imagesWithPublicUrlsPromises,
+        )
+        setCarouselImages(imagesWithPublicUrls as CarouselSlideImage[])
       } catch (err) {
         console.error('Fehler beim Laden der Bilder:', err)
         setCarouselImages([])
@@ -501,7 +507,7 @@ const PremiumWebsite: React.FC = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="fixed bottom-0 left-0 right-0 z-[100] p-4 border-t border-border/50 flex flex-col sm:flex-row items-center justify-between gap-4"
+            className="text-center mb-16"
           >
             <h2 className="text-4xl lg:text-5xl font-bold mb-6 font-['Merriweather']">
               <span className="bg-gradient-to-r from-[var(--blue-start)] to-[var(--blue-end)] bg-clip-text text-transparent">

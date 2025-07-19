@@ -80,10 +80,12 @@
   --blue-start: #000080; /* Dunkelblau */
   --blue-end: #4169E1;   /* Royalblau */
   --gold: #FFD700;       /* Gold */
+  --blue-500: #3B82F6;   /* Tailwind blue-500 */
+  --purple-600: #9333EA; /* Tailwind purple-600 */
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
+  --background: var(--blue-start);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
@@ -119,6 +121,8 @@
   --blue-start: #000080; /* Dunkelblau */
   --blue-end: #4169E1;   /* Royalblau */
   --gold: #FFD700;       /* Gold */
+  --blue-500: #3B82F6;   /* Tailwind blue-500 */
+  --purple-600: #9333EA; /* Tailwind purple-600 */
 }
 
 @layer base {

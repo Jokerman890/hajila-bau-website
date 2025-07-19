@@ -367,7 +367,7 @@ const PremiumWebsite: React.FC = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="fixed bottom-0 left-0 right-0 z-[100] p-4 bg-card/90 backdrop-blur-md border-t border-border/50 flex flex-col sm:flex-row items-center justify-between gap-4"
+            className={`fixed bottom-0 left-0 right-0 z-[100] p-4 rounded-xl bg-gradient-to-br from-[var(--blue-start)]/80 via-[var(--blue-end)]/80 to-[var(--blue-start)]/80 shadow-2xl backdrop-blur-md border border-white/20 flex flex-col sm:flex-row items-center justify-between gap-4`}
           >
             <p className="text-sm text-muted-foreground text-center sm:text-left font-['Open_Sans']">
               Wir verwenden Cookies, um Ihre Nutzererfahrung zu verbessern.
@@ -396,7 +396,6 @@ const PremiumWebsite: React.FC = () => {
                 alt="Hajila Bau Logo"
                 width={48}
                 height={48}
-                style={{ borderRadius: '0px' }}
               />
             </div>
 
@@ -443,7 +442,7 @@ const PremiumWebsite: React.FC = () => {
                 </motion.div>
 
                 <h1 className="text-5xl lg:text-7xl font-bold leading-tight font-['Merriweather']">
-                  <span className="bg-gradient-to-r from-[var(--blue-start)] via-[var(--blue-end)] to-[var(--blue-start)] bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-[var(--blue-500)] to-[var(--purple-600)] bg-clip-text text-transparent">
                     Bauen mit Präzision
                   </span>
                   <br />
@@ -510,7 +509,7 @@ const PremiumWebsite: React.FC = () => {
             className="text-center mb-16"
           >
             <h2 className="text-4xl lg:text-5xl font-bold mb-6 font-['Merriweather']">
-              <span className="bg-gradient-to-r from-[var(--blue-start)] to-[var(--blue-end)] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[var(--blue-500)] to-[var(--purple-600)] bg-clip-text text-transparent">
                 Unsere Leistungen
               </span>
             </h2>
@@ -533,7 +532,7 @@ const PremiumWebsite: React.FC = () => {
             className="text-center mb-16"
           >
             <h2 className="text-4xl lg:text-5xl font-bold mb-6 font-['Merriweather']">
-              <span className="bg-gradient-to-r from-[var(--blue-end)] to-[var(--gold)] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[var(--blue-500)] to-[var(--purple-600)] bg-clip-text text-transparent">
                 Unsere Referenzen
               </span>
             </h2>
@@ -564,13 +563,30 @@ const PremiumWebsite: React.FC = () => {
             className="text-center mb-16"
           >
             <h2 className="text-4xl lg:text-5xl font-bold mb-6 font-['Merriweather']">
-              <span className="bg-gradient-to-r from-[var(--blue-end)] to-[var(--gold)] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[var(--blue-500)] to-[var(--purple-600)] bg-clip-text text-transparent">
                 Über uns
               </span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-['Open_Sans']">
               Ihre Zufriedenheit ist unser Antrieb
             </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            viewport={{ once: true }}
+            className="flex justify-center mb-12"
+          >
+            <Image
+              src="/uploads/Baustelle mit HB Logo und Mauern.png"
+              alt="Baustelle mit Hajila Bau Logo"
+              width={800}
+              height={450}
+              className="rounded-xl shadow-lg"
+              style={{ objectFit: 'cover' }}
+            />
           </motion.div>
 
           <div className="grid lg:grid-cols-2 gap-12">
@@ -650,7 +666,7 @@ const PremiumWebsite: React.FC = () => {
             className="p-12 rounded-3xl bg-gradient-to-br from-[var(--blue-start)]/10 via-[var(--blue-end)]/10 to-[var(--gold)]/10 border border-[var(--blue-start)]/20 backdrop-blur-sm"
           >
             <h2 className="text-4xl lg:text-5xl font-bold mb-6 font-['Merriweather']">
-              <span className="bg-gradient-to-r from-[var(--blue-start)] to-[var(--gold)] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[var(--blue-500)] to-[var(--purple-600)] bg-clip-text text-transparent">
                 Kontaktieren Sie uns
               </span>
             </h2>
@@ -705,9 +721,8 @@ const PremiumWebsite: React.FC = () => {
               width={48}
               height={48}
               className="mr-2"
-              style={{ borderRadius: '0px' }}
             />
-            <span className="text-xl font-bold bg-gradient-to-r from-[var(--blue-start)] to-[var(--blue-end)] bg-clip-text text-transparent font-['Merriweather']">
+            <span className="text-xl font-bold text-foreground font-['Merriweather']">
               Hajila Bau GmbH
             </span>
           </div>

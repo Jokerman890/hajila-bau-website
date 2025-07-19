@@ -4,6 +4,10 @@
 
 ### Hinzugefügt
 
+- Implementierung der Bildercarousel-Verwaltung im Admin-Dashboard. Dies beinhaltet:
+    - Anzeige und Verwaltung von Bildern über Supabase Storage und die `carousel_images_metadata`-Tabelle.
+    - Funktionalität zum Hochladen, Löschen, Aktualisieren von Metadaten (Titel, Beschreibung, Alt-Text, Aktivierungsstatus) und Vorschau von Bildern.
+    - Integration des `AdminDashboard`-UI-Komponenten mit den entsprechenden Handlern für Datenoperationen.
 - Erstellung der fehlenden Memory-Bank-Dateien (`projectbrief.md`, `systemPatterns.md`, `techContext.md`, `progress.md`).
 
 ### Behoben

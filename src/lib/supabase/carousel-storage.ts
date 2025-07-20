@@ -4,7 +4,7 @@
 import { supabase, supabaseAdmin } from './client' // beide Clients aus einer Datei
 import { v4 as uuidv4 } from 'uuid'
 
-export const CAROUSEL_BUCKET_NAME = 'carousel_gallery'
+export const CAROUSEL_BUCKET_NAME = 'carousel-gallery'
 
 /* ------------------------------------------------------------------ */
 /* Typen                                                               */
@@ -138,4 +138,3 @@ export async function getCarouselImageMetadata(
     ),
   }
 }
-

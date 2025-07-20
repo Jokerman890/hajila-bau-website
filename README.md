@@ -80,6 +80,13 @@ Der statische Ordner `/out` wird dank `output: 'export'` automatisch erzeugt
 npm start
 ```
 
+### Tests
+
+Aktuell sind keine Unit-Tests im Repository vorhanden. Das Kommando
+`npm test` verwendet `jest --runInBand --passWithNoTests` und meldet
+erfolgreich, auch wenn keine Tests vorhanden sind. Sobald Tests
+hinzugefügt werden, können sie damit ausgeführt werden.
+
 ## 📁 Projektstruktur
 
 ```treeview
@@ -184,7 +191,7 @@ Die Website ist vollständig responsive und optimiert für:
 ### Version 0.3.0 (03.07.2025) - Aktuelle Version
 
 - **Supabase Photo Storage System** - Vollständiges Foto-Management mit API-Endpunkten
-- **Mock Storage System** - Demo-Funktionalität ohne externe Abhängigkeiten  
+- **Mock Storage System** - Demo-Funktionalität ohne externe Abhängigkeiten
 - **Jest Testing Framework** - 16 Unit-Tests und E2E-Workflows
 - **Admin Dashboard Erweiterungen** - Erweiterte Content-Management-Funktionen
 - **TypeScript Optimierungen** - 100% Typierung und Strict Mode

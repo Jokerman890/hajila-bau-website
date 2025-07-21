@@ -657,7 +657,7 @@ const PremiumWebsite: React.FC = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
+      {/* Stats Section - Updated for GitHub Pages */}
       <Stats />
 
       {/* Contact Section */}

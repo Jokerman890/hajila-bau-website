@@ -1,7 +1,7 @@
 import type { NextConfig } from 'next'
 
-const isProd = process.env.NODE_ENV === 'production';
-const isGitHubPages = process.env.GITHUB_PAGES === 'true';
+const isProd = process.env.NODE_ENV === 'production'
+const isGitHubPages = process.env.NEXT_PUBLIC_GITHUB_PAGES === 'true'
 
 const nextConfig: NextConfig = {
   // Nur für GitHub Pages statischen Export verwenden
@@ -41,17 +41,17 @@ const nextConfig: NextConfig = {
     'http://127.0.0.1',
   ],
   webpack(config, { webpack }) {
-    config.cache = { type: 'filesystem' };
+    config.cache = { type: 'filesystem' }
     config.resolve.fallback = {
       ...config.resolve.fallback,
-      buffer: require.resolve('buffer')
-    };
+      buffer: require.resolve('buffer'),
+    }
     config.plugins.push(
       new webpack.ProvidePlugin({
         Buffer: ['buffer', 'Buffer'],
-      })
-    );
-    return config;
+      }),
+    )
+    return config
   },
 }
 

@@ -1,5 +1,6 @@
 'use client';
 import { Component } from '@/components/ui/scroll-progress';
+import { Stats } from "@/components/ui/stats-section"
 
 const DemoOne = () => {
   return (
@@ -11,5 +12,13 @@ const DemoOne = () => {
   );
 };
 
-export { DemoOne };
+function StatsDemo() {
+  return (
+    <div className="w-full">
+      <Stats />
+    </div>
+  );
+}
+
+export { DemoOne, StatsDemo };
 

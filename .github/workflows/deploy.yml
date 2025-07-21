@@ -24,7 +24,7 @@ jobs:
         run: npm ci
 
       - name: Build static site
-        run: npm run build
+        run: npm run predeploy
         env:
           NODE_ENV: production
 

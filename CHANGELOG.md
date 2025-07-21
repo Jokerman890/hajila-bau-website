@@ -1,5 +1,62 @@
 # Changelog
 
+## [0.4.8] - 2025-07-20
+
+### Hinzugefügt
+- **Vollständige Systemanalyse**: Komplette Bildkarussell-Implementierung analysiert und dokumentiert
+- **SEO-Optimierungen**: 
+  - Sitemap-Generierung (`src/app/sitemap.ts`) für automatische Suchmaschinenindexierung
+  - Robots.txt (`src/app/robots.ts`) für Crawler-Steuerung
+  - MetadataBase-Konfiguration in `layout.tsx` für vollständige OpenGraph/Twitter Card Integration
+- **Umfassende Produktivkonfiguration-Dokumentation**:
+  - `docs/supabase_produktivkonfiguration.md` - Detaillierte Supabase-Setup-Anleitung
+  - `docs/produktiv-setup-checkliste.md` - Praktische Checkliste für Deployment
+  - `docs/SUPABASE_MANUAL_SETUP.md` - Schritt-für-Schritt Setup-Guide
+  - `docs/ADMIN_USER_SETUP.md` - Dedizierte Admin-User-Erstellung
+- **Memory Bank Update**: Aktuelle Systemanalyse und Erkenntnisse vollständig dokumentiert
+
+### Behoben
+- **SEO-Metadaten**: Vollständige Integration von metadataBase für korrekte URL-Generierung
+- **Browser-Kompatibilität**: Sitemap und Robots.txt erfolgreich getestet
+
+### Geändert
+- **Version auf 0.4.8 erhöht**: Systemanalyse-Update markiert
+- **Documentation**: Erweiterte Troubleshooting-Guides und Debug-Commands
+
+### Technische Details
+- **Status**: System vollständig analysiert und produktionsreif
+- **Architektur**: Frontend/Backend/API/Storage vollständig dokumentiert
+- **Sicherheit**: RLS-Policies, UUID-basierte Dateinamen, Input-Validierung
+- **Deployment**: Hybrid-Strategie für GitHub Pages und Development-Server
+
+## [0.4.7] - 2025-07-19
+
+### Hinzugefügt
+- **Kritischer Deployment-Fix**: Hybrid-Deployment-Strategie implementiert
+  - Bedingte Aktivierung von `output: 'export'` nur für GitHub Pages (NEXT_PUBLIC_GITHUB_PAGES=true)
+  - API-Routen für lokale Entwicklung wieder verfügbar
+- **Storage-Integration korrigiert**: Bucket-Name von `carousel_gallery` zu `carousel-gallery` standardisiert
+- **Vollständige API-Funktionalität wiederhergestellt**:
+  - `/api/admin/carousel/upload` - Funktionsfähig
+  - `/api/admin/carousel/update` - Funktionsfähig  
+  - `/api/admin/carousel/delete` - Funktionsfähig
+
+### Behoben
+- **Kritischer Fix**: Statischer Export blockierte alle API-Routen - durch bedingte Konfiguration gelöst
+- **Storage-Bucket-Integration**: Korrekte Bucket-Namen-Konsistenz zwischen Code und Supabase
+- **Admin-Dashboard**: Login und Authentifizierung vollständig funktionsfähig
+- **Browser-Tests**: Admin-Login, API-Verfügbarkeit bestätigt
+
+### Geändert
+- **next.config.ts**: Bedingte Export-Konfiguration für flexible Deployment-Optionen
+- **carousel-storage.ts**: Bucket-Namen auf `carousel-gallery` standardisiert
+- **Fehlerbehandlung**: Rollback-Mechanismen in Upload-APIs implementiert
+
+### Technische Meilensteine
+- **Content Management System**: Vollständig funktionsfähiges Admin-Dashboard
+- **CRUD-Operationen**: Komplette Bildverwaltung mit Metadaten-Bearbeitung
+- **Produktionsbereit**: System bereit für Supabase-Produktivkonfiguration
+
 ## [0.4.6] - 2025-07-18
 
 ### Hinzugefügt

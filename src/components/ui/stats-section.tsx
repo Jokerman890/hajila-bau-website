@@ -1,7 +1,6 @@
 import { Building2, Hammer, Users, Trophy } from "lucide-react";
 
 function Stats() {
-  console.log('Stats component rendering - GitHub Pages Debug');
   return (
     <div className="w-full py-20 lg:py-40 bg-gradient-to-br from-background via-background to-muted/30">
       <div className="container mx-auto px-6">

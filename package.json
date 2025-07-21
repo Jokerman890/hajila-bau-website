@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:github": "NEXT_PUBLIC_GITHUB_PAGES=true next build",
     "export": "NEXT_PUBLIC_GITHUB_PAGES=true next export",
     "start": "next start",
     "lint": "next lint",
@@ -12,7 +13,7 @@
     "test": "jest --runInBand --passWithNoTests",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "predeploy": "npm run build && npm run export",
+    "predeploy": "npm run build:github && npm run export",
     "deploy": "gh-pages -d out"
   },
   "dependencies": {

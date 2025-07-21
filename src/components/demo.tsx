@@ -14,11 +14,20 @@ const DemoOne = () => {
 
 function StatsDemo() {
   return (
-    <div className="w-full">
+    <div className="w-full min-h-screen bg-background">
       <Stats />
     </div>
   );
 }
 
-export { DemoOne, StatsDemo };
+// Alternative: Hajila Bau Stats als Teil einer größeren Sektion
+function HajilaBauStats() {
+  return (
+    <section className="w-full">
+      <Stats />
+    </section>
+  );
+}
+
+export { DemoOne, StatsDemo, HajilaBauStats };
 

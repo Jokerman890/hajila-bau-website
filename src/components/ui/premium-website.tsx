@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import Image from 'next/image'
 import { getAssetPath } from '@/lib/utils'
+import { Stats } from './stats-section'
 import { motion, AnimatePresence, Variants } from 'framer-motion'
 import {
   ChevronDown,
@@ -655,6 +656,9 @@ const PremiumWebsite: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Stats Section */}
+      <Stats />
 
       {/* Contact Section */}
       <section id="contact" className="relative z-10 py-20 px-6">

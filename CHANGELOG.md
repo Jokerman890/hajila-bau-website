@@ -60,36 +60,93 @@
 ## [0.4.6] - 2025-07-18
 
 ### Hinzugefügt
-
 - Implementierung der Bildercarousel-Verwaltung im Admin-Dashboard. Dies beinhaltet:
-    - Anzeige und Verwaltung von Bildern über Supabase Storage und die `carousel_images_metadata`-Tabelle.
-    - Funktionalität zum Hochladen, Löschen, Aktualisieren von Metadaten (Titel, Beschreibung, Alt-Text, Aktivierungsstatus) und Vorschau von Bildern.
-    - Integration des `AdminDashboard`-UI-Komponenten mit den entsprechenden Handlern für Datenoperationen.
-- Erstellung der fehlenden Memory-Bank-Dateien (`projectbrief.md`, `systemPatterns.md`, `techContext.md`, `progress.md`).
+  - Anzeige und Verwaltung von Bildern über Supabase Storage und die `carousel_images_metadata`-Tabelle
+  - Funktionalität zum Hochladen, Löschen, Aktualisieren von Metadaten (Titel, Beschreibung, Alt-Text, Aktivierungsstatus) und Vorschau von Bildern
+  - Integration des `AdminDashboard`-UI-Komponenten mit den entsprechenden Handlern für Datenoperationen
+- Erstellung der fehlenden Memory-Bank-Dateien (`projectbrief.md`, `systemPatterns.md`, `techContext.md`, `progress.md`)
 
 ### Behoben
+- Behebung von Markdown-Linting-Fehlern (MD022, MD032, MD036, MD034) in allen Memory-Bank-Dateien und der `README.md`
+- Behebung des Cookie-Banner-Hintergrunds in `src/components/ui/premium-website.tsx`
+- Korrektur der Position der Überschrift "Unsere Leistungen" in `src/components/ui/premium-website.tsx`
+- Behebung von Hydration-Mismatch-Problemen bei Image-Komponenten in `src/components/ui/premium-website.tsx` durch Hinzufügen von `className="rounded-none"` und `priority`
 
-- Behebung von Markdown-Linting-Fehlern (MD022, MD032, MD036, MD034) in allen Memory-Bank-Dateien und der `README.md`.
-- Behebung des Cookie-Banner-Hintergrunds in `src/components/ui/premium-website.tsx`.
-- Korrektur der Position der Überschrift "Unsere Leistungen" in `src/components/ui/premium-website.tsx`.
-- Behebung von Hydration-Mismatch-Problemen bei Image-Komponenten in `src/components/ui/premium-website.tsx` durch Hinzufügen von `className="rounded-none"` und `priority`.
-
-### Änderungen
-
-- Aktualisierung der Memory-Bank-Dateien mit aktuellen Informationen zu ungelösten Problemen (Supabase-Autorisierung, Submodul-Commits).
+### Geändert
+- Aktualisierung der Memory-Bank-Dateien mit aktuellen Informationen zu ungelösten Problemen (Supabase-Autorisierung, Submodul-Commits)
 
 ## [0.4.5] - 2025-07-16
 
 ### Behoben
+- Behebung des "null.from" Fehlers in `premium-website.tsx` durch robustere API-Abfrage
+- Behebung des "Cannot read properties of null (reading 'auth')" Fehlers in `AuthProvider.tsx` durch Prüfung auf `supabase`
+- Hinzufügung eines Buffer-Polyfills in `polyfills.ts` und Import in `AuthProvider.tsx`
+- Behebung des ESLint-Fehlers "A `require()` style import is forbidden." durch Migration der Next.js-Konfiguration von `next.config.js` nach `next.config.ts` und Korrektur des `ProvidePlugin`-Imports
+- Behebung des Fehlers "Doppelter Objektschlüssel" in `package.json` durch Entfernen des doppelten "buffer"-Eintrags
 
-- Behebung des "null.from" Fehlers in `premium-website.tsx` durch robustere API-Abfrage.
-- Behebung des "Cannot read properties of null (reading 'auth')" Fehlers in `AuthProvider.tsx` durch Prüfung auf `supabase`.
-- Hinzufügung eines Buffer-Polyfills in `polyfills.ts` und Import in `AuthProvider.tsx`.
-- Behebung des ESLint-Fehlers "A `require()` style import is forbidden." durch Migration der Next.js-Konfiguration von `next.config.js` nach `next.config.ts` und Korrektur des `ProvidePlugin`-Imports.
-- Behebung des Fehlers "Doppelter Objektschlüssel" in `package.json` durch Entfernen des doppelten "buffer"-Eintrags.
+## [0.4.2] - 2025-07-05
 
-## [0.4.4] - Datum unbekannt
+### Geändert
+- Logo und Favicon auf transparentes `logo_2d.png` gesetzt
+- Memory Bank und Changelog gepflegt
 
-### Änderungen
+## [0.4.1] - 2025-07-05
 
-- Vorherige Änderungen und Versionen sind nicht dokumentiert.
+### Hinzugefügt
+- Statischer Export für GitHub Pages, basePath/assetPrefix überall korrekt
+- AnimatedButton und Logo3D überall integriert
+- Karussell zeigt alle Bilder aus Upload-Ordner automatisch
+
+### Geändert
+- MCP-Memory Bank und Changelog gepflegt
+
+## [0.3.0] - 2025-07-03
+
+### Hinzugefügt
+- **Supabase Photo Storage System** - Vollständiges Foto-Management mit API-Endpunkten
+- **Mock Storage System** - Demo-Funktionalität ohne externe Abhängigkeiten  
+- **Jest Testing Framework** - 16 Unit-Tests und E2E-Workflows
+- **Admin Dashboard Erweiterungen** - Erweiterte Content-Management-Funktionen
+- **TypeScript Optimierungen** - 100% Typierung und Strict Mode
+- **API-Struktur** - RESTful Endpunkte für Photos, Admin und Memory-Bank
+- **Dokumentation** - Vollständige API-Docs und Supabase-Integration-Guide
+
+## [0.2.0] - 2025-01-15
+
+### Hinzugefügt
+- **Content Management System** - Bilder-Karussell und Admin-Dashboard
+- **Firebase Integration** - Storage und Admin SDK für Bildverwaltung
+- **Drag & Drop Upload** - Intuitive Bildverwaltung mit Sortierung
+
+## [0.1.0] - 2025-01-02
+
+### Hinzugefügt
+- **Initiale Website-Erstellung** - Next.js 15 mit TypeScript und Tailwind CSS
+- **Premium Glassmorphism-Design** - 3D-Effekte und moderne Optik
+- **Responsive Design** - Optimiert für alle Bildschirmgrößen
+- **Rechtliche Compliance** - DSGVO-konforme Seiten (Impressum, Datenschutz, Cookies)
+- **3D-Animationen** - Three.js Integration mit interaktiven Elementen
+
+---
+
+## 🔐 Supabase Authentifizierung
+
+### Authentifizierung-Features
+- Admin-Bereich und API sind mit Supabase Auth geschützt
+- E-Mail/Passwort-Login und Google Login im Admin-Bereich
+- Logout-Button oben rechts im Admin
+- API-Requests müssen den Bearer-Token mitsenden (siehe Beispiel in `src/app/api/admin/images/route.ts`)
+
+### Environment-Variablen
+Erforderliche Umgebungsvariablen in `.env.local`:
+```env
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+SUPABASE_SERVICE_ROLE_KEY=...
+```
+
+### Sicherheitsfeatures
+- Row Level Security (RLS) Policies für alle Datenbankoperationen
+- UUID-basierte Dateinamen für Upload-Sicherheit
+- Input-Validierung und Sanitisierung
+- CORS-Konfiguration für sichere API-Zugriffe

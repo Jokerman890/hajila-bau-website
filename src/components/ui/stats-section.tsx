@@ -1,4 +1,4 @@
-import { Building2, Hammer, Users, Trophy } from "lucide-react";
+import { Building2, Hammer, Users, Trophy } from 'lucide-react'
 
 function Stats() {
   return (
@@ -10,13 +10,14 @@ function Stats() {
             Unsere Erfolge in Zahlen
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Über Jahre hinweg haben wir uns als vertrauensvoller Partner im Baugewerbe etabliert
+            Über Jahre hinweg haben wir uns als vertrauensvoller Partner im
+            Baugewerbe etabliert
           </p>
         </div>
 
         {/* Stats Grid */}
         <div className="grid text-center grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full gap-6 lg:gap-8">
-          <div className="flex gap-0 flex-col justify-between items-center p-8 border rounded-xl bg-card hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
+          <div className="flex gap-0 flex-col justify-between items-center p-8 rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
             <div className="p-3 rounded-full bg-primary/10 mb-6">
               <Building2 className="w-8 h-8 text-primary" />
             </div>
@@ -31,7 +32,7 @@ function Stats() {
             </p>
           </div>
 
-          <div className="flex gap-0 flex-col justify-between items-center p-8 border rounded-xl bg-card hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
+          <div className="flex gap-0 flex-col justify-between items-center p-8 rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
             <div className="p-3 rounded-full bg-success/10 mb-6">
               <Users className="w-8 h-8 text-success" />
             </div>
@@ -46,7 +47,7 @@ function Stats() {
             </p>
           </div>
 
-          <div className="flex gap-0 flex-col justify-between items-center p-8 border rounded-xl bg-card hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
+          <div className="flex gap-0 flex-col justify-between items-center p-8 rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
             <div className="p-3 rounded-full bg-blue-500/10 mb-6">
               <Hammer className="w-8 h-8 text-blue-600" />
             </div>
@@ -61,7 +62,7 @@ function Stats() {
             </p>
           </div>
 
-          <div className="flex gap-0 flex-col justify-between items-center p-8 border rounded-xl bg-card hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
+          <div className="flex gap-0 flex-col justify-between items-center p-8 rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
             <div className="p-3 rounded-full bg-yellow-500/10 mb-6">
               <Trophy className="w-8 h-8 text-yellow-600" />
             </div>
@@ -80,16 +81,22 @@ function Stats() {
         {/* Zusätzliche Informationen */}
         <div className="mt-16 text-center">
           <div className="inline-flex items-center gap-4 px-6 py-3 rounded-full bg-primary/5 border border-primary/20">
-            <span className="text-sm font-medium text-primary">✓ Zertifizierte Handwerker</span>
+            <span className="text-sm font-medium text-primary">
+              ✓ Zertifizierte Handwerker
+            </span>
             <span className="text-muted-foreground">•</span>
-            <span className="text-sm font-medium text-primary">✓ Termingerechte Umsetzung</span>
+            <span className="text-sm font-medium text-primary">
+              ✓ Termingerechte Umsetzung
+            </span>
             <span className="text-muted-foreground">•</span>
-            <span className="text-sm font-medium text-primary">✓ Faire Preise</span>
+            <span className="text-sm font-medium text-primary">
+              ✓ Faire Preise
+            </span>
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export { Stats };
+export { Stats }

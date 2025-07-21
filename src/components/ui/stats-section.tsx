@@ -1,3 +1,5 @@
+'use client'
+
 import { Building2, Hammer, Users, Trophy } from 'lucide-react'
 
 function Stats() {

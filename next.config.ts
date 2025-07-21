@@ -29,8 +29,8 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  basePath: isProd ? '/hajila-bau-website' : '',
-  assetPrefix: isProd ? '/hajila-bau-website/' : '',
+  basePath: isGitHubPages ? '/hajila-bau-website' : '',
+  assetPrefix: isGitHubPages ? '/hajila-bau-website/' : '',
   trailingSlash: true,
   experimental: { externalDir: true },
   // Cross-Origin-Requests im Dev-Modus explizit erlauben (Next.js 14+)

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useMemo } from 'react'
 import Image from 'next/image'
+import { getAssetPath } from '@/lib/utils'
 import { motion, AnimatePresence, Variants } from 'framer-motion'
 import {
   ChevronDown,
@@ -392,7 +393,7 @@ const PremiumWebsite: React.FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Image
-                src="/uploads/logo_2d.png"
+                src={getAssetPath("/uploads/logo_2d.png")}
                 alt="Hajila Bau Logo"
                 width={48}
                 height={48}
@@ -580,7 +581,7 @@ const PremiumWebsite: React.FC = () => {
             className="flex justify-center mb-12"
           >
             <Image
-              src="/uploads/Baustelle mit HB Logo und Mauern.png"
+              src={getAssetPath("/uploads/Baustelle mit HB Logo und Mauern.png")}
               alt="Baustelle mit Hajila Bau Logo"
               width={800}
               height={450}
@@ -716,7 +717,7 @@ const PremiumWebsite: React.FC = () => {
         <div className="mx-auto max-w-7xl text-center text-sm text-muted-foreground font-['Open_Sans']">
           <div className="flex justify-center items-center mb-4">
             <Image
-              src="/uploads/logo_2d.png"
+              src={getAssetPath("/uploads/logo_2d.png")}
               alt="Hajila Bau Logo"
               width={48}
               height={48}

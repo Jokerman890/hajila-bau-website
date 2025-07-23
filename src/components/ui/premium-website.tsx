@@ -394,7 +394,7 @@ const PremiumWebsite: React.FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Image
-                src={getAssetPath("/uploads/logo_2d.png")}
+                src={getAssetPath('/uploads/logo_2d.png')}
                 alt="Hajila Bau Logo"
                 width={48}
                 height={48}
@@ -500,6 +500,9 @@ const PremiumWebsite: React.FC = () => {
         </div>
       </section>
 
+      {/* Stats Section */}
+      <Stats />
+
       {/* Services Section (Features) - Integrated with GlowingServiceGrid */}
       <section id="services" className="relative z-10 py-20 px-6">
         <div className="mx-auto max-w-7xl">
@@ -582,7 +585,9 @@ const PremiumWebsite: React.FC = () => {
             className="flex justify-center mb-12"
           >
             <Image
-              src={getAssetPath("/uploads/Baustelle mit HB Logo und Mauern.png")}
+              src={getAssetPath(
+                '/uploads/Baustelle mit HB Logo und Mauern.png',
+              )}
               alt="Baustelle mit Hajila Bau Logo"
               width={800}
               height={450}
@@ -657,9 +662,6 @@ const PremiumWebsite: React.FC = () => {
         </div>
       </section>
 
-      {/* Stats Section - Updated for GitHub Pages */}
-      <Stats />
-
       {/* Contact Section */}
       <section id="contact" className="relative z-10 py-20 px-6">
         <div className="mx-auto max-w-4xl text-center">
@@ -721,7 +723,7 @@ const PremiumWebsite: React.FC = () => {
         <div className="mx-auto max-w-7xl text-center text-sm text-muted-foreground font-['Open_Sans']">
           <div className="flex justify-center items-center mb-4">
             <Image
-              src={getAssetPath("/uploads/logo_2d.png")}
+              src={getAssetPath('/uploads/logo_2d.png')}
               alt="Hajila Bau Logo"
               width={48}
               height={48}

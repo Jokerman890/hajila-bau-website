@@ -2,7 +2,18 @@ import { Building2, Hammer, Users, Trophy } from 'lucide-react'
 
 function Stats() {
   return (
-    <div className="w-full py-20 lg:py-40 bg-gradient-to-br from-background via-background to-muted/30">
+    <>
+      <style jsx>{`
+        @keyframes rainbow-spin {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+      `}</style>
+      <div className="w-full py-20 lg:py-40 bg-gradient-to-br from-background via-background to-muted/30">
       <div className="container mx-auto px-6">
         {/* Titel-Sektion */}
         <div className="text-center mb-16">
@@ -19,10 +30,10 @@ function Stats() {
         <div className="grid text-center grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full gap-6 lg:gap-8">
           <div className="relative overflow-hidden rounded-xl p-px">
             <div
-              className="absolute inset-0 rounded-[inherit] animate-spin-slow opacity-70 blur-md"
+              className="absolute inset-0 rounded-[inherit] opacity-70 blur-md"
               style={{
-                background:
-                  'conic-gradient(var(--blue-500), var(--purple-600), var(--blue-500))',
+                background: 'conic-gradient(from 0deg, #ff0000, #ff8800, #ffff00, #88ff00, #00ff00, #00ff88, #00ffff, #0088ff, #0000ff, #8800ff, #ff00ff, #ff0088, #ff0000)',
+                animation: 'rainbow-spin 8s linear infinite'
               }}
             />
             <div className="relative flex gap-0 flex-col justify-between items-center p-8 rounded-[inherit] border border-border/50 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02]">
@@ -43,10 +54,10 @@ function Stats() {
 
           <div className="relative overflow-hidden rounded-xl p-px">
             <div
-              className="absolute inset-0 rounded-[inherit] animate-spin-slow opacity-70 blur-md"
+              className="absolute inset-0 rounded-[inherit] opacity-70 blur-md"
               style={{
-                background:
-                  'conic-gradient(var(--blue-500), var(--purple-600), var(--blue-500))',
+                background: 'conic-gradient(from 0deg, #ff0000, #ff8800, #ffff00, #88ff00, #00ff00, #00ff88, #00ffff, #0088ff, #0000ff, #8800ff, #ff00ff, #ff0088, #ff0000)',
+                animation: 'rainbow-spin 8s linear infinite'
               }}
             />
             <div className="relative flex gap-0 flex-col justify-between items-center p-8 rounded-[inherit] border border-border/50 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02]">
@@ -67,10 +78,10 @@ function Stats() {
 
           <div className="relative overflow-hidden rounded-xl p-px">
             <div
-              className="absolute inset-0 rounded-[inherit] animate-spin-slow opacity-70 blur-md"
+              className="absolute inset-0 rounded-[inherit] opacity-70 blur-md"
               style={{
-                background:
-                  'conic-gradient(var(--blue-500), var(--purple-600), var(--blue-500))',
+                background: 'conic-gradient(from 0deg, #ff0000, #ff8800, #ffff00, #88ff00, #00ff00, #00ff88, #00ffff, #0088ff, #0000ff, #8800ff, #ff00ff, #ff0088, #ff0000)',
+                animation: 'rainbow-spin 8s linear infinite'
               }}
             />
             <div className="relative flex gap-0 flex-col justify-between items-center p-8 rounded-[inherit] border border-border/50 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02]">
@@ -91,10 +102,10 @@ function Stats() {
 
           <div className="relative overflow-hidden rounded-xl p-px">
             <div
-              className="absolute inset-0 rounded-[inherit] animate-spin-slow opacity-70 blur-md"
+              className="absolute inset-0 rounded-[inherit] opacity-70 blur-md"
               style={{
-                background:
-                  'conic-gradient(var(--blue-500), var(--purple-600), var(--blue-500))',
+                background: 'conic-gradient(from 0deg, #ff0000, #ff8800, #ffff00, #88ff00, #00ff00, #00ff88, #00ffff, #0088ff, #0000ff, #8800ff, #ff00ff, #ff0088, #ff0000)',
+                animation: 'rainbow-spin 8s linear infinite'
               }}
             />
             <div className="relative flex gap-0 flex-col justify-between items-center p-8 rounded-[inherit] border border-border/50 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02]">
@@ -131,7 +142,7 @@ function Stats() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

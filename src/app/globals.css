@@ -153,4 +153,10 @@
   .animate-spin-slow {
     animation: spin-slow 8s linear infinite;
   }
+
+  .glow-border {
+    position: relative;
+    overflow: hidden;
+    padding: 1px;
+  }
 }

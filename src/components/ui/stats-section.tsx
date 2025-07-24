@@ -17,64 +17,100 @@ function Stats() {
 
         {/* Stats Grid */}
         <div className="grid text-center grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full gap-6 lg:gap-8">
-          <div className="flex gap-0 flex-col justify-between items-center p-8 rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-            <div className="p-3 rounded-full bg-primary/10 mb-6">
-              <Building2 className="w-8 h-8 text-primary" />
+          <div className="glow-border rounded-xl">
+            <div
+              className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-70 blur-md animate-spin-slow"
+              style={{
+                background:
+                  'conic-gradient(#ff0000,#ff8800,#ffff00,#88ff00,#00ff00,#00ff88,#00ffff,#0088ff,#0000ff,#8800ff,#ff00ff,#ff0088,#ff0000)',
+              }}
+            />
+            <div className="relative flex gap-0 flex-col justify-between items-center p-8 rounded-[inherit] border border-border/50 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02]">
+              <div className="p-3 rounded-full bg-primary/10 mb-6">
+                <Building2 className="w-8 h-8 text-primary" />
+              </div>
+              <h3 className="text-4xl lg:text-5xl tracking-tighter font-bold text-foreground mb-2">
+                150+
+              </h3>
+              <p className="text-lg font-medium text-muted-foreground">
+                Erfolgreich abgeschlossene Projekte
+              </p>
+              <p className="text-sm text-muted-foreground/80 mt-1">
+                Seit Firmengründung
+              </p>
             </div>
-            <h3 className="text-4xl lg:text-5xl tracking-tighter font-bold text-foreground mb-2">
-              150+
-            </h3>
-            <p className="text-lg font-medium text-muted-foreground">
-              Erfolgreich abgeschlossene Projekte
-            </p>
-            <p className="text-sm text-muted-foreground/80 mt-1">
-              Seit Firmengründung
-            </p>
           </div>
 
-          <div className="flex gap-0 flex-col justify-between items-center p-8 rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-            <div className="p-3 rounded-full bg-success/10 mb-6">
-              <Users className="w-8 h-8 text-success" />
+          <div className="glow-border rounded-xl">
+            <div
+              className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-70 blur-md animate-spin-slow"
+              style={{
+                background:
+                  'conic-gradient(#ff0000,#ff8800,#ffff00,#88ff00,#00ff00,#00ff88,#00ffff,#0088ff,#0000ff,#8800ff,#ff00ff,#ff0088,#ff0000)',
+              }}
+            />
+            <div className="relative flex gap-0 flex-col justify-between items-center p-8 rounded-[inherit] border border-border/50 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02]">
+              <div className="p-3 rounded-full bg-success/10 mb-6">
+                <Users className="w-8 h-8 text-success" />
+              </div>
+              <h3 className="text-4xl lg:text-5xl tracking-tighter font-bold text-foreground mb-2">
+                500+
+              </h3>
+              <p className="text-lg font-medium text-muted-foreground">
+                Zufriedene Kunden
+              </p>
+              <p className="text-sm text-muted-foreground/80 mt-1">
+                Privatpersonen & Unternehmen
+              </p>
             </div>
-            <h3 className="text-4xl lg:text-5xl tracking-tighter font-bold text-foreground mb-2">
-              500+
-            </h3>
-            <p className="text-lg font-medium text-muted-foreground">
-              Zufriedene Kunden
-            </p>
-            <p className="text-sm text-muted-foreground/80 mt-1">
-              Privatpersonen & Unternehmen
-            </p>
           </div>
 
-          <div className="flex gap-0 flex-col justify-between items-center p-8 rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-            <div className="p-3 rounded-full bg-blue-500/10 mb-6">
-              <Hammer className="w-8 h-8 text-blue-600" />
+          <div className="glow-border rounded-xl">
+            <div
+              className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-70 blur-md animate-spin-slow"
+              style={{
+                background:
+                  'conic-gradient(#ff0000,#ff8800,#ffff00,#88ff00,#00ff00,#00ff88,#00ffff,#0088ff,#0000ff,#8800ff,#ff00ff,#ff0088,#ff0000)',
+              }}
+            />
+            <div className="relative flex gap-0 flex-col justify-between items-center p-8 rounded-[inherit] border border-border/50 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02]">
+              <div className="p-3 rounded-full bg-blue-500/10 mb-6">
+                <Hammer className="w-8 h-8 text-blue-600" />
+              </div>
+              <h3 className="text-4xl lg:text-5xl tracking-tighter font-bold text-foreground mb-2">
+                15+
+              </h3>
+              <p className="text-lg font-medium text-muted-foreground">
+                Jahre Erfahrung
+              </p>
+              <p className="text-sm text-muted-foreground/80 mt-1">
+                Im Baugewerbe
+              </p>
             </div>
-            <h3 className="text-4xl lg:text-5xl tracking-tighter font-bold text-foreground mb-2">
-              15+
-            </h3>
-            <p className="text-lg font-medium text-muted-foreground">
-              Jahre Erfahrung
-            </p>
-            <p className="text-sm text-muted-foreground/80 mt-1">
-              Im Baugewerbe
-            </p>
           </div>
 
-          <div className="flex gap-0 flex-col justify-between items-center p-8 rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-            <div className="p-3 rounded-full bg-yellow-500/10 mb-6">
-              <Trophy className="w-8 h-8 text-yellow-600" />
+          <div className="glow-border rounded-xl">
+            <div
+              className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-70 blur-md animate-spin-slow"
+              style={{
+                background:
+                  'conic-gradient(#ff0000,#ff8800,#ffff00,#88ff00,#00ff00,#00ff88,#00ffff,#0088ff,#0000ff,#8800ff,#ff00ff,#ff0088,#ff0000)',
+              }}
+            />
+            <div className="relative flex gap-0 flex-col justify-between items-center p-8 rounded-[inherit] border border-border/50 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02]">
+              <div className="p-3 rounded-full bg-yellow-500/10 mb-6">
+                <Trophy className="w-8 h-8 text-yellow-600" />
+              </div>
+              <h3 className="text-4xl lg:text-5xl tracking-tighter font-bold text-foreground mb-2">
+                100%
+              </h3>
+              <p className="text-lg font-medium text-muted-foreground">
+                Qualitätsgarantie
+              </p>
+              <p className="text-sm text-muted-foreground/80 mt-1">
+                Auf alle unsere Arbeiten
+              </p>
             </div>
-            <h3 className="text-4xl lg:text-5xl tracking-tighter font-bold text-foreground mb-2">
-              100%
-            </h3>
-            <p className="text-lg font-medium text-muted-foreground">
-              Qualitätsgarantie
-            </p>
-            <p className="text-sm text-muted-foreground/80 mt-1">
-              Auf alle unsere Arbeiten
-            </p>
           </div>
         </div>
 

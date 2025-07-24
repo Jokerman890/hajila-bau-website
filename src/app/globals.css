@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -82,10 +82,10 @@
 
   /* Custom Colors for Hajila Bau */
   --blue-start: #000080; /* Dunkelblau */
-  --blue-end: #4169E1;   /* Royalblau */
-  --gold: #FFD700;       /* Gold */
-  --blue-500: #3B82F6;   /* Tailwind blue-500 */
-  --purple-600: #9333EA; /* Tailwind purple-600 */
+  --blue-end: #4169e1; /* Royalblau */
+  --gold: #ffd700; /* Gold */
+  --blue-500: #3b82f6; /* Tailwind blue-500 */
+  --purple-600: #9333ea; /* Tailwind purple-600 */
 }
 
 .dark {
@@ -125,10 +125,10 @@
 
   /* Custom Colors for Hajila Bau in Dark Mode */
   --blue-start: #000080; /* Dunkelblau */
-  --blue-end: #4169E1;   /* Royalblau */
-  --gold: #FFD700;       /* Gold */
-  --blue-500: #3B82F6;   /* Tailwind blue-500 */
-  --purple-600: #9333EA; /* Tailwind purple-600 */
+  --blue-end: #4169e1; /* Royalblau */
+  --gold: #ffd700; /* Gold */
+  --blue-500: #3b82f6; /* Tailwind blue-500 */
+  --purple-600: #9333ea; /* Tailwind purple-600 */
 }
 
 @layer base {
@@ -137,5 +137,26 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@layer utilities {
+  .animate-spin-slow {
+    animation: spin-slow 8s linear infinite;
+  }
+
+  .glow-border {
+    position: relative;
+    overflow: hidden;
+    padding: 1px;
   }
 }

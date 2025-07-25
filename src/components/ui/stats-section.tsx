@@ -23,9 +23,7 @@ function Stats() {
           <div className="glow-border rounded-xl">
             <div
               className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-70 blur-md animate-spin-slow"
-              style={{
-                background: RAINBOW_GRADIENT,
-              }}
+              style={{ background: RAINBOW_GRADIENT }}
             />
             <div className="relative flex gap-0 flex-col justify-between items-center p-8 rounded-[inherit] border border-border/50 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02]">
               <div className="p-3 rounded-full bg-primary/10 mb-6">
@@ -46,9 +44,7 @@ function Stats() {
           <div className="glow-border rounded-xl">
             <div
               className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-70 blur-md animate-spin-slow"
-              style={{
-                background: RAINBOW_GRADIENT,
-              }}
+              style={{ background: RAINBOW_GRADIENT }}
             />
             <div className="relative flex gap-0 flex-col justify-between items-center p-8 rounded-[inherit] border border-border/50 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02]">
               <div className="p-3 rounded-full bg-success/10 mb-6">
@@ -69,9 +65,7 @@ function Stats() {
           <div className="glow-border rounded-xl">
             <div
               className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-70 blur-md animate-spin-slow"
-              style={{
-                background: RAINBOW_GRADIENT,
-              }}
+              style={{ background: RAINBOW_GRADIENT }}
             />
             <div className="relative flex gap-0 flex-col justify-between items-center p-8 rounded-[inherit] border border-border/50 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02]">
               <div className="p-3 rounded-full bg-blue-500/10 mb-6">
@@ -92,9 +86,7 @@ function Stats() {
           <div className="glow-border rounded-xl">
             <div
               className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-70 blur-md animate-spin-slow"
-              style={{
-                background: RAINBOW_GRADIENT,
-              }}
+              style={{ background: RAINBOW_GRADIENT }}
             />
             <div className="relative flex gap-0 flex-col justify-between items-center p-8 rounded-[inherit] border border-border/50 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02]">
               <div className="p-3 rounded-full bg-yellow-500/10 mb-6">

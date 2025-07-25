@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef } from 'react';
+import Logo3D from './logo-3d';
 import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { ChevronDown, Hammer, Building2, LeafyGreen } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -83,53 +84,7 @@ const Tilt: React.FC<TiltProps> = ({
   );
 };
 
-// 3D Logo Component (Simplified)
-const Logo3D: React.FC = () => {
-  const logoRef = useRef<HTMLDivElement>(null);
 
-  React.useEffect(() => {
-    const logo = logoRef.current;
-    if (!logo) return;
-
-    const animate = () => {
-      const time = Date.now() * 0.001;
-      logo.style.transform = `
-        rotateY(${Math.sin(time * 0.5) * 10}deg) 
-        rotateX(${Math.cos(time * 0.3) * 5}deg)
-        translateZ(${Math.sin(time * 0.7) * 5}px)
-      `;
-      requestAnimationFrame(animate);
-    };
-    animate();
-  }, []);
-
-  return (
-    <div 
-      ref={logoRef}
-      className="relative w-16 h-16 [transform-style:preserve-3d] transition-transform duration-300"
-    >
-      {/* H Letter - Front Face */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37] to-[#B8962F] rounded-lg shadow-lg [transform:translateZ(8px)]">
-        <div className="flex items-center justify-center h-full">
-          <span className="text-2xl font-bold text-white font-['Merriweather']">H</span>
-        </div>
-      </div>
-      
-      {/* H Letter - Back Face */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#00C3E3] to-[#005B9F] rounded-lg shadow-lg [transform:translateZ(-8px)_rotateY(180deg)]">
-        <div className="flex items-center justify-center h-full">
-          <span className="text-2xl font-bold text-white font-['Merriweather']">B</span>
-        </div>
-      </div>
-      
-      {/* Side Faces */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37]/80 to-[#00C3E3]/80 rounded-lg [transform:rotateY(90deg)_translateZ(8px)] w-4"></div>
-      <div className="absolute inset-0 bg-gradient-to-r from-[#00C3E3]/80 to-[#D4AF37]/80 rounded-lg [transform:rotateY(-90deg)_translateZ(8px)] w-4"></div>
-      <div className="absolute inset-0 bg-gradient-to-b from-[#D4AF37]/60 to-[#00C3E3]/60 rounded-lg [transform:rotateX(90deg)_translateZ(8px)] h-4"></div>
-      <div className="absolute inset-0 bg-gradient-to-b from-[#00C3E3]/60 to-[#D4AF37]/60 rounded-lg [transform:rotateX(-90deg)_translateZ(8px)] h-4"></div>
-    </div>
-  );
-};
 
 // Glass Card Component
 const GlassCard: React.FC<{ className?: string }> = ({ className }) => {
@@ -149,7 +104,12 @@ const GlassCard: React.FC<{ className?: string }> = ({ className }) => {
 
         <div className="absolute [transform:translate3d(0,0,26px)] p-6">
           <div className="flex justify-center mb-6">
-            <Logo3D />
+            <Logo3D
+              imageUrl="/uploads/3d%20logo%20ohne%20bg.png"
+              size="md"
+              primaryColor="#00C3E3"
+              secondaryColor="#005B9F"
+            />
           </div>
           <div className="text-center">
             <span className="block text-xl font-black text-white font-['Merriweather'] mb-2">
@@ -224,5 +184,5 @@ const GlassCard: React.FC<{ className?: string }> = ({ className }) => {
   );
 };
 
-export { GlassCard, Tilt, Logo3D };
+export { GlassCard, Tilt };
 

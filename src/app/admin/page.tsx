@@ -239,6 +239,19 @@ export default function HajilaBauAdminPage() {
     }
   }
 
+  const handleImportLocal = async () => {
+    try {
+      const response = await fetch('/api/admin/carousel/import-local', { method: 'POST' })
+      if (!response.ok) {
+        const err = await response.json()
+        throw new Error(err.error || 'Import fehlgeschlagen')
+      }
+      await fetchCarouselImages()
+    } catch (e) {
+      console.error('Lokaler Import fehlgeschlagen:', e)
+    }
+  }
+
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -254,7 +267,7 @@ export default function HajilaBauAdminPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       <div className="container mx-auto px-4 py-8">
-        <div className="flex justify-end mb-4">
+        <div className="flex items-center gap-3">
           <LogoutButton />
         </div>
         <div className="text-center">
@@ -276,6 +289,11 @@ export default function HajilaBauAdminPage() {
           onImageUpdate={handleImageUpdate}
           onImageReorder={handleImageReorder}
         />
+        <div className="flex justify-center mt-6">
+          <button onClick={handleImportLocal} className="px-4 py-2 text-sm rounded-md border border-slate-300 hover:bg-slate-50 dark:border-slate-600 dark:hover:bg-slate-800">
+            Lokale Bilder importieren
+          </button>
+        </div>
       </div>
     </div>
   )

@@ -4,6 +4,7 @@ export const translations = {
     title: "Karussell Admin",
     subtitle: "Verwalten Sie Ihre Referenzbilder für das Karussell",
     addImages: "Bilder hinzufügen",
+    importLocal: "Lokale Bilder importieren",
     
     // Stats
     totalImages: "Bilder gesamt",
@@ -78,6 +79,7 @@ export const translations = {
     title: "Karusel Admin",
     subtitle: "Upravljajte vašim referentnim slikama za karusel",
     addImages: "Dodaj slike",
+    importLocal: "Uvezi lokalne slike",
     
     // Stats
     totalImages: "Ukupno slika",

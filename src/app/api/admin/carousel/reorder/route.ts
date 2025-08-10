@@ -39,6 +39,13 @@ export async function POST(request: NextRequest) {
     // Aktualisiere display_order global entsprechend ihrer Position
     const updates = imageIds.map((id, index) => ({ id, display_order: index + 1 }))
 
+    // 1) Versuche atomare Transaktion via RPC (falls in DB vorhanden)
+    const { data: rpcData, error: rpcError } = await supabaseAdmin
+      .rpc('reorder_carousel', { _pairs: JSON.stringify(updates) })
+    if (!rpcError && rpcData) {
+      return NextResponse.json({ success: true, images: rpcData }, { status: 200 })
+    }
+
     // Fallback: Mehrere Updates sequentiell/parallel (ohne RPC-Transaktion)
     const results = await Promise.all(
       updates.map((u) =>

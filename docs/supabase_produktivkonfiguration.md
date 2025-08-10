@@ -232,3 +232,60 @@ Bei Problemen:
 **Status**: Bereit für Produktivkonfiguration v0.4.8
 **Letzte Aktualisierung**: 2025-07-20
 **System**: Vollständig analysiert und dokumentiert
+
+## 10. Erweiterte Konsistenz (optional empfohlen)
+
+### 10.1 Atomarer Reorder per RPC
+
+```sql
+-- Transaktionaler Reorder (Beispiel):
+create or replace function public.reorder_carousel(_pairs jsonb)
+returns setof public.carousel_images_metadata
+language plpgsql
+as $$
+declare r record;
+begin
+  -- Optional: serialize parallele Reorders
+  perform pg_advisory_xact_lock(424242);
+
+  -- IDs und Reihenfolge setzen
+  for r in select (p->>'id')::uuid as id, (p->>'display_order')::int as display_order
+           from jsonb_array_elements(_pairs) p
+  loop
+    update public.carousel_images_metadata
+      set display_order = r.display_order
+    where id = r.id;
+  end loop;
+
+  return query
+    select * from public.carousel_images_metadata
+    where id in (select (p->>'id')::uuid from jsonb_array_elements(_pairs) p)
+    order by display_order asc;
+end;
+$$;
+```
+
+### 10.2 DB-seitige Vergabe von display_order (ohne Race)
+
+```sql
+-- Trigger, der display_order automatisch auf (max+1) setzt, falls nicht angegeben
+create or replace function public.set_display_order()
+returns trigger
+language plpgsql
+as $$
+begin
+  if NEW.display_order is null then
+    select coalesce(max(display_order), 0) + 1 into NEW.display_order
+    from public.carousel_images_metadata;
+  end if;
+  return NEW;
+end;
+$$;
+
+drop trigger if exists trg_set_display_order on public.carousel_images_metadata;
+create trigger trg_set_display_order
+before insert on public.carousel_images_metadata
+for each row execute function public.set_display_order();
+```
+
+Hinweis: Für hohe Parallelität kann zusätzlich `pg_advisory_xact_lock` innerhalb des Triggers genutzt werden oder die Vergabe in eine dedizierte Sequenz/Tabelle ausgelagert werden.

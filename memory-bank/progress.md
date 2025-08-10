@@ -106,29 +106,24 @@
 - [ ] E2E Tests für Admin-Workflows
 - [ ] Performance Tests
 
-## Aktueller Status (v0.4.9)
+## Aktueller Status (v0.4.10)
 
 ### Kürzlich Abgeschlossen
 
-- ✅ **Vollständige Systemanalyse**: Komplette Bildkarussell-Implementierung analysiert und dokumentiert
-- ✅ **Architektur-Dokumentation**: Frontend/Backend/API/Storage vollständig dokumentiert
-- ✅ **Browser-Testing abgeschlossen**: Admin-Login, SEO-Features (Sitemap, Robots.txt) getestet
-- ✅ **SEO-Optimierung**: metadataBase konfiguriert, alle Metadaten vollständig
-  - ✅ **Memory Bank vollständig aktualisiert**: Aktuelle Systemanalyse dokumentiert
-  - ✅ **Stats-Section mit Rainbow-Glow**: Direkt nach dem Hero platziert
+- ✅ Einheitliches `display_order`-Mapping in Frontend/API
+- ✅ Persistentes Reordering inkl. neuer API `/api/admin/carousel/reorder`
+- ✅ Upload-Härtung (MIME/Größe) und automatische Reihenfolgevergabe
+- ✅ Next/Image-Optimierung für Hostinger VPS (Supabase/Hostinger Domains whitelisted)
 
 ### Aktuelle Arbeit
 
-- 🔄 Versionierung auf v0.4.9 (Stats-Section-Update)
-- 🔄 Git-Commit der vollständigen Dokumentation
-- 🔄 MCP Memory Update durchführen
+- 🔄 Optionales Drag & Drop Reordering (kann folgen)
 
 ### Nächste Prioritäten
 
-1. Supabase-Produktivkonfiguration abschließen
-2. Initialer Content-Upload ins Carousel
-3. SEO-Optimierung und Metadaten
-4. Performance-Testing und -Optimierung
+1. RLS-Policies in Supabase final prüfen (Produktiv)
+2. Nginx/PM2 Setup auf Hostinger VPS mit Caching/Compression
+3. Erweiterte Tests (API-Integration, E2E Admin-Workflows)
 
 ## Projektevolution
 

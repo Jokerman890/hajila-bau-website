@@ -216,28 +216,28 @@ export default function HajilaBauAdminPage() {
   }
 
   // Hinweis: Reordering-Funktion optional aktivierbar
-  // async function handleImageReorder(orderedIds: string[]) {
-  //   try {
-  //     const response = await fetch('/api/admin/carousel/reorder', {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify({ imageIds: orderedIds }),
-  //     })
-  //     if (!response.ok) {
-  //       const err = await response.json()
-  //       throw new Error(err.error || 'Reorder fehlgeschlagen')
-  //     }
-  //     const result: { success: boolean; images: Array<{ id: string; display_order: number }> } = await response.json()
-  //     setCarouselImages((prev) => {
-  //       const map = new Map(result.images.map((img) => [img.id, img.display_order]))
-  //       return [...prev]
-  //         .map((img) => ({ ...img, order: map.get(img.id) ?? img.order }))
-  //         .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-  //     })
-  //   } catch (e) {
-  //     console.error('Reorder-Fehler:', e)
-  //   }
-  // }
+  async function handleImageReorder(orderedIds: string[]) {
+    try {
+      const response = await fetch('/api/admin/carousel/reorder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageIds: orderedIds }),
+      })
+      if (!response.ok) {
+        const err = await response.json()
+        throw new Error(err.error || 'Reorder fehlgeschlagen')
+      }
+      const result: { success: boolean; images: Array<{ id: string; display_order: number }> } = await response.json()
+      setCarouselImages((prev) => {
+        const map = new Map(result.images.map((img) => [img.id, img.display_order]))
+        return [...prev]
+          .map((img) => ({ ...img, order: map.get(img.id) ?? img.order }))
+          .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+      })
+    } catch (e) {
+      console.error('Reorder-Fehler:', e)
+    }
+  }
 
   if (authLoading) {
     return (
@@ -273,8 +273,7 @@ export default function HajilaBauAdminPage() {
           onImageUpload={handleImageUpload}
           onImageDelete={handleImageDelete}
           onImageUpdate={handleImageUpdate}
-          // Reordering optional:
-          // onImageReorder={handleImageReorder}
+          onImageReorder={handleImageReorder}
         />
       </div>
     </div>

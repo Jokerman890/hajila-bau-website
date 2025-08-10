@@ -43,7 +43,7 @@ interface AdminDashboardProps {
   onImageUpload?: (files: FileList, metadata: Array<{width?: number, height?: number, size_kb: number, name: string, type: string }>) => Promise<void> // Nimmt jetzt auch Metadaten entgegen
   onImageDelete?: (id: string) => Promise<void>
   onImageUpdate?: (id: string, updates: Partial<CarouselDisplayImage>) => Promise<void>
-  // onImageReorder?: (orderedIds: string[]) => Promise<void>
+  onImageReorder?: (orderedIds: string[]) => Promise<void>
   maxImages?: number
   allowedFormats?: string[]
   maxFileSize?: number
@@ -434,7 +434,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   onImageUpload,
   onImageDelete,
   onImageUpdate,
-  // onImageReorder,
+  onImageReorder,
   maxImages = 20,
   allowedFormats = ['image/jpeg', 'image/png', 'image/webp'],
   maxFileSize = 5 * 1024 * 1024
@@ -518,10 +518,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
   const handleMove = async (id: string, direction: -1 | 1, list: 'active' | 'inactive') => {
     const base = list === 'active' ? activeImages : inactiveImages
-    moveImage(base, id, direction)
-    // Option: neue Reihenfolge an Parent melden
-    // const orderedIds = updatedList.map((img) => img.id)
-    // if (onImageReorder) await onImageReorder(orderedIds)
+    const updated = moveImage(base, id, direction)
+    const orderedIds = updated.map((img) => img.id)
+    if (onImageReorder) await onImageReorder(orderedIds)
   }
 
   if (isLoading) {

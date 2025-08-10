@@ -16,9 +16,11 @@ Die folgenden Dateien sind relevant für das Projekt:
 
 ## Aktuelle Änderungen
 
-- Aktualisierung der Regeln in `memory-bank/rules.md`
-- Weiterentwicklung der Komponenten in `src/components/ui/...`
-- Implementierung neuer API-Endpoints in `src/app/api/...`
+- Reordering für Karussell-Bilder inkl. neuer API `/api/admin/carousel/reorder` implementiert
+- Upload-Route gehärtet (MIME/Größe), `display_order` automatisch vergeben
+- Frontend/Backend auf `display_order` vereinheitlicht
+- Next/Image für Hostinger VPS optimiert; Supabase/Hostinger Domains whitelisted
+- Changelog auf Version 0.4.10 aktualisiert
 - Behebung des ESLint-Fehlers "A `require()` style import is forbidden." durch Migration der Next.js-Konfiguration von `next.config.js` nach `next.config.ts` und Korrektur des `ProvidePlugin`-Imports.
 - Behebung des Fehlers "Doppelter Objektschlüssel" in `package.json` durch Entfernen des doppelten "buffer"-Eintrags.
   - Aktualisierung der Version in `package.json` auf 0.4.9.
@@ -31,9 +33,9 @@ Die folgenden Dateien sind relevant für das Projekt:
 
 ## Nächste Schritte
 
-1. Überprüfung der Barrierefreiheit und SEO-Optimierung
-2. Integration der neuen Regeln in den Code
-3. Test und Optimierung der Laderate der Webseite
+1. Optional: Drag & Drop Reordering
+2. Nginx/PM2 Setup für Hostinger VPS (Gzip/Brotli, Cache)
+3. Integrationstests/E2E für Admin-Workflows
 
 ## Beobachtungen
 

@@ -183,3 +183,33 @@ SUPABASE_SERVICE_ROLE_KEY=...
 - UUID-basierte Dateinamen für Upload-Sicherheit
 - Input-Validierung und Sanitisierung
 - CORS-Konfiguration für sichere API-Zugriffe
+
+## [0.4.10] - 2025-08-10
+
+### Hinzugefügt
+
+- Persistentes Reordering der Karussell-Bilder:
+  - Neue API-Route `POST /api/admin/carousel/reorder`
+  - Admin-Dashboard: Auf/Ab-Buttons, Reorder-Handler aktiviert
+- Upload-Härtung:
+  - MIME-Validierung (JPEG/PNG/WebP)
+  - Größenlimit 10MB
+  - Automatische Vergabe von `display_order = max + 1`
+
+### Geändert
+
+- Einheitliches Mapping von `order` (Frontend) zu `display_order` (DB) in Upload/Update/Lesen
+- Admin-Frontend liest mit `supabase` (public), Admin-Operationen laufen über serverseitige API
+- Next/Image für Hostinger VPS optimiert:
+  - Bildoptimierung aktiv (außer bei GitHub Pages)
+  - `remotePatterns` für Supabase- und Hostinger-Domains ergänzt
+
+### Behoben
+
+- Typisierung/ESLint in Update-API (keine `any` mehr)
+- Inkonsistente Sortierung nach `order` vs. `display_order`
+
+### Technische Details
+
+- Build & Tests grün
+- Routen: Upload/Update/Delete/Reorder aktiv

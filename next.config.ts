@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   // Nur für GitHub Pages statischen Export verwenden
   ...(isGitHubPages && { output: 'export' }),
   images: {
-    unoptimized: true,
+    unoptimized: isGitHubPages, // Nur auf GitHub Pages deaktivieren
     remotePatterns: [
       {
         protocol: 'https',
@@ -24,6 +24,18 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: '**.github.io',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.hostinger.com',
         port: '',
         pathname: '/**',
       },

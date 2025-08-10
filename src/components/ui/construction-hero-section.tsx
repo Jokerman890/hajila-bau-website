@@ -319,7 +319,7 @@ function HeroContent() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          Hajila Bau GmbH
+          <span className="brand-gradient-text">Hajila Bau GmbH</span>
         </motion.h1>
 <motion.h2 
           className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold mb-4 leading-tight tracking-wide"

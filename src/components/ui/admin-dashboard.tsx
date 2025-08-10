@@ -43,6 +43,7 @@ interface AdminDashboardProps {
   onImageUpload?: (files: FileList, metadata: Array<{width?: number, height?: number, size_kb: number, name: string, type: string }>) => Promise<void> // Nimmt jetzt auch Metadaten entgegen
   onImageDelete?: (id: string) => Promise<void>
   onImageUpdate?: (id: string, updates: Partial<CarouselDisplayImage>) => Promise<void>
+  onImageReorder?: (orderedIds: string[]) => Promise<void>
   maxImages?: number
   allowedFormats?: string[]
   maxFileSize?: number
@@ -433,7 +434,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   onImageUpload,
   onImageDelete,
   onImageUpdate,
-  // onImageReorder,
+  onImageReorder,
   maxImages = 20,
   allowedFormats = ['image/jpeg', 'image/png', 'image/webp'],
   maxFileSize = 5 * 1024 * 1024
@@ -502,6 +503,26 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const inactiveImages = images.filter(img => !img.is_active)
   const totalSize = images.reduce((sum, img) => sum + (img.size_kb || 0), 0) // Summiere size_kb
 
+  const moveImage = (list: CarouselDisplayImage[], id: string, direction: -1 | 1) => {
+    const sorted = [...list].sort((a, b) => a.order - b.order)
+    const index = sorted.findIndex((img) => img.id === id)
+    if (index === -1) return sorted
+    const newIndex = index + direction
+    if (newIndex < 0 || newIndex >= sorted.length) return sorted
+    const temp = sorted[index]
+    sorted[index] = sorted[newIndex]
+    sorted[newIndex] = temp
+    // Recalculate order sequentially starting at 1
+    return sorted.map((img, i) => ({ ...img, order: i + 1 }))
+  }
+
+  const handleMove = async (id: string, direction: -1 | 1, list: 'active' | 'inactive') => {
+    const base = list === 'active' ? activeImages : inactiveImages
+    const updated = moveImage(base, id, direction)
+    const orderedIds = updated.map((img) => img.id)
+    if (onImageReorder) await onImageReorder(orderedIds)
+  }
+
   if (isLoading) {
     return <LoadingSkeleton />
   }
@@ -516,7 +537,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Carousel Admin</h1>
-          <p className="text-slate-600 dark:text-slate-400">Manage your reference images for the carousel</p>
+          <p className="text-slate-600 dark:text-slate-400">Verwalten Sie Ihre Referenzbilder für das Karussell</p>
         </div>
         
         <div className="flex items-center gap-3">
@@ -543,7 +564,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
               <ImageIcon className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-sm text-slate-600 dark:text-slate-400">Total Images</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Bilder gesamt</p>
               <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{images.length}</p>
             </div>
           </div>
@@ -555,7 +576,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
               <CheckCircle className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-sm text-slate-600 dark:text-slate-400">Active Images</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Aktive Bilder</p>
               <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{activeImages.length}</p>
             </div>
           </div>
@@ -567,7 +588,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
               <Upload className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-sm text-slate-600 dark:text-slate-400">Storage Used</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Speicher genutzt</p>
               <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{(totalSize / 1024).toFixed(1)}MB</p>
             </div>
           </div>
@@ -579,7 +600,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
               <Eye className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-sm text-slate-600 dark:text-slate-400">Available Slots</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Verfügbare Slots</p>
               <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{maxImages - images.length}</p>
             </div>
           </div>
@@ -590,7 +611,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
         <Alert className="border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950/20">
           <CheckCircle className="h-4 w-4 text-green-600" />
           <AlertDescription className="text-green-800 dark:text-green-200">
-            Images uploaded successfully!
+            Bilder erfolgreich hochgeladen!
           </AlertDescription>
         </Alert>
       )}
@@ -609,7 +630,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             }`}
           >
             <ImageIcon className="w-4 h-4" />
-            Gallery
+            Galerie
           </button>
           <button
             onClick={() => setActiveTab('upload')}
@@ -631,7 +652,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             }`}
           >
             <Eye className="w-4 h-4" />
-            Preview
+            Vorschau
           </button>
         </div>
 
@@ -645,18 +666,27 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 {/* Active Images */}
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Active Images ({activeImages.length})</h2>
-                    <Badge variant="default">Visible in Carousel</Badge>
+                    <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Aktive Bilder ({activeImages.length})</h2>
+                    <Badge variant="default">Im Karussell sichtbar</Badge>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {activeImages.map(image => (
-                      <ImageCard
-                        key={image.id}
-                        image={image}
-                        onDelete={handleImageDelete}
-                        onUpdate={onImageUpdate!} // onImageUpdate ist async, wird in page.tsx gehandhabt
-                        onPreview={handleImagePreview}
-                      />
+                      <div key={image.id} className="space-y-2">
+                        <ImageCard
+                          image={image}
+                          onDelete={handleImageDelete}
+                          onUpdate={onImageUpdate!} // onImageUpdate ist async, wird in page.tsx gehandhabt
+                          onPreview={handleImagePreview}
+                        />
+                        <div className="flex gap-2">
+                          <Button size="sm" variant="outline" onClick={() => handleMove(image.id, -1, 'active')}>
+                            Nach oben
+                          </Button>
+                          <Button size="sm" variant="outline" onClick={() => handleMove(image.id, 1, 'active')}>
+                            Nach unten
+                          </Button>
+                        </div>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -665,18 +695,27 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 {inactiveImages.length > 0 && (
                   <div>
                     <div className="flex items-center justify-between mb-4">
-                      <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Inactive Images ({inactiveImages.length})</h2>
-                      <Badge variant="secondary">Hidden from Carousel</Badge>
+                      <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Inaktive Bilder ({inactiveImages.length})</h2>
+                      <Badge variant="secondary">Im Karussell versteckt</Badge>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                       {inactiveImages.map(image => (
-                        <ImageCard
-                          key={image.id}
-                          image={image}
-                          onDelete={handleImageDelete}
-                          onUpdate={onImageUpdate!} // onImageUpdate ist async, wird in page.tsx gehandhabt
-                          onPreview={handleImagePreview}
-                        />
+                        <div key={image.id} className="space-y-2">
+                          <ImageCard
+                            image={image}
+                            onDelete={handleImageDelete}
+                            onUpdate={onImageUpdate!} // onImageUpdate ist async, wird in page.tsx gehandhabt
+                            onPreview={handleImagePreview}
+                          />
+                          <div className="flex gap-2">
+                            <Button size="sm" variant="outline" onClick={() => handleMove(image.id, -1, 'inactive')}>
+                              Nach oben
+                            </Button>
+                            <Button size="sm" variant="outline" onClick={() => handleMove(image.id, 1, 'inactive')}>
+                              Nach unten
+                            </Button>
+                          </div>
+                        </div>
                       ))}
                     </div>
                   </div>
@@ -700,9 +739,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
         {activeTab === 'preview' && (
           <div className="space-y-6">
             <Card className="p-6">
-              <h2 className="text-xl font-semibold mb-4 text-slate-900 dark:text-slate-100">Carousel Preview</h2>
+              <h2 className="text-xl font-semibold mb-4 text-slate-900 dark:text-slate-100">Karussell-Vorschau</h2>
               <p className="text-slate-600 dark:text-slate-400 mb-4">
-                This is how your active images will appear in the carousel
+                So werden Ihre aktiven Bilder im Karussell angezeigt
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {activeImages.slice(0, 6).map(image => (
@@ -722,7 +761,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
               </div>
               {activeImages.length === 0 && (
                 <div className="text-center py-8 text-slate-500 dark:text-slate-400">
-                  No active images to preview. Activate some images to see them here.
+                  Keine aktiven Bilder für die Vorschau. Aktivieren Sie einige Bilder, um sie hier zu sehen.
                 </div>
               )}
             </Card>

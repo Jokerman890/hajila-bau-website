@@ -159,4 +159,12 @@
     overflow: hidden;
     padding: 1px;
   }
+
+  /* Marken-Farbverlauf für Text */
+  .brand-gradient-text {
+    background-image: linear-gradient(to right, var(--gold), var(--blue-end));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 }

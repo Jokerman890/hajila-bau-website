@@ -112,7 +112,7 @@ const GlassCard: React.FC<{ className?: string }> = ({ className }) => {
             />
           </div>
           <div className="text-center">
-            <span className="block text-xl font-black text-white font-['Merriweather'] mb-2">
+            <span className="block text-xl font-black font-['Merriweather'] mb-2 brand-gradient-text">
               Hajila Bau GmbH
             </span>
             <span className="block text-sm text-white/90 leading-relaxed font-['Open_Sans']">

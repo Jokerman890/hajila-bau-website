@@ -258,8 +258,9 @@ export default function HajilaBauAdminPage() {
           <LogoutButton />
         </div>
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4">
-            Hajila Bau GmbH – Admin Dashboard
+          <h1 className="text-4xl font-bold mb-4">
+            <span className="brand-gradient-text">Hajila Bau GmbH</span>
+            <span className="text-slate-900 dark:text-slate-100"> – Admin Dashboard</span>
           </h1>
           {/* Removed "Debug Mode" and "Weitere Debugging-Schritte erforderlich." */}
         </div>

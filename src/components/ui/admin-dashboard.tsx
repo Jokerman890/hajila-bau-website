@@ -57,6 +57,8 @@ const Card: React.FC<{ children: React.ReactNode; className?: string }> = ({ chi
 )
 
 import { Button } from './button'
+import { translations, type Language } from '@/lib/translations'
+import { useAdminSettings } from '@/hooks/useAdminDashboard'
 
 // Simple Input Component
 const Input: React.FC<{
@@ -439,6 +441,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   allowedFormats = ['image/jpeg', 'image/png', 'image/webp'],
   maxFileSize = 5 * 1024 * 1024
 }) => {
+  const { language, changeLanguage } = useAdminSettings()
+  const t = translations[language]
   const [activeTab, setActiveTab] = useState('gallery')
   const [uploadSuccess, setUploadSuccess] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -484,7 +488,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   }
 
   const handleImageDelete = async (id: string) => {
-    if (window.confirm('Are you sure you want to delete this image?')) {
+    if (window.confirm(t.deleteConfirm)) {
       if (onImageDelete) {
         try {
           await onImageDelete(id);
@@ -536,14 +540,22 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Carousel Admin</h1>
-          <p className="text-slate-600 dark:text-slate-400">Verwalten Sie Ihre Referenzbilder für das Karussell</p>
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">{t.title}</h1>
+          <p className="text-slate-600 dark:text-slate-400">{t.subtitle}</p>
         </div>
         
         <div className="flex items-center gap-3">
+          <select
+            value={language}
+            onChange={(e) => changeLanguage(e.target.value as Language)}
+            className="h-10 rounded-md border border-slate-300 bg-transparent px-3 py-2 text-sm dark:border-slate-600"
+          >
+            <option value="de">{t.german}</option>
+            <option value="sr">{t.serbian}</option>
+          </select>
           <Button onClick={() => fileInputRef.current?.click()}>
             <Plus className="w-4 h-4 mr-2" />
-            Add Images
+            {t.addImages}
           </Button>
           <input
             ref={fileInputRef}
@@ -564,7 +576,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
               <ImageIcon className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-sm text-slate-600 dark:text-slate-400">Bilder gesamt</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">{t.totalImages}</p>
               <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{images.length}</p>
             </div>
           </div>
@@ -576,7 +588,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
               <CheckCircle className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-sm text-slate-600 dark:text-slate-400">Aktive Bilder</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">{t.activeImages}</p>
               <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{activeImages.length}</p>
             </div>
           </div>
@@ -588,7 +600,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
               <Upload className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-sm text-slate-600 dark:text-slate-400">Speicher genutzt</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">{t.storageUsed}</p>
               <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{(totalSize / 1024).toFixed(1)}MB</p>
             </div>
           </div>
@@ -600,7 +612,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
               <Eye className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-sm text-slate-600 dark:text-slate-400">Verfügbare Slots</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">{t.availableSlots}</p>
               <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{maxImages - images.length}</p>
             </div>
           </div>
@@ -611,7 +623,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
         <Alert className="border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950/20">
           <CheckCircle className="h-4 w-4 text-green-600" />
           <AlertDescription className="text-green-800 dark:text-green-200">
-            Bilder erfolgreich hochgeladen!
+            {t.uploadSuccess}
           </AlertDescription>
         </Alert>
       )}
@@ -630,7 +642,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             }`}
           >
             <ImageIcon className="w-4 h-4" />
-            Galerie
+            {t.gallery}
           </button>
           <button
             onClick={() => setActiveTab('upload')}
@@ -641,7 +653,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             }`}
           >
             <Upload className="w-4 h-4" />
-            Upload
+            {t.upload}
           </button>
           <button
             onClick={() => setActiveTab('preview')}
@@ -652,7 +664,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             }`}
           >
             <Eye className="w-4 h-4" />
-            Vorschau
+            {t.preview}
           </button>
         </div>
 
@@ -666,8 +678,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 {/* Active Images */}
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Aktive Bilder ({activeImages.length})</h2>
-                    <Badge variant="default">Im Karussell sichtbar</Badge>
+                    <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">{t.activeImagesTitle} ({activeImages.length})</h2>
+                    <Badge variant="default">{t.visibleInCarousel}</Badge>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {activeImages.map(image => (
@@ -680,10 +692,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         />
                         <div className="flex gap-2">
                           <Button size="sm" variant="outline" onClick={() => handleMove(image.id, -1, 'active')}>
-                            Nach oben
+                            ↑
                           </Button>
                           <Button size="sm" variant="outline" onClick={() => handleMove(image.id, 1, 'active')}>
-                            Nach unten
+                            ↓
                           </Button>
                         </div>
                       </div>
@@ -695,8 +707,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 {inactiveImages.length > 0 && (
                   <div>
                     <div className="flex items-center justify-between mb-4">
-                      <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Inaktive Bilder ({inactiveImages.length})</h2>
-                      <Badge variant="secondary">Im Karussell versteckt</Badge>
+                      <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">{t.inactiveImagesTitle} ({inactiveImages.length})</h2>
+                      <Badge variant="secondary">{t.hiddenFromCarousel}</Badge>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                       {inactiveImages.map(image => (
@@ -709,10 +721,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                           />
                           <div className="flex gap-2">
                             <Button size="sm" variant="outline" onClick={() => handleMove(image.id, -1, 'inactive')}>
-                              Nach oben
+                              ↑
                             </Button>
                             <Button size="sm" variant="outline" onClick={() => handleMove(image.id, 1, 'inactive')}>
-                              Nach unten
+                              ↓
                             </Button>
                           </div>
                         </div>
@@ -739,9 +751,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
         {activeTab === 'preview' && (
           <div className="space-y-6">
             <Card className="p-6">
-              <h2 className="text-xl font-semibold mb-4 text-slate-900 dark:text-slate-100">Karussell-Vorschau</h2>
+              <h2 className="text-xl font-semibold mb-4 text-slate-900 dark:text-slate-100">{t.carouselPreviewTitle}</h2>
               <p className="text-slate-600 dark:text-slate-400 mb-4">
-                So werden Ihre aktiven Bilder im Karussell angezeigt
+                {t.carouselPreviewDescription}
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {activeImages.slice(0, 6).map(image => (
@@ -761,7 +773,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
               </div>
               {activeImages.length === 0 && (
                 <div className="text-center py-8 text-slate-500 dark:text-slate-400">
-                  Keine aktiven Bilder für die Vorschau. Aktivieren Sie einige Bilder, um sie hier zu sehen.
+                  {t.noActiveImagesPreview}
                 </div>
               )}
             </Card>

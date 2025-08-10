@@ -1,23 +1,45 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase/client'
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import { z } from 'zod'
 
 export async function POST(request: NextRequest) {
   if (!supabaseAdmin) {
     return NextResponse.json({ error: 'Supabase Admin Client nicht initialisiert.' }, { status: 500 })
   }
+  // Server-seitige Authentifizierung (nur eingeloggte Benutzer zulassen)
+  const supabase = createRouteHandlerClient({ cookies })
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
 
   try {
-    const { imageIds } = (await request.json()) as { imageIds: string[] }
+    const body = await request.json()
+    const schema = z.object({ imageIds: z.array(z.string().uuid()).min(1) })
+    const { imageIds } = schema.parse(body)
 
     if (!Array.isArray(imageIds) || imageIds.length === 0) {
       return NextResponse.json({ error: 'imageIds muss ein nicht-leeres Array sein.' }, { status: 400 })
     }
 
-    // Aktualisiere display_order für jede ID entsprechend ihrer Position
+    // Prüfe, ob alle IDs existieren
+    const { data: existing, error: existErr } = await supabaseAdmin
+      .from('carousel_images_metadata')
+      .select('id')
+      .in('id', imageIds)
+    if (existErr) {
+      return NextResponse.json({ error: 'Validierung fehlgeschlagen: ' + existErr.message }, { status: 400 })
+    }
+    if (!existing || existing.length !== imageIds.length) {
+      return NextResponse.json({ error: 'Einige IDs existieren nicht.' }, { status: 400 })
+    }
+
+    // Aktualisiere display_order global entsprechend ihrer Position
     const updates = imageIds.map((id, index) => ({ id, display_order: index + 1 }))
 
-    // Supabase unterstützt kein Bulk-Update mit unterschiedlichen Werten in einem Call.
-    // Wir führen daher mehrere Updates parallel aus.
+    // Fallback: Mehrere Updates sequentiell/parallel (ohne RPC-Transaktion)
     const results = await Promise.all(
       updates.map((u) =>
         supabaseAdmin!

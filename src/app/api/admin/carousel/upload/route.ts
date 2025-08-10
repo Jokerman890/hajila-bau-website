@@ -5,6 +5,8 @@ import {
   deleteCarouselImageByPath,
 } from "@/lib/supabase/carousel-storage";
 import sizeOf from "image-size"; // Dependency, muss ggf. installiert werden
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
 
 // Dependency: npm install image-size @types/image-size
 // Diese Route ist für das Admin-Panel gedacht und sollte entsprechend geschützt sein.
@@ -18,6 +20,11 @@ export async function POST(request: NextRequest) {
       { error: "Supabase Admin Client nicht initialisiert." },
       { status: 500 },
     );
+  }
+  const supabase = createRouteHandlerClient({ cookies })
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {

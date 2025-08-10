@@ -1,10 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase/client'
 import { deleteCarouselImageByPath } from '@/lib/supabase/carousel-storage'
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
 
 export async function DELETE(request: NextRequest) {
   if (!supabaseAdmin) {
     return NextResponse.json({ error: 'Supabase Admin Client nicht initialisiert.' }, { status: 500 })
+  }
+  const supabase = createRouteHandlerClient({ cookies })
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {

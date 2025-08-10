@@ -1,14 +1,39 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase/client'
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import { z } from 'zod'
 
 export async function PUT(request: NextRequest) {
   if (!supabaseAdmin) {
     return NextResponse.json({ error: 'Supabase Admin Client nicht initialisiert.' }, { status: 500 })
   }
+  const supabase = createRouteHandlerClient({ cookies })
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
 
   try {
     const payload = await request.json()
-    const { id, ...updates } = payload as { id: string } & Partial<{
+    const baseSchema = z.object({
+      id: z.string().uuid(),
+      title: z.string().nullable().optional(),
+      description: z.string().nullable().optional(),
+      alt_text: z.string().optional(),
+      display_order: z.number().int().optional(),
+      order: z.number().int().optional(),
+      is_active: z.boolean().optional(),
+      size_kb: z.number().int().nullable().optional(),
+      width: z.number().int().nullable().optional(),
+      height: z.number().int().nullable().optional(),
+      storage_path: z.string().nullable().optional(),
+      file_name: z.string().nullable().optional(),
+      public_url: z.string().optional(),
+      uploaded_at: z.string().optional(),
+    })
+    const parsed = baseSchema.parse(payload)
+    const { id, ...updates } = parsed as { id: string } & Partial<{
       title: string | null
       description: string | null
       alt_text: string

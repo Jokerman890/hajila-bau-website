@@ -69,13 +69,13 @@ export async function POST(request: NextRequest) {
       .insert({
         file_name,
         storage_path,
-        // public_url wird durch die DB generiert, kann hier aber auch gesetzt werden
+        // public_url wird nicht gespeichert, wird dynamisch abgeleitet
         alt_text:
           file.name.split(".").slice(0, -1).join(".") || "Hochgeladenes Bild", // Standard Alt-Text
         title:
           file.name.split(".").slice(0, -1).join(".") || "Hochgeladenes Bild", // Standard Titel
         is_active: true,
-        order: 0, // Standard-Reihenfolge, kann später angepasst werden
+        display_order: 0, // Korrektur: display_order statt order
         size_kb: fileSizeKb,
         width,
         height,

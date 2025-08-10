@@ -8,7 +8,21 @@ export async function PUT(request: NextRequest) {
 
   try {
     const payload = await request.json()
-    const { id, ...updates } = payload
+    const { id, ...updates } = payload as { id: string } & Partial<{
+      title: string | null
+      description: string | null
+      alt_text: string
+      display_order: number
+      order?: number
+      is_active: boolean
+      size_kb: number | null
+      width: number | null
+      height: number | null
+      storage_path?: string | null
+      file_name?: string | null
+      public_url?: string
+      uploaded_at?: string
+    }>
 
     if (!id) {
       return NextResponse.json({ error: 'Bild-ID fehlt.' }, { status: 400 })
@@ -18,6 +32,12 @@ export async function PUT(request: NextRequest) {
     delete updates.public_url
     delete updates.uploaded_at
     // storage_path und file_name sollten normalerweise nicht über diesen Weg geändert werden.
+
+    // Mapping: order -> display_order, falls vorhanden
+    if (typeof updates.order === 'number') {
+      updates.display_order = updates.order
+      delete updates.order
+    }
 
     const { data, error } = await supabaseAdmin
       .from('carousel_images_metadata')

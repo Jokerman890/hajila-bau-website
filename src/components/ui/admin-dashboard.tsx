@@ -43,6 +43,7 @@ interface AdminDashboardProps {
   onImageUpload?: (files: FileList, metadata: Array<{width?: number, height?: number, size_kb: number, name: string, type: string }>) => Promise<void> // Nimmt jetzt auch Metadaten entgegen
   onImageDelete?: (id: string) => Promise<void>
   onImageUpdate?: (id: string, updates: Partial<CarouselDisplayImage>) => Promise<void>
+  // onImageReorder?: (orderedIds: string[]) => Promise<void>
   maxImages?: number
   allowedFormats?: string[]
   maxFileSize?: number
@@ -502,6 +503,27 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const inactiveImages = images.filter(img => !img.is_active)
   const totalSize = images.reduce((sum, img) => sum + (img.size_kb || 0), 0) // Summiere size_kb
 
+  const moveImage = (list: CarouselDisplayImage[], id: string, direction: -1 | 1) => {
+    const sorted = [...list].sort((a, b) => a.order - b.order)
+    const index = sorted.findIndex((img) => img.id === id)
+    if (index === -1) return sorted
+    const newIndex = index + direction
+    if (newIndex < 0 || newIndex >= sorted.length) return sorted
+    const temp = sorted[index]
+    sorted[index] = sorted[newIndex]
+    sorted[newIndex] = temp
+    // Recalculate order sequentially starting at 1
+    return sorted.map((img, i) => ({ ...img, order: i + 1 }))
+  }
+
+  const handleMove = async (id: string, direction: -1 | 1, list: 'active' | 'inactive') => {
+    const base = list === 'active' ? activeImages : inactiveImages
+    moveImage(base, id, direction)
+    // Option: neue Reihenfolge an Parent melden
+    // const orderedIds = updatedList.map((img) => img.id)
+    // if (onImageReorder) await onImageReorder(orderedIds)
+  }
+
   if (isLoading) {
     return <LoadingSkeleton />
   }
@@ -650,13 +672,22 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {activeImages.map(image => (
-                      <ImageCard
-                        key={image.id}
-                        image={image}
-                        onDelete={handleImageDelete}
-                        onUpdate={onImageUpdate!} // onImageUpdate ist async, wird in page.tsx gehandhabt
-                        onPreview={handleImagePreview}
-                      />
+                      <div key={image.id} className="space-y-2">
+                        <ImageCard
+                          image={image}
+                          onDelete={handleImageDelete}
+                          onUpdate={onImageUpdate!} // onImageUpdate ist async, wird in page.tsx gehandhabt
+                          onPreview={handleImagePreview}
+                        />
+                        <div className="flex gap-2">
+                          <Button size="sm" variant="outline" onClick={() => handleMove(image.id, -1, 'active')}>
+                            Nach oben
+                          </Button>
+                          <Button size="sm" variant="outline" onClick={() => handleMove(image.id, 1, 'active')}>
+                            Nach unten
+                          </Button>
+                        </div>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -670,13 +701,22 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                       {inactiveImages.map(image => (
-                        <ImageCard
-                          key={image.id}
-                          image={image}
-                          onDelete={handleImageDelete}
-                          onUpdate={onImageUpdate!} // onImageUpdate ist async, wird in page.tsx gehandhabt
-                          onPreview={handleImagePreview}
-                        />
+                        <div key={image.id} className="space-y-2">
+                          <ImageCard
+                            image={image}
+                            onDelete={handleImageDelete}
+                            onUpdate={onImageUpdate!} // onImageUpdate ist async, wird in page.tsx gehandhabt
+                            onPreview={handleImagePreview}
+                          />
+                          <div className="flex gap-2">
+                            <Button size="sm" variant="outline" onClick={() => handleMove(image.id, -1, 'inactive')}>
+                              Nach oben
+                            </Button>
+                            <Button size="sm" variant="outline" onClick={() => handleMove(image.id, 1, 'inactive')}>
+                              Nach unten
+                            </Button>
+                          </div>
+                        </div>
                       ))}
                     </div>
                   </div>

@@ -36,6 +36,17 @@ export async function POST(request: NextRequest) {
     let height: number | undefined;
     const fileSizeKb = Math.round(file.size / 1024);
 
+    // Validierungen
+    const allowed = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+    const fileType = (file as File).type || ''
+    if (!allowed.includes(fileType)) {
+      return NextResponse.json({ error: 'Nicht unterstütztes Dateiformat' }, { status: 400 })
+    }
+    const MAX = 10 * 1024 * 1024
+    if (file.size > MAX) {
+      return NextResponse.json({ error: 'Datei zu groß (max. 10MB)' }, { status: 400 })
+    }
+
     try {
       const bytes = await file.arrayBuffer();
       const fileBuffer = Buffer.from(bytes);
@@ -64,6 +75,15 @@ export async function POST(request: NextRequest) {
     const { path: storage_path } = uploadResult.data;
     const file_name = storage_path; // Da UUID verwendet wird, ist path = Dateiname
 
+    // display_order als (max + 1) bestimmen
+    const { data: orderRows, error: orderErr } = await supabaseAdmin
+      .from('carousel_images_metadata')
+      .select('display_order')
+      .order('display_order', { ascending: false })
+      .limit(1)
+
+    const nextOrder = orderErr || !orderRows || orderRows.length === 0 ? 1 : (orderRows[0].display_order ?? 0) + 1
+
     const { data: dbData, error: dbError } = await supabaseAdmin
       .from("carousel_images_metadata")
       .insert({
@@ -75,7 +95,7 @@ export async function POST(request: NextRequest) {
         title:
           file.name.split(".").slice(0, -1).join(".") || "Hochgeladenes Bild", // Standard Titel
         is_active: true,
-        display_order: 0, // Korrektur: display_order statt order
+        display_order: nextOrder,
         size_kb: fileSizeKb,
         width,
         height,

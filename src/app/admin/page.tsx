@@ -215,12 +215,29 @@ export default function HajilaBauAdminPage() {
     }
   }
 
-  // Handler for reordering (if implemented)
-  // const handleImageReorder = async (orderedImages: CarouselDisplayImage[]) => {
-  //   // This would involve sending the new order to the backend API
-  //   // and updating the 'order' field for each image.
-  //   // For now, we'll assume updates are handled individually.
-  // };
+  // Hinweis: Reordering-Funktion optional aktivierbar
+  // async function handleImageReorder(orderedIds: string[]) {
+  //   try {
+  //     const response = await fetch('/api/admin/carousel/reorder', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ imageIds: orderedIds }),
+  //     })
+  //     if (!response.ok) {
+  //       const err = await response.json()
+  //       throw new Error(err.error || 'Reorder fehlgeschlagen')
+  //     }
+  //     const result: { success: boolean; images: Array<{ id: string; display_order: number }> } = await response.json()
+  //     setCarouselImages((prev) => {
+  //       const map = new Map(result.images.map((img) => [img.id, img.display_order]))
+  //       return [...prev]
+  //         .map((img) => ({ ...img, order: map.get(img.id) ?? img.order }))
+  //         .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+  //     })
+  //   } catch (e) {
+  //     console.error('Reorder-Fehler:', e)
+  //   }
+  // }
 
   if (authLoading) {
     return (
@@ -252,11 +269,12 @@ export default function HajilaBauAdminPage() {
           images={carouselImages}
           isLoading={isLoading}
           hasError={hasError}
-          onRetry={fetchCarouselImages} // Pass the fetch function for retry
+          onRetry={fetchCarouselImages}
           onImageUpload={handleImageUpload}
           onImageDelete={handleImageDelete}
           onImageUpdate={handleImageUpdate}
-          // onImageReorder={handleImageReorder} // Uncomment if reordering is implemented
+          // Reordering optional:
+          // onImageReorder={handleImageReorder}
         />
       </div>
     </div>

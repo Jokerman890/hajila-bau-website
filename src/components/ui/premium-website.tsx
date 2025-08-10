@@ -451,7 +451,7 @@ const PremiumWebsite: React.FC = () => {
                   <Typewriter
                     text={['& Vertrauen', 'Hochbau', 'Klinkerarbeiten', 'WDVS']}
                     speed={80}
-                    className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent"
+                    className="brand-gradient-text"
                     waitTime={2000}
                     deleteSpeed={50}
                     cursorChar="_"
@@ -568,7 +568,7 @@ const PremiumWebsite: React.FC = () => {
             className="text-center mb-16"
           >
             <h2 className="text-4xl lg:text-5xl font-bold mb-6 font-['Merriweather']">
-              <span className="bg-gradient-to-r from-[var(--blue-500)] to-[var(--purple-600)] bg-clip-text text-transparent">
+              <span className="brand-gradient-text">
                 Über uns
               </span>
             </h2>

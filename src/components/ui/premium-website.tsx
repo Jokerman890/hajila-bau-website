@@ -444,7 +444,7 @@ const PremiumWebsite: React.FC = () => {
                 </motion.div>
 
                 <h1 className="text-5xl lg:text-7xl font-bold leading-tight font-['Merriweather']">
-                  <span className="brand-gradient-text">
+                  <span className="bg-gradient-to-r from-[var(--blue-500)] to-[var(--purple-600)] bg-clip-text text-transparent">
                     Bauen mit Präzision
                   </span>
                   <br />
@@ -729,7 +729,7 @@ const PremiumWebsite: React.FC = () => {
               height={48}
               className="mr-2"
             />
-            <span className="text-xl font-bold font-['Merriweather'] brand-gradient-text">Hajila Bau GmbH</span>
+            <span className="text-xl font-bold font-['Merriweather'] bg-gradient-to-r from-[var(--blue-500)] to-[var(--purple-600)] bg-clip-text text-transparent">Hajila Bau GmbH</span>
           </div>
           <p className="mb-2">
             Hajila Bau GmbH · Geschäftsführerin Samia Omerovic · HRB 210702,

@@ -4,7 +4,6 @@ const config = {
   testEnvironment: 'node',
   testTimeout: 30000,
   detectOpenHandles: true,
-  forceExit: true,
   coverageProvider: 'v8',
   
   // Testdateien finden

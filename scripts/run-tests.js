@@ -6,7 +6,7 @@ function runTests() {
   console.log('🚀 Starte Test-Suite...');
   console.log(`ℹ️ Node: ${process.version} | Plattform: ${process.platform}`);
   console.log(`ℹ️ CWD: ${process.cwd()}`);
-  console.log(`ℹ️ NODE_OPTIONS (vorher): ${process.env.NODE_OPTIONS || '(none)'}`);
+  console.log(`ℹ️ NODE_OPTIONS (vorher): ${process.env.NODE_OPTIONS ? '(set)' : '(none)'}`);
   // Zusätzliche CLI-Argumente an Jest weiterreichen (z. B. --watch, --coverage)
   const passthrough = process.argv.slice(2);
   const args = ['jest', '--config', 'jest.config.mjs', '--runInBand', '--verbose', ...passthrough];
@@ -19,7 +19,7 @@ function runTests() {
   } else if (!env.NODE_OPTIONS) {
     env.NODE_OPTIONS = vmFlag;
   }
-  console.log(`ℹ️ NODE_OPTIONS (effektiv): ${env.NODE_OPTIONS}`);
+  console.log(`ℹ️ NODE_OPTIONS (effektiv): ${env.NODE_OPTIONS ? '(set)' : '(none)'}`);
 
   const npxCmd = process.platform === 'win32' ? 'npx.cmd' : 'npx';
   console.log(`ℹ️ NPX Kommando: ${npxCmd}`);

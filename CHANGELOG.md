@@ -5,6 +5,28 @@ Alle wichtigen Änderungen an der Hajila Bau GmbH Website werden in dieser Datei
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.6] - 2025-08-18
+
+### Behoben
+- Fehlende TypeScript-Typdefinitionen für Testing Library hinzugefügt
+- Bildpfade in carousel-images.json korrigiert
+- TypeScript-Konfiguration für Testumgebung aktualisiert
+- CI-Konfiguration für bessere Fehlerbehandlung erweitert
+
+## [0.4.5] - 2025-08-18
+
+### Added
+- Monatlicher Dokumentations-Refresh für npm, Next.js und React
+- Automatische Diff-Erstellung für Dokumentationsaktualisierungen
+- Aktualisierte Playbooks für die Dokumentationsverwaltung
+
+### Changed
+- Versionsaktualisierung auf 0.4.5
+- Verbesserte Dokumentationsstruktur im Context7-Verzeichnis
+
+### Fixed
+- Kleinere Fehler in der Dokumentationsverwaltung
+
 ## [0.4.3] - 2025-07-05
 
 ### Changed in 0.4.3

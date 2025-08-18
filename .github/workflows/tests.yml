@@ -33,14 +33,22 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: 'npm'
 
+      - name: Diagnostics
+        run: |
+          node -v
+          npm -v
+          pwd || cd
+          ls -la
+
       - name: Install dependencies
         run: npm ci
 
-      - name: Run Jest via script
+      - name: Run Jest via script (with junit)
         env:
           CI: true
           NODE_OPTIONS: --experimental-vm-modules
-        run: node scripts/run-tests.js --ci
+          JEST_JUNIT_OUTPUT: junit.xml
+        run: node scripts/run-tests.js --ci --reporters=default --reporters=jest-junit
 
       - name: Upload coverage (if present)
         if: always() && hashFiles('coverage/lcov.info') != ''
@@ -49,12 +57,18 @@ jobs:
           name: coverage-lcov-${{ matrix.os }}-node${{ matrix.node }}
           path: coverage/lcov.info
 
+      - name: Upload junit (if present)
+        if: always() && hashFiles('junit.xml') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-${{ matrix.os }}-node${{ matrix.node }}
+          path: junit.xml
+
       - name: Upload jest output (on failure)
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: jest-logs-${{ matrix.os }}-node${{ matrix.node }}
           path: |
-            junit.xml
             ./**/jest-*.log
           if-no-files-found: ignore

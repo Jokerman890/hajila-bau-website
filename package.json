@@ -23,6 +23,7 @@
     "assets:cleanup": "node scripts/monthly-asset-cleanup.js",
     "assets:cleanup:dry-run": "node scripts/monthly-asset-cleanup.js --dry-run",
     "report:status": "node scripts/status-report.js",
+  "generate:dashboard": "node scripts/generate-dashboard.cjs",
     "docs:diff:init": "node scripts/context7-docs-diff.js --init",
     "docs:diff": "node scripts/context7-docs-diff.js"
   },
@@ -59,6 +60,8 @@
     "@babel/plugin-transform-modules-commonjs": "^7.27.1",
     "@babel/plugin-transform-runtime": "^7.28.3",
     "@babel/preset-env": "^7.28.3",
+    "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
     "@babel/runtime": "^7.28.3",
     "@eslint/eslintrc": "^3",
     "@jest/globals": "^29.7.0",

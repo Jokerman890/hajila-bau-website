@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
+import supabaseDefault, { supabase as supabaseMaybe } from "@/lib/supabase/client";
+const supabase = supabaseMaybe ?? supabaseDefault;
 
 export interface CarouselImage {
   id: string;
@@ -18,17 +20,34 @@ export function useAdminImages() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Hilfsfunktion: Auth-Header mit Access Token
+  const getAuthHeaders = async (extraHeaders: HeadersInit = {}) => {
+    const headers: HeadersInit = { ...extraHeaders };
+    if (supabase) {
+      const { data } = await supabase.auth.getSession();
+      const token = data.session?.access_token;
+      if (token) {
+        (headers as Record<string, string>)["Authorization"] = `Bearer ${token}`;
+      }
+    }
+    return headers;
+  };
+
   // Bilder laden
   const fetchImages = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/admin/images");
+      const headers = await getAuthHeaders();
+      const res = await fetch("/api/admin/images", { headers });
       if (!res.ok) throw new Error("Fehler beim Laden");
       const data = await res.json();
-      setImages(data);
-    } catch (e: any) {
-      setError(e.message);
+      // API liefert { images, success }; kompatibel halten:
+      const list = Array.isArray(data) ? data : data.images ?? [];
+      setImages(list);
+    } catch (e: unknown) {
+      const error = e as Error;
+      setError(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -45,14 +64,17 @@ export function useAdminImages() {
     setIsLoading(true);
     setError(null);
     try {
+      const headers = await getAuthHeaders(); // FormData: Content-Type automatisch
       const res = await fetch("/api/admin/images", {
         method: "POST",
         body: formData,
+        headers,
       });
       if (!res.ok) throw new Error("Upload fehlgeschlagen");
       await fetchImages();
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e: unknown) {
+      const error = e as Error;
+      setError(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -63,13 +85,68 @@ export function useAdminImages() {
     setIsLoading(true);
     setError(null);
     try {
-      const res = await fetch(`/api/admin/images?id=${id}`, { method: "DELETE" });
+      const headers = await getAuthHeaders();
+      const res = await fetch(`/api/admin/images?id=${id}`, { method: "DELETE", headers });
       if (!res.ok) throw new Error("Löschen fehlgeschlagen");
       await fetchImages();
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e: unknown) {
+      const error = e as Error;
+      setError(error.message);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // Bilder neu anordnen
+  const reorderImages = async (imageIds: string[]) => {
+    if (!imageIds || !imageIds.length) {
+      setError('Keine gültigen Bild-IDs zum Sortieren erhalten');
+      return { success: false, error: 'Ungültige Bild-IDs' };
+    }
+
+    // Speichere die ursprüngliche Reihenfolge für den Fall eines Fehlers
+    const originalOrder = [...images];
+    
+    // Optimiertes Update der lokalen State
+    setImages(prevImages => {
+      const imageMap = new Map(prevImages.map(img => [img.id, img]));
+      return imageIds
+        .map((id, index) => {
+          const img = imageMap.get(id);
+          return img ? { ...img, order: index + 1 } : null;
+        })
+        .filter(Boolean) as CarouselImage[];
+    });
+
+    try {
+      const headers = await getAuthHeaders({
+        'Content-Type': 'application/json',
+      });
+      
+      const res = await fetch('/api/admin/carousel/reorder', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ imageIds }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Fehler beim Speichern der neuen Reihenfolge');
+      }
+
+      // Bestätige die erfolgreiche Aktualisierung
+      const result = await res.json();
+      if (result.images) {
+        setImages(result.images);
+      }
+
+      return { success: true };
+    } catch (e: unknown) {
+      // Bei Fehler: Zurück zur ursprünglichen Reihenfolge
+      setImages(originalOrder);
+      const error = e as Error;
+      setError(error.message);
+      return { success: false, error: error.message };
     }
   };
 
@@ -78,34 +155,17 @@ export function useAdminImages() {
     setIsLoading(true);
     setError(null);
     try {
+      const headers = await getAuthHeaders({ "Content-Type": "application/json" });
       const res = await fetch(`/api/admin/images?id=${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify(updates),
       });
-      if (!res.ok) throw new Error("Update fehlgeschlagen");
+      if (!res.ok) throw new Error("Aktualisierung fehlgeschlagen");
       await fetchImages();
-    } catch (e: any) {
-      setError(e.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Reihenfolge ändern (optional)
-  const reorderImages = async (imageIds: string[]) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const res = await fetch(`/api/admin/images/reorder`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ imageIds }),
-      });
-      if (!res.ok) throw new Error("Reihenfolge ändern fehlgeschlagen");
-      await fetchImages();
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e: unknown) {
+      const error = e as Error;
+      setError(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -119,7 +179,7 @@ export function useAdminImages() {
     deleteImage,
     updateImage,
     reorderImages,
-    retry: fetchImages,
+    refresh: fetchImages,
     clearError: () => setError(null),
   };
 }

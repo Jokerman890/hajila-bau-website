@@ -1,0 +1,54 @@
+name: Maintenance Monthly
+
+on:
+  schedule:
+    - cron: "0 3 1 * *"  # Jeden Monat am 1. um 03:00 UTC
+  workflow_dispatch: {}   # Manuell auslösbar
+
+permissions:
+  contents: read
+
+jobs:
+  maintenance:
+    name: Assets-Cleanup Scan + Status Report
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run assets scan (threshold=300KB)
+        run: node scripts/assets-scan.js
+
+      - name: Run status report
+        run: node scripts/status-report.js
+
+      - name: Upload assets scan artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: assets-reports
+          path: |
+            docs/assets/duplicates.csv
+            docs/assets/duplicates.md
+            docs/assets/orphaned.csv
+            docs/assets/orphaned.md
+            docs/assets/large-images.csv
+          if-no-files-found: warn
+
+      - name: Upload status report artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: status-report
+          path: |
+            docs/status/status-*.md
+            docs/status/status-*.csv
+          if-no-files-found: warn

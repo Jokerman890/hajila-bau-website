@@ -23,22 +23,8 @@ interface ImageCarouselProps {
   className?: string
 }
 
-// Entferne window.__NEXT_DATA__ aus getBasePath und nutze nur process.env.NEXT_PUBLIC_BASE_PATH
-const getBasePath = () => {
-  return process.env.NEXT_PUBLIC_BASE_PATH || ''
-}
-
-function withBasePath(path: string) {
-  const base = getBasePath()
-  if (!base || path.startsWith(base)) return path
-  return `${base}${path.startsWith('/') ? '' : '/'}${path}`
-}
-
 // defaultImages: alle Bilder aus JSON verwenden
-const defaultImages: ImageItem[] = (carouselImages as ImageItem[]).map((img) => ({
-  ...img,
-  src: withBasePath(img.src)
-}));
+const defaultImages: ImageItem[] = carouselImages as ImageItem[];
 
 export function ImageCarousel({
   images = defaultImages,
@@ -51,10 +37,17 @@ export function ImageCarousel({
   const [loadedImages, setLoadedImages] = useState<ImageItem[]>([]);
 
   useEffect(() => {
+    const processImages = (imgList: ImageItem[]) => {
+      return imgList.map(img => ({
+        ...img,
+        src: img.src.startsWith('/') ? img.src : `/${img.src}`
+      }));
+    };
+
     if (images && images.length > 0) {
-      setLoadedImages(images.map(img => ({ ...img, src: withBasePath(img.src) })))
+      setLoadedImages(processImages(images));
     } else {
-      setLoadedImages(defaultImages)
+      setLoadedImages(processImages(defaultImages));
     }
   }, [images]);
   const [currentIndex, setCurrentIndex] = useState(0)

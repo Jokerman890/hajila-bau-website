@@ -6,7 +6,7 @@ import { ChevronDown, Sparkles, Zap, Cpu, Code, Layers, Building2, Hammer, Phone
 import { cn } from '@/lib/utils';
 import { GlassCard } from './glass-card';
 import GlowingServiceGrid from './glowing-service-grid';
-import BilderKarussel from './bilder-karussel';
+import ImageCarousel from './bilder-karussel';
 import { HeroSplineBackground } from './construction-hero-section';
 import AnimatedButton from './animated-button';
 
@@ -268,13 +268,15 @@ const PremiumWebsite: React.FC = () => {
       backgroundColor: currentTheme === 'dark' ? '#0A1E33' : '#F8FAFC',
       color: currentTheme === 'dark' ? '#F8FAFC' : '#0A1E33'
     }}>
-      <style jsx global>{`
+<style jsx global>{`
         :root {
           --blue-start: #00C3E3;
           --blue-end: #005B9F;
           --gold: #D4AF37;
           --gold-hover: #B8962F;
           --dark: #0A1E33;
+          --royal-blue: #4A00E0;
+          --lila: #8A2BE2;
         }
         .dark {
           --background: #0A1E33;
@@ -318,7 +320,7 @@ const PremiumWebsite: React.FC = () => {
           --input: #E2E8F0;
           --ring: #005B9F;
         }
-        h1, h2, h3, h4, h5, h6 {
+        h1, h2, h3, h4, h5, h6, footer {
           font-family: 'Merriweather', serif;
         }
         body {
@@ -327,6 +329,38 @@ const PremiumWebsite: React.FC = () => {
         }
         html {
           background-color: ${currentTheme === 'dark' ? '#0A1E33' : '#F8FAFC'} !important;
+        }
+        .dynamic-gradient-text {
+          background: linear-gradient(to right, var(--royal-blue), var(--lila));
+          background-size: 200% 200%;
+          animation: gradient 3s linear infinite;
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+        }
+
+        @keyframes gradient {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+
+        /* Apply dynamic gradient to header, sections, and footer */
+        header,
+        .dynamic-gradient section#services .text-center > div,
+        .dynamic-gradient section#references .text-center > div,
+        .dynamic-gradient section#about-us .text-center > div,
+        .dynamic-gradient section#contact .text-center > div,
+        footer {
+          background: linear-gradient(to right, var(--royal-blue), var(--lila));
+          background-size: 200% 200%;
+          animation: gradient 3s linear infinite;
         }
       `}</style>
       <div className="fixed inset-0 z-0">
@@ -405,26 +439,26 @@ const PremiumWebsite: React.FC = () => {
                   Ihr Partner für Bauprojekte
                 </motion.div>
 
-                <h1 className="text-5xl lg:text-7xl font-bold leading-tight font-['Merriweather']">
-                  <span className="bg-gradient-to-r from-[var(--blue-start)] via-[var(--blue-end)] to-[var(--blue-start)] bg-clip-text text-transparent">
-                    Bauen mit Präzision
-                  </span>
-                  <br />
-                  <Typewriter
-                    text={[
-                      "& Vertrauen",
-                      "Hochbau",
-                      "Klinkerarbeiten",
-                      "WDVS"
-                    ]}
-                    speed={80}
-                    className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent"
-                    waitTime={2000}
-                    deleteSpeed={50}
-                    cursorChar="_"
-                    cursorClassName="text-[var(--gold)]"
-                  />
-                </h1>
+<h1 className="text-5xl lg:text-7xl font-bold leading-tight font-['Merriweather'] dynamic-gradient-text">
+  <span className="bg-gradient-to-r from-[var(--blue-start)] via-[var(--blue-end)] to-[var(--blue-start)] bg-clip-text text-transparent">
+    Bauen mit Präzision
+  </span>
+  <br />
+  <Typewriter
+    text={[
+      "& Vertrauen",
+      "Hochbau",
+      "Klinkerarbeiten",
+      "WDVS"
+    ]}
+    speed={80}
+    className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent"
+    waitTime={2000}
+    deleteSpeed={50}
+    cursorChar="_"
+    cursorClassName="text-[var(--gold)]"
+  />
+</h1>
 
                 <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl font-['Open_Sans']">
                   Ihr Partner für Hochbau & Klinkerarbeiten in Osnabrück.
@@ -464,169 +498,169 @@ const PremiumWebsite: React.FC = () => {
       </section>
 
       {/* Services Section (Features) - Integrated with GlowingServiceGrid */}
-      <section id="services" className="relative z-10 py-20 px-6">
-        <div className="mx-auto max-w-7xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6 font-['Merriweather']">
-              <span className="bg-gradient-to-r from-[var(--blue-start)] to-[var(--blue-end)] bg-clip-text text-transparent">
-                Unsere Leistungen
-              </span>
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-['Open_Sans']">
-              Qualität und Präzision für Ihr Bauvorhaben
-            </p>
-          </motion.div>
-          <GlowingServiceGrid />
-        </div>
-      </section>
+<section id="services" className="relative z-10 py-20 px-6">
+  <div className="mx-auto max-w-7xl">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true }}
+      className="text-center mb-16"
+    >
+      <h2 className="text-4xl lg:text-5xl font-bold mb-6 font-['Merriweather'] dynamic-gradient-text">
+        <span className="bg-gradient-to-r from-[var(--blue-start)] to-[var(--blue-end)] bg-clip-text text-transparent">
+          Unsere Leistungen
+        </span>
+      </h2>
+      <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-['Open_Sans']">
+        Qualität und Präzision für Ihr Bauvorhaben
+      </p>
+    </motion.div>
+    <GlowingServiceGrid />
+  </div>
+</section>
 
       {/* References Section */}
-      <section id="references" className="relative z-10 py-20 px-6">
-        <div className="mx-auto max-w-7xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6 font-['Merriweather']">
-              <span className="bg-gradient-to-r from-[var(--blue-end)] to-[var(--gold)] bg-clip-text text-transparent">
-                Unsere Referenzen
-              </span>
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-['Open_Sans']">
-              Erfolgreich abgeschlossene Projekte
-            </p>
-          </motion.div>
-          <BilderKarussel />
-        </div>
-      </section>
+<section id="references" className="relative z-10 py-20 px-6">
+  <div className="mx-auto max-w-7xl">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true }}
+      className="text-center mb-16"
+    >
+      <h2 className="text-4xl lg:text-5xl font-bold mb-6 font-['Merriweather'] dynamic-gradient-text">
+        <span className="bg-gradient-to-r from-[var(--blue-end)] to-[var(--gold)] bg-clip-text text-transparent">
+          Unsere Referenzen
+        </span>
+      </h2>
+      <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-['Open_Sans']">
+        Erfolgreich abgeschlossene Projekte
+      </p>
+    </motion.div>
+    <ImageCarousel />
+  </div>
+</section>
 
       {/* About Us Section */}
-      <section id="about-us" className="relative z-10 py-20 px-6">
-        <div className="mx-auto max-w-7xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6 font-['Merriweather']">
-              <span className="bg-gradient-to-r from-[var(--blue-end)] to-[var(--gold)] bg-clip-text text-transparent">
-                Über uns
-              </span>
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-['Open_Sans']">
-              Ihre Zufriedenheit ist unser Antrieb
-            </p>
-          </motion.div>
+<section id="about-us" className="relative z-10 py-20 px-6">
+  <div className="mx-auto max-w-7xl">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true }}
+      className="text-center mb-16"
+    >
+      <h2 className="text-4xl lg:text-5xl font-bold mb-6 font-['Merriweather'] dynamic-gradient-text">
+        <span className="bg-gradient-to-r from-[var(--blue-end)] to-[var(--gold)] bg-clip-text text-transparent">
+          Über uns
+        </span>
+      </h2>
+      <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-['Open_Sans']">
+        Ihre Zufriedenheit ist unser Antrieb
+      </p>
+    </motion.div>
 
-          <div className="grid lg:grid-cols-2 gap-12">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="p-8 rounded-2xl bg-card/50 border border-border/50 backdrop-blur-sm"
-            >
-              <h3 className="text-2xl font-bold mb-4 text-foreground font-['Merriweather']">Unsere Mission</h3>
-              <ul className="space-y-3 text-muted-foreground font-['Open_Sans']">
-                <li className="flex items-start gap-2"><Sparkles className="h-5 w-5 text-[var(--gold)] shrink-0 mt-1" /> Qualität ohne Kompromisse</li>
-                <li className="flex items-start gap-2"><Clock className="h-5 w-5 text-[var(--blue-start)] shrink-0 mt-1" /> Strikte Termintreue</li>
-                <li className="flex items-start gap-2"><User className="h-5 w-5 text-[var(--blue-end)] shrink-0 mt-1" /> Persönliche Betreuung vom ersten Gespräch bis zur Schlüsselübergabe</li>
-              </ul>
-            </motion.div>
+    <div className="grid lg:grid-cols-2 gap-12">
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        viewport={{ once: true }}
+        className="p-8 rounded-2xl bg-card/50 border border-border/50 backdrop-blur-sm"
+      >
+<h3 className="text-2xl font-bold mb-4 text-foreground font-['Merriweather'] dynamic-gradient-text">Unsere Mission</h3>
+        <ul className="space-y-3 text-muted-foreground font-['Open_Sans']">
+          <li className="flex items-start gap-2"><Sparkles className="h-5 w-5 text-[var(--gold)] shrink-0 mt-1" /> Qualität ohne Kompromisse</li>
+          <li className="flex items-start gap-2"><Clock className="h-5 w-5 text-[var(--blue-start)] shrink-0 mt-1" /> Strikte Termintreue</li>
+          <li className="flex items-start gap-2"><User className="h-5 w-5 text-[var(--blue-end)] shrink-0 mt-1" /> Persönliche Betreuung vom ersten Gespräch bis zur Schlüsselübergabe</li>
+        </ul>
+      </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              viewport={{ once: true }}
-              className="p-8 rounded-2xl bg-card/50 border border-border/50 backdrop-blur-sm"
-            >
-              <h3 className="text-2xl font-bold mb-4 text-foreground font-['Merriweather']">Unternehmensprofil</h3>
-              <ul className="space-y-3 text-muted-foreground font-['Open_Sans']">
-                <li className="flex items-center gap-2"><CalendarDays className="h-5 w-5 text-[var(--gold)] shrink-0" /> Gegründet: 03.08.2016</li>
-                <li className="flex items-center gap-2"><Landmark className="h-5 w-5 text-[var(--blue-start)] shrink-0" /> Handelsregister: HRB 210702 (AG Osnabrück)</li>
-                <li className="flex items-center gap-2"><User className="h-5 w-5 text-[var(--blue-end)] shrink-0" /> Geschäftsführerin: <strong className="text-foreground">Samia Omerovic</strong></li>
-                <li className="flex items-center gap-2"><Scale className="h-5 w-5 text-[var(--gold)] shrink-0" /> USt-ID: DE401804294</li>
-                <li className="flex items-center gap-2"><Clock className="h-5 w-5 text-[var(--blue-start)] shrink-0" /> Öffnungszeiten: Montag – Samstag 06:00 – 18:00 Uhr</li>
-              </ul>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8, delay: 0.4 }}
+        viewport={{ once: true }}
+        className="p-8 rounded-2xl bg-card/50 border border-border/50 backdrop-blur-sm"
+      >
+<h3 className="text-2xl font-bold mb-4 text-foreground font-['Merriweather']">Unternehmensprofil</h3>
+        <ul className="space-y-3 text-muted-foreground font-['Open_Sans']">
+          <li className="flex items-center gap-2"><CalendarDays className="h-5 w-5 text-[var(--gold)] shrink-0" /> Gegründet: 03.08.2016</li>
+          <li className="flex items-center gap-2"><Landmark className="h-5 w-5 text-[var(--blue-start)] shrink-0" /> Handelsregister: HRB 210702 (AG Osnabrück)</li>
+          <li className="flex items-center gap-2"><User className="h-5 w-5 text-[var(--blue-end)] shrink-0" /> Geschäftsführerin: <strong className="text-foreground">Samia Omerovic</strong></li>
+          <li className="flex items-center gap-2"><Scale className="h-5 w-5 text-[var(--gold)] shrink-0" /> USt-ID: DE401804294</li>
+          <li className="flex items-center gap-2"><Clock className="h-5 w-5 text-[var(--blue-start)] shrink-0" /> Öffnungszeiten: Montag – Samstag 06:00 – 18:00 Uhr</li>
+        </ul>
+      </motion.div>
+    </div>
+  </div>
+</section>
 
       {/* Contact Section */}
-      <section id="contact" className="relative z-10 py-20 px-6">
-        <div className="mx-auto max-w-4xl text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="p-12 rounded-3xl bg-gradient-to-br from-[var(--blue-start)]/10 via-[var(--blue-end)]/10 to-[var(--gold)]/10 border border-[var(--blue-start)]/20 backdrop-blur-sm"
-          >
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6 font-['Merriweather']">
-              <span className="bg-gradient-to-r from-[var(--blue-start)] to-[var(--gold)] bg-clip-text text-transparent">
-                Kontaktieren Sie uns
-              </span>
-            </h2>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto font-['Open_Sans']">
-              Wir freuen uns auf Ihre Anfrage und beraten Sie gerne persönlich.
-            </p>
-            <div className="space-y-4 mb-8 text-foreground font-['Open_Sans']">
-              <p className="flex items-center justify-center gap-2"><MapPin className="h-5 w-5 text-[var(--gold)]" /> Wildeshauser Straße 3, 49088 Osnabrück</p>
-              <p className="flex items-center justify-center gap-2"><Phone className="h-5 w-5 text-[var(--blue-start)]" /> Büro 0541 44026213 · Mobil 0152 23000800 · Fax 0541 44097451</p>
-              <p className="flex items-center justify-center gap-2"><Mail className="h-5 w-5 text-[var(--blue-end)]" /> E-Mail info@hajila-bau.de</p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <AnimatedButton 
-                onClick={() => { window.location.href = 'mailto:info@hajila-bau.de'; }}
-                variant="primary"
-                size="md"
-              >
-                E-Mail senden
-              </AnimatedButton>
-              <AnimatedButton 
-                onClick={() => { window.location.href = 'tel:+4915223000800'; }}
-                variant="ghost"
-                size="md"
-              >
-                Jetzt anrufen
-              </AnimatedButton>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+<section id="contact" className="relative z-10 py-20 px-6 dynamic-gradient-text">
+  <div className="mx-auto max-w-4xl text-center">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true }}
+      className="p-12 rounded-3xl bg-gradient-to-br from-[var(--blue-start)]/10 via-[var(--blue-end)]/10 to-[var(--gold)]/10 border border-[var(--blue-start)]/20 backdrop-blur-sm"
+    >
+      <h2 className="text-4xl lg:text-5xl font-bold mb-6 font-['Merriweather']">
+        <span className="bg-gradient-to-r from-[var(--blue-start)] to-[var(--gold)] bg-clip-text text-transparent">
+          Kontaktieren Sie uns
+        </span>
+      </h2>
+      <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto font-['Open_Sans']">
+        Wir freuen uns auf Ihre Anfrage und beraten Sie gerne persönlich.
+      </p>
+      <div className="space-y-4 mb-8 text-foreground font-['Open_Sans']">
+        <p className="flex items-center justify-center gap-2"><MapPin className="h-5 w-5 text-[var(--gold)]" /> Wildeshauser Straße 3, 49088 Osnabrück</p>
+        <p className="flex items-center justify-center gap-2"><Phone className="h-5 w-5 text-[var(--blue-start)]" /> Büro 0541 44026213 · Mobil 0152 23000800 · Fax 0541 44097451</p>
+        <p className="flex items-center justify-center gap-2"><Mail className="h-5 w-5 text-[var(--blue-end)]" /> E-Mail info@hajila-bau.de</p>
+      </div>
+      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <AnimatedButton 
+          onClick={() => { window.location.href = 'mailto:info@hajila-bau.de'; }}
+          variant="primary"
+          size="md"
+        >
+          E-Mail senden
+        </AnimatedButton>
+        <AnimatedButton 
+          onClick={() => { window.location.href = 'tel:+4915223000800'; }}
+          variant="ghost"
+          size="md"
+        >
+          Jetzt anrufen
+        </AnimatedButton>
+      </div>
+    </motion.div>
+  </div>
+</section>
 
       {/* Footer */}
-      <footer className="relative z-10 py-12 px-6 border-t border-border/50 bg-background/80 backdrop-blur-md">
-        <div className="mx-auto max-w-7xl text-center text-sm text-muted-foreground font-['Open_Sans']">
-          <div className="flex justify-center items-center mb-4">
-            <img src="https://hajila-bau.de/logo_2d.png" alt="Hajila Bau Logo" width="48" height="48" className="mr-2" style={{borderRadius: '8px'}} />
-            <span className="text-xl font-bold bg-gradient-to-r from-[var(--blue-start)] to-[var(--blue-end)] bg-clip-text text-transparent font-['Merriweather']">
-              Hajila Bau GmbH
-            </span>
-          </div>
-                <p className="mb-2">Hajila Bau GmbH · Geschäftsführerin Samia Omerovic · HRB 210702, Amtsgericht Osnabrück</p>
-          <p className="mb-4">USt-ID: DE401804294</p>
-          <p className="mb-4">© 2025 Hajila Bau GmbH – Alle Rechte vorbehalten.</p>
-          <div className="flex justify-center gap-x-6">
-            <a href="/impressum" className="hover:text-foreground transition-colors flex items-center gap-1"><FileText className="h-4 w-4" /> Impressum</a>
-            <a href="/datenschutz" className="hover:text-foreground transition-colors flex items-center gap-1"><Lock className="h-4 w-4" /> Datenschutz</a>
-            <a href="/cookies" className="hover:text-foreground transition-colors flex items-center gap-1">🍪 Cookie-Hinweis</a>
-          </div>
-        </div>
-      </footer>
+<footer className="relative z-10 py-12 px-6 border-t border-border/50 bg-background/80 backdrop-blur-md dynamic-gradient-text">
+  <div className="mx-auto max-w-7xl text-center text-sm text-muted-foreground font-['Open_Sans']">
+    <div className="flex justify-center items-center mb-4">
+      <img src="https://hajila-bau.de/logo_2d.png" alt="Hajila Bau Logo" width="48" height="48" className="mr-2" style={{borderRadius: '8px'}} />
+      <span className="text-xl font-bold bg-gradient-to-r from-[var(--blue-start)] to-[var(--blue-end)] bg-clip-text text-transparent font-['Merriweather']">
+        Hajila Bau GmbH
+      </span>
+    </div>
+          <p className="mb-2">Hajila Bau GmbH · Geschäftsführerin Samia Omerovic · HRB 210702, Amtsgericht Osnabrück</p>
+    <p className="mb-4">USt-ID: DE401804294</p>
+    <p className="mb-4">© 2025 Hajila Bau GmbH – Alle Rechte vorbehalten.</p>
+    <div className="flex justify-center gap-x-6">
+      <a href="/impressum" className="hover:text-foreground transition-colors flex items-center gap-1"><FileText className="h-4 w-4" /> Impressum</a>
+      <a href="/datenschutz" className="hover:text-foreground transition-colors flex items-center gap-1"><Lock className="h-4 w-4" /> Datenschutz</a>
+      <a href="/cookies" className="hover:text-foreground transition-colors flex items-center gap-1">🍪 Cookie-Hinweis</a>
+    </div>
+  </div>
+</footer>
     </div>
   );
 };

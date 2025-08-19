@@ -5,16 +5,15 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-// Check if Supabase is properly configured
-export const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey && supabaseServiceKey)
+// Public client für das Frontend (nur URL und Anon-Key nötig!)
+export const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey)
 
-// Public client for frontend operations (only if configured)
 export const supabase = isSupabaseConfigured 
   ? createClient(supabaseUrl!, supabaseAnonKey!)
   : null
 
-// Admin client for backend operations (with service role key, only if configured)
-export const supabaseAdmin = isSupabaseConfigured
+// Admin client für das Backend (Service Role Key nötig)
+export const supabaseAdmin = (supabaseUrl && supabaseServiceKey)
   ? createClient(supabaseUrl!, supabaseServiceKey!, {
       auth: {
         autoRefreshToken: false,

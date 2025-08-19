@@ -1,0 +1,26 @@
+{
+  "libraries": [
+    {
+      "id": "/websites/npmjs",
+      "topics": [
+        "commands",
+        "install"
+      ]
+    },
+    {
+      "id": "/vercel/next.js",
+      "topics": [
+        "routing",
+        "config"
+      ]
+    },
+    {
+      "id": "/reactjs/react.dev",
+      "topics": [
+        "hooks",
+        "components"
+      ]
+    }
+  ],
+  "tokens": 4000
+}

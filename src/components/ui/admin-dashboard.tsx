@@ -13,25 +13,14 @@ import {
   Save,
   X,
   AlertCircle,
-  CheckCircle,
-  RefreshCw
+  RefreshCw,
+  ArrowUpDown
 } from 'lucide-react'
+import { Button } from './button'
+// Simple drag and drop implementation using HTML5 API
 
-interface CarouselImage {
-  id: string
-  url: string
-  title: string
-  description?: string
-  alt: string
-  order: number
-  isActive: boolean
-  uploadedAt: Date
-  size: number
-  dimensions: {
-    width: number
-    height: number
-  }
-}
+// Import the CarouselImage type from useAdminImages
+import type { CarouselImage } from '@/hooks/useAdminImages';
 
 interface AdminDashboardProps {
   images?: CarouselImage[]
@@ -41,7 +30,7 @@ interface AdminDashboardProps {
   onImageUpload?: (files: FileList) => void
   onImageDelete?: (id: string) => void
   onImageUpdate?: (id: string, updates: Partial<CarouselImage>) => void
-  // onImageReorder?: (imageIds: string[]) => Promise<void>
+  onImageReorder?: (imageIds: string[]) => void
   maxImages?: number
   allowedFormats?: string[]
   maxFileSize?: number
@@ -53,8 +42,6 @@ const Card: React.FC<{ children: React.ReactNode; className?: string }> = ({ chi
     {children}
   </div>
 )
-
-import { Button } from './button'
 
 // Simple Input Component
 const Input: React.FC<{
@@ -101,140 +88,34 @@ const Label: React.FC<{ children: React.ReactNode; htmlFor?: string; className?:
 )
 
 // Simple Badge Component
-const Badge: React.FC<{ children: React.ReactNode; variant?: 'default' | 'secondary' }> = ({ children, variant = 'default' }) => {
+const Badge: React.FC<{ children: React.ReactNode; variant?: 'default' | 'secondary' }> = ({ children, variant = 'default' }) => (
+  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+    variant === 'default' 
+      ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' 
+      : 'bg-slate-100 text-slate-800 dark:bg-slate-900/30 dark:text-slate-300'
+  }`}>
+    {children}
+  </span>
+)
 
-// Drag & Drop Imports
-import {
-  DndContext,
-  closestCenter,
-  PointerSensor,
-  TouchSensor,
-  KeyboardSensor,
-  useSensor,
-  useSensors,
-  DragEndEvent,
-} from '@dnd-kit/core';
-import {
-  arrayMove,
-  SortableContext,
-  useSortable,
-  verticalListSortingStrategy,
-  sortableKeyboardCoordinates,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-
-// SortableImageCard-Komponente
-interface SortableImageCardProps {
-  image: CarouselImage;
-  onDelete: (id: string) => void;
-  onUpdate: (id: string, updates: Partial<CarouselImage>) => void;
-  onPreview: (image: CarouselImage) => void;
+// Helper function to format file size
+const formatFileSize = (bytes: number) => {
+  if (bytes === 0) return '0 Bytes'
+  const k = 1024
+  const sizes = ['Bytes', 'KB', 'MB', 'GB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
 }
 
-function SortableImageCard({ image, ...props }: SortableImageCardProps) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging, isOver } = useSortable({ id: image.id });
-  const style = {
-    transform: ` scale()`,
-  transition: 'transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s',
-    transition,
-    opacity: isDragging ? 0.7 : 1,
-    boxShadow: isDragging
-      ? '0 8px 32px 0 rgba(30, 64, 175, 0.25), 0 1.5px 6px 0 rgba(30, 64, 175, 0.10)'
-      : '0 1px 4px 0 rgba(30, 41, 59, 0.08)',
-    border: isOver ? '2px solid #3b82f6' : '1px solid transparent',
-    borderRadius: '1rem',
-    background: isDragging ? 'linear-gradient(90deg, #e0e7ef 0%, #f1f5f9 100%)' : undefined,
-    cursor: isDragging ? 'grabbing' : 'grab',
-    zIndex: isDragging ? 50 : 1,
-  };
-  return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <ImageCard image={image} {...props} />
-    </div>
-  );
-}> = ({ onFileUpload, maxFiles = 10, allowedFormats = ['image/jpeg', 'image/png', 'image/webp'], maxFileSize = 5 * 1024 * 1024 }) => {
-  const [isDragOver, setIsDragOver] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement>(null)
-
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    setIsDragOver(true)
-  }
-
-  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    setIsDragOver(false)
-  }
-
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    setIsDragOver(false)
-    const files = e.dataTransfer.files
-    if (files.length > 0) {
-      onFileUpload(files)
-    }
-  }
-
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files
-    if (files && files.length > 0) {
-      onFileUpload(files)
-    }
-  }
-
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes'
-    const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-  }
-
-  return (
-    <Card className="p-6">
-      <div
-        className={`border-2 border-dashed rounded-lg p-8 text-center transition-all duration-300 cursor-pointer ${
-          isDragOver 
-            ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/20 scale-105' 
-            : 'border-slate-300 dark:border-slate-600 hover:border-blue-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
-        }`}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-        onClick={() => fileInputRef.current?.click()}
-      >
-        <Upload className={`w-12 h-12 mx-auto mb-4 transition-colors duration-300 ${
-          isDragOver ? 'text-blue-500' : 'text-slate-400'
-        }`} />
-        <h3 className="text-lg font-semibold mb-2 text-slate-900 dark:text-slate-100">Upload Reference Images</h3>
-        <p className="text-slate-600 dark:text-slate-400 mb-4">
-          Drag and drop images here, or click to select files
-        </p>
-        <div className="text-sm text-slate-500 dark:text-slate-400 space-y-1">
-          <p>Maximum {maxFiles} images</p>
-          <p>Supported formats: JPEG, PNG, WebP</p>
-          <p>Maximum file size: {formatFileSize(maxFileSize)}</p>
-        </div>
-        
-        <input
-          ref={fileInputRef}
-          type="file"
-          multiple
-          accept={allowedFormats.join(',')}
-          onChange={handleFileSelect}
-          className="hidden"
-        />
-      </div>
-    </Card>
-  )
-}
-
-const ImageCard: React.FC<{
+// ImageCard Component
+interface ImageCardProps {
   image: CarouselImage
   onDelete: (id: string) => void
   onUpdate: (id: string, updates: Partial<CarouselImage>) => void
   onPreview: (image: CarouselImage) => void
-}> = ({ image, onDelete, onUpdate, onPreview }) => {
+}
+
+const ImageCard: React.FC<ImageCardProps> = ({ image, onDelete, onUpdate, onPreview }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [editForm, setEditForm] = useState({
     title: image.title,
@@ -256,34 +137,38 @@ const ImageCard: React.FC<{
     setIsEditing(false)
   }
 
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes'
-    const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-  }
-
   return (
-    <Card className="group hover:shadow-lg transition-all duration-300">
+    <Card className="group relative overflow-hidden hover:shadow-lg transition-all duration-300">
       <div className="relative">
         <Image
           src={image.url}
           alt={image.alt}
-          width={800}
-          height={600}
+          width={300}
+          height={200}
           className="w-full h-48 object-cover rounded-t-lg"
         />
         <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <Button="h-8 w-8 p-0 transition-transform duration-150 hover:scale-105"
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="h-8 w-8 p-0 transition-transform duration-150 hover:scale-105"
+            onClick={() => onPreview(image)}
           >
             <Eye className="w-4 h-4" />
           </Button>
-          <Button="h-8 w-8 p-0 transition-transform duration-150 hover:scale-105"
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="h-8 w-8 p-0 transition-transform duration-150 hover:scale-105"
+            onClick={() => setIsEditing(true)}
           >
             <Edit className="w-4 h-4" />
           </Button>
-          <Button="h-8 w-8 p-0 transition-transform duration-150 hover:scale-105"
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="h-8 w-8 p-0 transition-transform duration-150 hover:scale-105"
+            onClick={() => onDelete(image.id)}
           >
             <Trash2 className="w-4 h-4" />
           </Button>
@@ -336,10 +221,21 @@ const ImageCard: React.FC<{
               />
             </div>
             <div className="flex gap-2">
-              <Button="w-4 h-4 mr-1 transition-transform duration-150 hover:scale-105" />
+              <Button 
+                size="sm" 
+                className="w-full"
+                onClick={handleSave}
+              >
+                <Save className="w-4 h-4 mr-1" />
                 Save
               </Button>
-              <Button="w-4 h-4 mr-1 transition-transform duration-150 hover:scale-105" />
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="w-full"
+                onClick={handleCancel}
+              >
+                <X className="w-4 h-4 mr-1" />
                 Cancel
               </Button>
             </div>
@@ -360,7 +256,10 @@ const ImageCard: React.FC<{
               <span className="text-xs text-slate-500 dark:text-slate-400">
                 Order: {image.order}
               </span>
-              <Button="bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800 transition-colors transition-transform duration-150 hover:scale-105" onUpdate(image.id, { isActive: !image.isActive })}
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => onUpdate(image.id, { isActive: !image.isActive })}
               >
                 {image.isActive ? 'Deactivate' : 'Activate'}
               </Button>
@@ -372,55 +271,91 @@ const ImageCard: React.FC<{
   )
 }
 
-const LoadingSkeleton: React.FC = () => (
-  <div className="space-y-6">
+// ImageUploadZone Component
+interface ImageUploadZoneProps {
+  onFileUpload: (files: FileList) => void
+  maxFiles?: number
+  allowedFormats?: string[]
+  maxFileSize?: number
+}
+
+const ImageUploadZone: React.FC<ImageUploadZoneProps> = ({ 
+  onFileUpload, 
+  maxFiles = 10, 
+  allowedFormats = ['image/jpeg', 'image/png', 'image/webp'], 
+  maxFileSize = 5 * 1024 * 1024 
+}) => {
+  const [isDragOver, setIsDragOver] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    setIsDragOver(true)
+  }
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    setIsDragOver(false)
+  }
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    setIsDragOver(false)
+    const files = e.dataTransfer.files
+    if (files.length > 0) {
+      onFileUpload(files)
+    }
+  }
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (files && files.length > 0) {
+      onFileUpload(files)
+    }
+  }
+
+  return (
     <Card className="p-6">
-      <div className="w-full h-32 bg-slate-200 dark:bg-slate-700 rounded animate-pulse" />
-    </Card>
-    
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
-      {Array.from({ length: 8 }).map((_, i) => (
-        <Card key={i} className="overflow-hidden">
-          <div className="w-full h-48 bg-slate-200 dark:bg-slate-700 animate-pulse" />
-          <div className="p-4 space-y-2">
-            <div className="w-3/4 h-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse" />
-            <div className="w-full h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse" />
-            <div className="w-1/2 h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse" />
-          </div>
-        </Card>
-      ))}
-    </div>
-  </div>
-)
-
-const ErrorState: React.FC<{ onRetry?: () => void }> = ({ onRetry }) => (
-  <Alert className="border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-950/20 rounded-xl shadow transition-opacity duration-300">
-    <AlertCircle className="h-4 w-4 text-red-600" />
-    <AlertDescription className="text-red-800 dark:text-red-200">
-      Failed to load dashboard data. Please try again.
-      {onRetry && (
-        <Button="w-4 h-4 mr-1 transition-transform duration-150 hover:scale-105" />
-          Retry
+      <div
+        className={`border-2 border-dashed rounded-lg p-8 text-center transition-all duration-300 cursor-pointer ${
+          isDragOver 
+            ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/20 scale-105' 
+            : 'border-slate-300 dark:border-slate-600 hover:border-blue-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
+        }`}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        onClick={() => fileInputRef.current?.click()}
+      >
+        <input
+          ref={fileInputRef}
+          type="file"
+          multiple
+          accept={allowedFormats.join(',')}
+          onChange={handleFileSelect}
+          className="hidden"
+        />
+        <Upload className="mx-auto h-12 w-12 text-slate-400 mb-4" />
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
+          Drop images here or click to browse
+        </h3>
+        <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+          Supports: {allowedFormats.join(', ')} • Max: {formatFileSize(maxFileSize)} • Limit: {maxFiles} files
+        </p>
+        <Button 
+          variant="outline"
+          onClick={() => fileInputRef.current?.click()}
+        >
+          <Plus className="w-4 h-4 mr-2" />
+          Add Images
         </Button>
-      )}
-    </AlertDescription>
-  </Alert>
-)
+      </div>
+    </Card>
+  )
+}
 
-const EmptyState: React.FC<{ onUpload: () => void }> = ({ onUpload }) => (
-  <Card className="p-12 text-center">
-    <ImageIcon className="w-16 h-16 mx-auto text-slate-400 mb-4" />
-    <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">No Images Uploaded</h3>
-    <p className="text-slate-600 dark:text-slate-400 mb-4">
-      Start building your carousel by uploading reference images.
-    </p>
-    <Button="w-4 h-4 mr-2 transition-transform duration-150 hover:scale-105" />
-      Upload Images
-    </Button>
-  </Card>
-)
-
-const AdminDashboard: React.FC<AdminDashboardProps> = ({
+// Main AdminDashboard Component
+export default function AdminDashboard({
   images = [],
   isLoading = false,
   hasError = false,
@@ -432,323 +367,223 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   maxImages = 20,
   allowedFormats = ['image/jpeg', 'image/png', 'image/webp'],
   maxFileSize = 5 * 1024 * 1024
-}) => {
-  const [activeTab, setActiveTab] = useState('gallery')
-  const [uploadSuccess, setUploadSuccess] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement>(null)
+}: AdminDashboardProps) {
+  const [selectedImage, setSelectedImage] = useState<CarouselImage | null>(null)
+  const [localImages, setLocalImages] = useState<CarouselImage[]>(images)
+  const [isReordering, setIsReordering] = useState(false)
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null)
 
-  const handleFileUpload = (files: FileList) => {
-    setUploadSuccess(true)
-    setTimeout(() => setUploadSuccess(false), 3000)
-    onImageUpload?.(files)
-  }
+  // Update local images when props change
+  React.useEffect(() => {
+    setLocalImages(images)
+  }, [images])
 
-  const handleImageDelete = (id: string) => {
-    if (window.confirm('Are you sure you want to delete this image?')) {
-      onImageDelete?.(id)
-    }
-  }
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, index: number) => {
+    if (!isReordering) return;
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', index.toString());
+    setDraggedIndex(index);
+  };
 
-  const handleImagePreview = (image: CarouselImage) => {
-    window.open(image.url, '_blank')
-  }
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>, index: number) => {
+    if (!isReordering || draggedIndex === null) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    
+    if (draggedIndex === index) return;
+    
+    const newImages = [...localImages];
+    const [movedImage] = newImages.splice(draggedIndex, 1);
+    newImages.splice(index, 0, movedImage);
+    
+    setLocalImages(newImages);
+    setDraggedIndex(index);
+  };
 
-  const activeImages = images.filter(img => img.isActive)
-const inactiveImages = images.filter(img => !img.isActive)
-const totalSize = images.reduce((sum, img) => sum + img.size, 0)
-
-// Drag & Drop State für aktive Bilder
-const [orderedImages, setOrderedImages] = useState(activeImages);
-const [reorderError, setReorderError] = useState<string | null>(null);
-const [reorderSuccess, setReorderSuccess] = useState(false);
-
-useEffect(() => {
-  setOrderedImages(activeImages);
-}, [activeImages]);
-const sensors = useSensors(
-  useSensor(PointerSensor),
-  useSensor(TouchSensor),
-  useSensor(KeyboardSensor, {
-    coordinateGetter: sortableKeyboardCoordinates,
-  })
-);
-const handleDragEnd = async (event: DragEndEvent) => {
-  const { active, over } = event;
-  if (active.id !== over?.id) {
-    const oldIndex = orderedImages.findIndex(img => img.id === active.id);
-    const newIndex = orderedImages.findIndex(img => img.id === over?.id);
-    const newOrder = arrayMove(orderedImages, oldIndex, newIndex);
-    setOrderedImages(newOrder);
-    if (onImageReorder) {
-      try {
-        await onImageReorder(newOrder.map(img => img.id));
-        setReorderSuccess(true);
-        setTimeout(() => setReorderSuccess(false), 2000);
-      } catch (e: any) {
-        setReorderError("Reihenfolge konnte nicht gespeichert werden.");
-        setOrderedImages(activeImages); // Rollback
-        setTimeout(() => setReorderError(null), 4000);
+  const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    if (!isReordering || draggedIndex === null) return;
+    
+    try {
+      // Update the order in the parent component
+      if (onImageReorder) {
+        await onImageReorder(localImages.map(img => img.id));
+        // Show success feedback
+        alert('Die neue Reihenfolge wurde erfolgreich gespeichert.');
       }
+    } catch (error) {
+      console.error('Fehler beim Speichern der neuen Reihenfolge:', error);
+      alert('Es gab ein Problem beim Speichern der neuen Reihenfolge. Bitte versuchen Sie es erneut.');
+      // Reset to original order on error
+      setLocalImages(images);
+    } finally {
+      setDraggedIndex(null);
     }
-  }
-};
+  };
+  
+  const handleDragEnd = () => {
+    setDraggedIndex(null);
+  };
 
   if (isLoading) {
-    return <LoadingSkeleton />
+    return (
+      <div className="flex items-center justify-center p-8">
+        <div className="text-center">
+          <RefreshCw className="mx-auto h-8 w-8 animate-spin text-blue-600 mb-4" />
+          <p className="text-slate-600 dark:text-slate-400">Loading dashboard...</p>
+        </div>
+      </div>
+    )
   }
 
   if (hasError) {
-    return <ErrorState onRetry={onRetry} />
+    return (
+      <div className="text-center p-8">
+        <AlertCircle className="mx-auto h-12 w-12 text-red-500 mb-4" />
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
+          Failed to load dashboard data. Please try again.
+        </h3>
+        {onRetry && (
+          <Button onClick={onRetry} className="mt-4">
+            <RefreshCw className="w-4 h-4 mr-2" />
+            Retry
+          </Button>
+        )}
+      </div>
+    )
+  }
+
+  if (!images || images.length === 0) {
+    return (
+      <div className="text-center p-8">
+        <ImageIcon className="mx-auto h-12 w-12 text-slate-400 mb-4" />
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
+          No images uploaded yet
+        </h3>
+        <p className="text-slate-600 dark:text-slate-400 mb-4">
+          Start building your carousel by uploading reference images.
+        </p>
+        {onImageUpload && (
+          <ImageUploadZone
+            onFileUpload={onImageUpload}
+            maxFiles={maxImages}
+            allowedFormats={allowedFormats}
+            maxFileSize={maxFileSize}
+          />
+        )}
+      </div>
+    )
   }
 
   return (
-    <div className="space-y-6 p-6 bg-transparent">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Carousel Admin</h1>
-          <p className="text-slate-600 dark:text-slate-400">Manage your reference images for the carousel</p>
-        </div>
-        
-        <div className="flex items-center gap-3">
-          <Button="bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800 transition-colors transition-transform duration-150 hover:scale-105" fileInputRef.current?.click()}>
-            <Plus className="w-4 h-4 mr-2" />
-            Add Images
-          </Button>
-          <input
-            ref={fileInputRef}
-            type="file"
-            multiple
-            accept={allowedFormats.join(',')}
-            onChange={(e) => e.target.files && handleFileUpload(e.target.files)}
-            className="hidden"
-          />
-        </div>
-      </div>
-
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="p-6">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-blue-500">
-              <ImageIcon className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <p className="text-sm text-slate-600 dark:text-slate-400">Total Images</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{images.length}</p>
-            </div>
-          </div>
-        </Card>
-        
-        <Card className="p-6">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-green-500">
-              <CheckCircle className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <p className="text-sm text-slate-600 dark:text-slate-400">Active Images</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{activeImages.length}</p>
-            </div>
-          </div>
-        </Card>
-        
-        <Card className="p-6">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-orange-500">
-              <Upload className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <p className="text-sm text-slate-600 dark:text-slate-400">Storage Used</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{(totalSize / 1024 / 1024).toFixed(1)}MB</p>
-            </div>
-          </div>
-        </Card>
-        
-        <Card className="p-6">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-purple-500">
-              <Eye className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <p className="text-sm text-slate-600 dark:text-slate-400">Available Slots</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{maxImages - images.length}</p>
-            </div>
-          </div>
-        </Card>
-      </div>
-
-      {uploadSuccess && (
-        <Alert className="border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950/20 rounded-xl shadow transition-opacity duration-300">
-          <CheckCircle className="h-4 w-4 text-green-600" />
-          <AlertDescription className="text-green-800 dark:text-green-200">
-            Images uploaded successfully!
-          </AlertDescription>
-        </Alert>
+    <div className="space-y-6">
+      {/* Upload Zone */}
+      {onImageUpload && images.length < maxImages && (
+        <ImageUploadZone
+          onFileUpload={onImageUpload}
+          maxFiles={maxImages - images.length}
+          allowedFormats={allowedFormats}
+          maxFileSize={maxFileSize}
+        />
       )}
 
-      <div className="border-t border-slate-200 dark:border-slate-700" />
+      {/* Reorder Controls */}
+      <div className="flex justify-end mb-4">
+        <Button
+          variant={isReordering ? 'default' : 'outline'}
+          onClick={() => setIsReordering(!isReordering)}
+          size="sm"
+          className="flex items-center gap-2"
+        >
+          <ArrowUpDown className="w-4 h-4" />
+          {isReordering ? 'Done Reordering' : 'Reorder Images'}
+        </Button>
+      </div>
 
-      {/* Simple Tab Navigation */}
-      <div className="space-y-6">
-        <div className="flex space-x-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg w-fit">
-          <button
-            onClick={() => setActiveTab('gallery')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              activeTab === 'gallery'
-                ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
+      {/* Images Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {localImages.map((image, index) => (
+          <div
+            key={image.id}
+            draggable={isReordering}
+            onDragStart={(e) => handleDragStart(e, index)}
+            onDragOver={(e) => handleDragOver(e, index)}
+            onDrop={handleDrop}
+            onDragEnd={handleDragEnd}
+            className={`relative transition-all duration-200 transform ${isReordering ? 'cursor-move hover:scale-[1.02]' : ''} ${
+              draggedIndex === index ? 'opacity-50 scale-95' : 'hover:shadow-lg'
             }`}
           >
-            <ImageIcon className="w-4 h-4" />
-            Gallery
-          </button>
-          <button
-            onClick={() => setActiveTab('upload')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              activeTab === 'upload'
-                ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
-            }`}
-          >
-            <Upload className="w-4 h-4" />
-            Upload
-          </button>
-          <button
-            onClick={() => setActiveTab('preview')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              activeTab === 'preview'
-                ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
-            }`}
-          >
-            <Eye className="w-4 h-4" />
-            Preview
-          </button>
-        </div>
-
-        {/* Tab Content */}
-        {activeTab === 'gallery' && (
-          <div className="space-y-6">
-  {reorderSuccess && (
-    <Alert className="border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950/20 mb-2 rounded-xl shadow transition-opacity duration-300">
-      <CheckCircle className="h-4 w-4 text-green-600" />
-      <AlertDescription className="text-green-800 dark:text-green-200">
-        Reihenfolge erfolgreich gespeichert!
-      </AlertDescription>
-    </Alert>
-  )}
-  {reorderError && (
-    <Alert className="border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-950/20 mb-2 rounded-xl shadow transition-opacity duration-300">
-      <AlertCircle className="h-4 w-4 text-red-600" />
-      <AlertDescription className="text-red-800 dark:text-red-200">
-        {reorderError}
-      </AlertDescription>
-    </Alert>
-  )}
-
-            {images.length === 0 ? (
-              <EmptyState onUpload={() => setActiveTab('upload')} />
-            ) : (
-              <div className="space-y-6">
-                {/* Active Images */}
-                <div>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
-  Tipp: Du kannst die Reihenfolge per Maus, Touch oder Tastatur (Tab + Pfeiltasten + Leertaste) ändern.
-</p>
-<div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Active Images ({activeImages.length})</h2>
-                    <Badge variant="default">Visible in Carousel</Badge>
-                  </div>
-                  <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-  <SortableContext items={orderedImages.map(img => img.id)} strategy={verticalListSortingStrategy}>
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
-      {orderedImages.map(image => (
-        <SortableImageCard
-          key={image.id}
-          image={image}
-          onDelete={handleImageDelete}
-          onUpdate={onImageUpdate!}
-          onPreview={handleImagePreview}
-        />
-      ))}
-    </div>
-  </SortableContext>
-</DndContext>
-                </div>
-
-                {/* Inactive Images */}
-                {inactiveImages.length > 0 && (
-                  <div>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
-  Tipp: Du kannst die Reihenfolge per Maus, Touch oder Tastatur (Tab + Pfeiltasten + Leertaste) ändern.
-</p>
-<div className="flex items-center justify-between mb-4">
-                      <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Inactive Images ({inactiveImages.length})</h2>
-                      <Badge variant="secondary">Hidden from Carousel</Badge>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
-                      {inactiveImages.map(image => (
-                        <ImageCard
-                          key={image.id}
-                          image={image}
-                          onDelete={handleImageDelete}
-                          onUpdate={onImageUpdate!}
-                          onPreview={handleImagePreview}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                )}
+            <ImageCard
+              image={image}
+              onDelete={onImageDelete || (() => {})}
+              onUpdate={onImageUpdate || (() => {})}
+              onPreview={setSelectedImage}
+            />
+            {isReordering && (
+              <div className="absolute -left-2 -top-2 bg-blue-500 text-white p-1 rounded-full">
+                <GripVertical className="w-4 h-4" />
               </div>
             )}
           </div>
-        )}
-
-        {activeTab === 'upload' && (
-          <div className="space-y-6">
-            <ImageUploadZone
-              onFileUpload={handleFileUpload}
-              maxFiles={maxImages}
-              allowedFormats={allowedFormats}
-              maxFileSize={maxFileSize}
-            />
-          </div>
-        )}
-
-        {activeTab === 'preview' && (
-          <div className="space-y-6">
-            <Card className="p-6">
-              <h2 className="text-xl font-semibold mb-4 text-slate-900 dark:text-slate-100">Carousel Preview</h2>
-              <p className="text-slate-600 dark:text-slate-400 mb-4">
-                This is how your active images will appear in the carousel
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {activeImages.slice(0, 6).map(image => (
-                  <div key={image.id} className="relative group">
-                    <Image
-                      src={image.url}
-                      alt={image.alt}
-                      width={800}
-                      height={600}
-                      className="w-full h-32 object-cover rounded-lg"
-                    />
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">
-                      <span className="text-white text-sm font-medium">Order: {image.order}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              {activeImages.length === 0 && (
-                <div className="text-center py-8 text-slate-500 dark:text-slate-400">
-                  No active images to preview. Activate some images to see them here.
-                </div>
-              )}
-            </Card>
-          </div>
-        )}
+        ))}
       </div>
+
+      {/* Image Preview Modal */}
+      {selectedImage && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto">
+            <div className="p-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
+              <h3 className="text-lg font-semibold">{selectedImage.title}</h3>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSelectedImage(null)}
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+            <div className="p-4">
+              <Image
+                src={selectedImage.url}
+                alt={selectedImage.alt}
+                width={600}
+                height={400}
+                className="w-full h-auto rounded-lg mb-4"
+              />
+              {selectedImage.description && (
+                <p className="text-slate-600 dark:text-slate-400 mb-4">
+                  {selectedImage.description}
+                </p>
+              )}
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className="font-medium">Dimensions:</span>
+                  <br />
+                  {selectedImage.dimensions.width} × {selectedImage.dimensions.height}
+                </div>
+                <div>
+                  <span className="font-medium">File Size:</span>
+                  <br />
+                  {formatFileSize(selectedImage.size)}
+                </div>
+                <div>
+                  <span className="font-medium">Order:</span>
+                  <br />
+                  {selectedImage.order}
+                </div>
+                <div>
+                  <span className="font-medium">Status:</span>
+                  <br />
+                  <Badge variant={selectedImage.isActive ? "default" : "secondary"}>
+                    {selectedImage.isActive ? "Active" : "Inactive"}
+                  </Badge>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
-
-export default AdminDashboard

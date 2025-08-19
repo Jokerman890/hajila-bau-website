@@ -1,0 +1,10 @@
+[33mdd15f30[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge pull request #34 from Jokerman890/cursor/match-hero-and-footer-colors-to-about-us-ac40
+[33ma93b538[m[33m ([m[1;31morigin/cursor/match-hero-and-footer-colors-to-about-us-ac40[m[33m)[m Replace brand-gradient-text with explicit Tailwind gradient classes
+[33m6cbefc6[m Merge pull request #33 from Jokerman890/cursor/website-bug-check-and-optimization-c4de
+[33ma734cd9[m feat(admin,carousel,design): persistentes Reordering, Upload-Härtung, Hostinger-Bildoptimierung; Brand-Gradient für Firmenname sitewide; v0.4.10 docs (Changelog/Memory) [build green]
+[33m9c96886[m Add brand gradient text to admin page and glass card headings
+[33mb353222[m Checkpoint before follow-up message
+[33mc367e2c[m Implement carousel image reordering and upload hardening
+[33m4d169ed[m Enhance image management with validation, reordering, and dynamic config
+[33mfab1036[m Fix carousel admin UI, update image handling, and improve German translations
+[33mcf25c6f[m Update eslint.yml

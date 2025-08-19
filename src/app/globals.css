@@ -24,7 +24,7 @@
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
-  --color-destructive: var(--destructive);
+  --destructive: var(--destructive);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -76,6 +76,8 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --royal-blue: #4A00E0;
+  --lila: #8A2BE2;
 }
 
 .dark {
@@ -119,4 +121,75 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.dynamic-gradient-text {
+  background: linear-gradient(to right, var(--royal-blue), var(--lila));
+  background-size: 200% 200%;
+  animation: gradient 3s linear infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Apply dynamic gradient to header, sections, and footer */
+header,
+section#services .text-center > div,
+section#references .text-center > div,
+section#about-us .text-center > div,
+section#contact .text-center > div,
+footer {
+  background: linear-gradient(to right, var(--royal-blue), var(--lila));
+  background-size: 200% 200%;
+  animation: gradient 3s linear infinite;
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .dynamic-gradient-text,
+  header,
+  section#services .text-center > div,
+  section#references .text-center > div,
+  section#about-us .text-center > div,
+  section#contact .text-center > div,
+  footer {
+    animation: none !important;
+    background-position: 50% 50% !important;
+  }
+}
+
+/* Gradient Text Styles */
+.gradient-text {
+  background: linear-gradient(90deg, var(--royal-blue), var(--lila));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+/* Apply gradient to all headings */
+h1, h2, h3, h4, h5, h6 {
+  @apply gradient-text;
+}
+
+/* Specific style for hero text */
+.hero-heading {
+  @apply text-4xl md:text-6xl font-bold mb-4 gradient-text;
+  background: linear-gradient(90deg, var(--royal-blue), var(--lila));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
 }

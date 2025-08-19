@@ -13,22 +13,7 @@ import {
   Globe
 } from 'lucide-react'
 
-// Dynamically import the dashboard to avoid SSR issues
-interface CarouselImage {
-  id: string
-  url: string
-  title: string
-  description?: string
-  alt: string
-  order: number
-  isActive: boolean
-  uploadedAt: Date
-  size: number
-  dimensions: {
-    width: number
-    height: number
-  }
-}
+// The CarouselImage type is now imported in the AdminDashboard component
 
 const AdminDashboard = dynamic(() => import('@/components/ui/admin-dashboard'), {
   ssr: false,
@@ -147,18 +132,19 @@ export default function HajilaBauAdminPage() {
           </div>
 
           {/* Admin Dashboard Component */}
-<AdminDashboard
-  images={dashboard.images}
-  isLoading={dashboard.isLoading}
-  hasError={!!dashboard.error}
-  onRetry={dashboard.retry}
-  onImageUpload={dashboard.uploadImages}
-  onImageDelete={dashboard.deleteImage}
-  onImageUpdate={dashboard.updateImage}
-  maxImages={20}
-  allowedFormats={['image/jpeg', 'image/png', 'image/webp']}
-  maxFileSize={5 * 1024 * 1024}
-/>
+          <AdminDashboard
+            images={dashboard.images}
+            isLoading={dashboard.isLoading}
+            hasError={!!dashboard.error}
+            onRetry={dashboard.refresh}
+            onImageUpload={dashboard.uploadImages}
+            onImageDelete={dashboard.deleteImage}
+            onImageUpdate={dashboard.updateImage}
+            onImageReorder={dashboard.reorderImages}
+            maxImages={20}
+            allowedFormats={['image/jpeg', 'image/png', 'image/webp']}
+            maxFileSize={5 * 1024 * 1024}
+          />
 </div>
 
         {/* Company Information Section */}

@@ -1,5 +1,6 @@
 // Jest setup file
-import '@testing-library/jest-dom'
+// Use CommonJS require here to avoid ESM parse errors in Jest runtime
+require('@testing-library/jest-dom')
 
 // Mock environment variables for tests
 process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co'

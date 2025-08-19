@@ -314,15 +314,15 @@ function HeroContent() {
         transition={{ duration: 0.8, delay: 0.2 }}
       >
         <motion.h1 
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight tracking-wide"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight tracking-wide gradient-text"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
           Hajila Bau GmbH
         </motion.h1>
-<motion.h2 
-          className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold mb-4 leading-tight tracking-wide"
+        <motion.h2 
+          className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold mb-4 leading-tight tracking-wide gradient-text"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
@@ -351,7 +351,7 @@ function HeroContent() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          Bauen mit Präzision - Ihr Partner für Hochbau & Klinkerarbeiten mit jahrelanger Erfahrung und höchsten Qualitätsstandards.
+          <span className="gradient-text font-bold">Bauen mit Präzision</span> - Ihr Partner für Hochbau & Klinkerarbeiten mit jahrelanger Erfahrung und höchsten Qualitätsstandards.
         </motion.p>
         <motion.div 
           className="flex pointer-events-auto flex-col sm:flex-row items-start space-y-3 sm:space-y-0 sm:space-x-3"
@@ -498,7 +498,7 @@ const ConstructionHeroSection: React.FC<Record<string, never>> = ({}) => {
           viewport={{ once: true }}
         >
           <motion.h2 
-            className="text-4xl font-bold text-center mb-8"
+            className="text-4xl font-bold text-center mb-8 gradient-text"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}

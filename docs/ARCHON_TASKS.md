@@ -4,6 +4,12 @@ Zweck: Kurzleitfaden und Aufgabenliste, damit die erzeugte Doku, der Dashboard-G
 
 - PR: `#36` — docs: add best-practice docs + dashboard generator
 
+## Archon / MCP — Dokumentation & Follow-ups
+
+Zweck: Kurzleitfaden und Aufgabenliste, damit die erzeugte Doku, der Dashboard-Generator und CI-Fixes nicht verloren gehen und in Archon/PR-Workflow nachverfolgbar sind.
+
+- PR: `#36` — docs: add best-practice docs + dashboard generator
+
 Aufgaben (Checkliste)
 
 1. Dokumentation pflegen (Owner: @Jokerman890)
@@ -35,14 +41,20 @@ Aufgaben (Checkliste)
 
 Kurz-Anleitungen
 
-- Lokaler Generator (Beispiel):
+-- Lokaler Generator (Beispiel):
 
   1. node v18+ benutzen
   2. `npm ci`
   3. `npm run generate:dashboard`
   4. Output prüfen: `docs/status/dashboard-README.md`, `docs/status/images/`
 
-- CI-Fix: Minimaler `permissions`-Block (in `.github/workflows/pr-checks.yml`):
+CI/Status-Update (aktuell)
+
+- Vercel Build schlug fehl wegen ERESOLVE (peer dependency conflict zwischen `@typescript-eslint`-Versionen).
+- Aktion: `package.json` angepasst (downgrade `@typescript-eslint/eslint-plugin` zu v6) und `package-lock.json` lokal neu generiert. Änderungen wurden in Branch `feature/supabase-auth` gepusht (Commit 8123fd0).
+- Folge: Lokale Tests laufen grün; nun Vercel-Deploy prüfen (neues Deploy oder `.npmrc`-Workaround).
+
+CI-Fix: Minimaler `permissions`-Block (in `.github/workflows/pr-checks.yml`):
 
 ```yaml
 permissions:
@@ -52,7 +64,8 @@ permissions:
 
 Nächste Schritte (empfohlen)
 
-1. Ich kann die CI-Logs der fehlschlagenden Jest-Jobs aus dem PR abrufen und hier posten (hilft beim Fix). — der schnellste Weg zum Fix.
-2. Ich kann einen kleinen PR vorschlagen/öffnen, der nur den `permissions`-Block in der Workflow-Datei ergänzt. Möchtest du das?
+1. Logs prüfen: Ich kann die vollständigen GitHub Actions-Logs und Vercel-Logs sammeln und analysieren, um verbleibende CI-Fehler exakt zu lokalisieren.
+2. Workflow-Fix: Ich kann einen PR öffnen, der nur den `permissions`-Block ergänzt (klein, schnell, höchstwahrscheinlich sicher).
+3. Optional: Kurzfristiger Vercel-Workaround: `.npmrc` mit `legacy-peer-deps=true` committen, falls sofortiges Redeploy nötig ist.
 
-Wenn du möchtest, führe ich sofort Option 1 (Logs holen) oder Option 2 (permissions-PR öffnen) aus.
+Wenn du möchtest, führe ich sofort Option 1 (Logs holen & analysieren) und Option 2 (permissions-PR öffnen) aus.

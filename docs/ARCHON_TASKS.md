@@ -54,13 +54,10 @@ CI/Status-Update (aktuell)
 - Aktion: `package.json` angepasst (downgrade `@typescript-eslint/eslint-plugin` zu v6) und `package-lock.json` lokal neu generiert. Änderungen wurden in Branch `feature/supabase-auth` gepusht (Commit 8123fd0).
 - Folge: Lokale Tests laufen grün; nun Vercel-Deploy prüfen (neues Deploy oder `.npmrc`-Workaround).
 
-CI-Fix: Minimaler `permissions`-Block (in `.github/workflows/pr-checks.yml`):
+CI-Fix: Workflow-Status
 
-```yaml
-permissions:
-  contents: read
-  actions: read
-```
+- Hinweis: Die Workflow-Datei `.github/workflows/pr-checks.yml` enthält bereits einen `permissions:` Block (contents: read, actions: read). Kein PR für `permissions` nötig.
+
 
 Nächste Schritte (empfohlen)
 

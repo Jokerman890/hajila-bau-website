@@ -30,9 +30,8 @@ import { cn } from '@/lib/utils'
 import {
   supabase,
   isSupabaseClientConfigured,
-  STORAGE_BUCKET,
 } from '@/lib/supabase/client'
-import { getStorageUrl } from '@/lib/supabase/storage'
+import { getLocalPublicUrl } from '@/lib/local-storage' // Korrektur für lokale Bilder
 import { HeroSplineBackground } from './construction-hero-section'
 import { GlassCard } from './glass-card'
 import GlowingServiceGrid from './glowing-service-grid'
@@ -249,22 +248,18 @@ const PremiumWebsite: React.FC = () => {
       try {
         const { data, error } = await supabase
           .from('carousel_images_metadata')
-          .select('id, file_name, alt_text, title, description') // Select file_name instead of public_url
+          .select('id, storage_path, alt_text, title, description') // Wähle storage_path
           .eq('is_active', true)
-          .order('order', { ascending: true })
+          .order('display_order', { ascending: true }) // Korrigiert auf display_order
 
         if (error) throw error
 
-        // Generiere public_url mit getStorageUrl und warte auf alle Promises
-        const imagesWithPublicUrlsPromises = (data ?? []).map(
-          async (image) => ({
-            ...image,
-            public_url: await getStorageUrl(STORAGE_BUCKET, image.file_name), // Verwende file_name und warte
-          }),
-        )
-        const imagesWithPublicUrls = await Promise.all(
-          imagesWithPublicUrlsPromises,
-        )
+        // Generiere public_url direkt mit getLocalPublicUrl
+        const imagesWithPublicUrls = (data ?? []).map((image) => ({
+          ...image,
+          public_url: getLocalPublicUrl(image.storage_path), // Benutze die neue lokale Funktion
+        }))
+
         setCarouselImages(imagesWithPublicUrls as CarouselSlideImage[])
       } catch (err) {
         console.error('Fehler beim Laden der Bilder:', err)

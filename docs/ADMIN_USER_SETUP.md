@@ -113,6 +113,17 @@ Nach erfolgreichem Login sollten Sie sehen:
 - ✅ Drag & Drop funktioniert
 - ✅ Keine Fehler in Browser-Console
 
+### Neue Funktion: Bilder Synchronisieren
+Zusätzlich zur normalen Upload-Funktion gibt es einen **"Sync Images"** Button.
+
+**Zweck**: Diese Funktion ist nützlich, wenn Bilder manuell (z.B. per FTP) in den `public/uploads/carousel`-Ordner hochgeladen wurden. Solche Bilder erscheinen nicht automatisch im Karussell, da der zugehörige Datenbankeintrag fehlt.
+
+**So funktioniert's**:
+1.  Klicken Sie auf den **"Sync Images"**-Button.
+2.  Das System vergleicht die Dateien im Ordner mit den Einträgen in der Datenbank.
+3.  Alle neuen, noch nicht erfassten Bilder werden automatisch in die Datenbank aufgenommen.
+4.  **Wichtig**: Neu synchronisierte Bilder sind standardmäßig **inaktiv**. Sie müssen sie in der Galerie manuell aktivieren, damit sie im Karussell auf der Webseite erscheinen.
+
 ## 🚨 TROUBLESHOOTING
 
 ### Häufige Probleme:
@@ -187,4 +198,4 @@ console.log(await supabase.auth.getSession());
 **PROJEKT-ID**: csrsbihrqlejyrjndrkz  
 **REGION**: eu-central-1  
 **STATUS**: Bereit für Admin-User-Erstellung  
-**VERSION**: v0.4.8
+**VERSION**: v0.5.0

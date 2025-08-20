@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase/client'
-import { deleteCarouselImageByPath } from '@/lib/supabase/carousel-storage'
+import { deleteFileLocally } from '@/lib/local-storage.server' // Korrigierter Import für Server-Datei
 
 export async function DELETE(request: NextRequest) {
   if (!supabaseAdmin) {
@@ -27,16 +27,15 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'Bild nicht gefunden oder Fehler beim Abrufen: ' + (fetchError?.message || '') }, { status: 404 })
     }
 
-    // 2. Bild aus Supabase Storage löschen
+    // 2. Bild aus dem lokalen Dateisystem löschen
     if (imageMeta.storage_path) {
-      const deleteStorageResult = await deleteCarouselImageByPath(imageMeta.storage_path)
+      const deleteStorageResult = await deleteFileLocally(imageMeta.storage_path)
       if (deleteStorageResult.error) {
-        // Fehler beim Löschen aus Storage ist nicht ideal, aber wir versuchen trotzdem, den DB-Eintrag zu löschen.
-        // In einer robusteren Implementierung könnte man hier anders verfahren (z.B. Soft-Delete in DB).
-        console.warn('Fehler beim Löschen des Bildes aus Storage, fahre aber mit DB-Löschung fort:', deleteStorageResult.error.message)
+        // Fehler beim lokalen Löschen ist nicht ideal, aber wir versuchen trotzdem, den DB-Eintrag zu löschen.
+        console.warn('Fehler beim Löschen der lokalen Datei, fahre aber mit DB-Löschung fort:', deleteStorageResult.error.message)
       }
     } else {
-        console.warn(`Kein storage_path für Bild-ID ${id} gefunden, Überspringe Storage-Löschung.`)
+        console.warn(`Kein storage_path für Bild-ID ${id} gefunden, Überspringe Löschung der Datei.`)
     }
 
 

@@ -6,7 +6,7 @@ import LogoutButton from '@/components/LogoutButton'
 import AdminDashboard from '@/components/ui/admin-dashboard' // Import AdminDashboard
 import { useAuth } from '@/components/AuthProvider'
 import { supabase } from '@/lib/supabase/client' // Import public supabase client statt supabaseAdmin
-import { getPublicImageUrl } from '@/lib/supabase/carousel-storage' // Import helper for public URLs
+import { getLocalPublicUrl } from '@/lib/local-storage' // Geändert für lokale Speicherung
 import { CarouselDisplayImage } from '@/components/ui/admin-dashboard' // Import the type
 
 // Define the AdminPage component
@@ -63,7 +63,7 @@ export default function HajilaBauAdminPage() {
 
         const processedImages = data.map((img: CarouselImageRow) => ({
           id: img.id,
-          public_url: getPublicImageUrl(img.storage_path), // Use helper to get public URL
+          public_url: getLocalPublicUrl(img.storage_path), // Use helper to get public URL
           title: img.title,
           description: img.description,
           alt_text: img.alt_text,
@@ -127,7 +127,7 @@ export default function HajilaBauAdminPage() {
         if (result.success && result.image) {
           const newImage: CarouselDisplayImage = {
             id: result.image.id,
-            public_url: getPublicImageUrl(result.image.storage_path),
+            public_url: getLocalPublicUrl(result.image.storage_path),
             title: result.image.title,
             description: result.image.description,
             alt_text: result.image.alt_text,

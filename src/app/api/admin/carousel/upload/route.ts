@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/client";
 import {
-  uploadCarouselImage,
-  deleteCarouselImageByPath,
-} from "@/lib/supabase/carousel-storage";
-import sizeOf from "image-size"; // Dependency, muss ggf. installiert werden
+  saveFileLocally,
+  deleteFileLocally,
+} from "@/lib/local-storage"; // Geändert für lokale Speicherung
+import sizeOf from "image-size";
 
 // Dependency: npm install image-size @types/image-size
 // Diese Route ist für das Admin-Panel gedacht und sollte entsprechend geschützt sein.
@@ -58,8 +58,8 @@ export async function POST(request: NextRequest) {
       // Fehler ist nicht kritisch, Upload wird fortgesetzt
     }
 
-    // Bild in Supabase Storage hochladen
-    const uploadResult = await uploadCarouselImage(file);
+    // Bild lokal speichern
+    const uploadResult = await saveFileLocally(file);
 
     if (uploadResult.error || !uploadResult.data) {
       return NextResponse.json(
@@ -72,8 +72,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Metadaten in der Datenbank speichern
-    const { path: storage_path } = uploadResult.data;
-    const file_name = storage_path; // Da UUID verwendet wird, ist path = Dateiname
+    const { path: storage_path, fileName: file_name } = uploadResult.data;
 
     // display_order als (max + 1) bestimmen
     const { data: orderRows, error: orderErr } = await supabaseAdmin
@@ -89,27 +88,24 @@ export async function POST(request: NextRequest) {
       .insert({
         file_name,
         storage_path,
-        // public_url wird nicht gespeichert, wird dynamisch abgeleitet
         alt_text:
-          file.name.split(".").slice(0, -1).join(".") || "Hochgeladenes Bild", // Standard Alt-Text
+          file.name.split(".").slice(0, -1).join(".") || "Hochgeladenes Bild",
         title:
-          file.name.split(".").slice(0, -1).join(".") || "Hochgeladenes Bild", // Standard Titel
+          file.name.split(".").slice(0, -1).join(".") || "Hochgeladenes Bild",
         is_active: true,
         display_order: nextOrder,
         size_kb: fileSizeKb,
         width,
         height,
-        // user_id: (await supabaseAdmin.auth.getUser()).data.user?.id // Optional: Wer hat es hochgeladen
       })
       .select()
       .single();
 
     if (dbError) {
-      // Wenn DB-Eintrag fehlschlägt, löschen wir das zuvor hochgeladene Bild (Rollback)
       console.error("Fehler beim Speichern der Bildmetadaten in DB:", dbError);
 
-      const { error: deleteError } =
-        await deleteCarouselImageByPath(storage_path);
+      // Rollback: Lokal gespeicherte Datei löschen
+      const { error: deleteError } = await deleteFileLocally(storage_path);
       if (deleteError) {
         console.error(
           "Rollback fehlgeschlagen, Bild konnte nicht gelöscht werden:",

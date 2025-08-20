@@ -44,6 +44,7 @@ interface AdminDashboardProps {
   onImageDelete?: (id: string) => Promise<void>
   onImageUpdate?: (id: string, updates: Partial<CarouselDisplayImage>) => Promise<void>
   onImageReorder?: (orderedIds: string[]) => Promise<void>
+  onImageSync?: () => Promise<void> // Hinzugefügt für die Synchronisierung
   maxImages?: number
   allowedFormats?: string[]
   maxFileSize?: number
@@ -435,6 +436,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   onImageDelete,
   onImageUpdate,
   onImageReorder,
+  onImageSync,
   maxImages = 20,
   allowedFormats = ['image/jpeg', 'image/png', 'image/webp'],
   maxFileSize = 5 * 1024 * 1024
@@ -541,6 +543,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
         </div>
         
         <div className="flex items-center gap-3">
+          {onImageSync && (
+            <Button variant="outline" onClick={onImageSync}>
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Sync Images
+            </Button>
+          )}
           <Button onClick={() => fileInputRef.current?.click()}>
             <Plus className="w-4 h-4 mr-2" />
             Add Images

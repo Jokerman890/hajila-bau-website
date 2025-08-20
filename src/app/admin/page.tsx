@@ -19,6 +19,7 @@ export default function HajilaBauAdminPage() {
     [],
   )
   const [isLoading, setIsLoading] = useState(true)
+  const [isSyncing, setIsSyncing] = useState(false) // Zustand für den Sync-Vorgang
   const [hasError, setHasError] = useState(false)
 
   // Fetch initial carousel images
@@ -239,6 +240,66 @@ export default function HajilaBauAdminPage() {
     }
   }
 
+  // Handler for image sync
+  const handleImageSync = async () => {
+    setIsSyncing(true)
+    try {
+      const response = await fetch('/api/admin/carousel/sync', {
+        method: 'POST',
+      })
+      const result = await response.json()
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to sync images.')
+      }
+
+      if (result.success && result.added > 0 && result.newImages) {
+        // Definiere einen Typ für die neuen Bilder von der API
+        interface SyncedImage {
+          id: string;
+          storage_path: string;
+          title: string | null;
+          description: string | null;
+          alt_text: string;
+          display_order: number;
+          is_active: boolean;
+          uploaded_at: string;
+          size_kb: number | null;
+          width: number | null;
+          height: number | null;
+          file_name: string | null;
+        }
+
+        // Neue Bilder zur Anzeige aufbereiten
+        const newImagesProcessed = result.newImages.map((img: SyncedImage) => ({
+          id: img.id,
+          public_url: getLocalPublicUrl(img.storage_path),
+          title: img.title,
+          description: img.description,
+          alt_text: img.alt_text,
+          order: img.display_order,
+          is_active: img.is_active,
+          uploaded_at: img.uploaded_at,
+          size_kb: img.size_kb,
+          width: img.width,
+          height: img.height,
+          file_name: img.file_name,
+          storage_path: img.storage_path,
+        }))
+
+        setCarouselImages((prevImages) => [...prevImages, ...newImagesProcessed]);
+        alert(`${result.added} neue Bilder wurden hinzugefügt. Sie sind zunächst inaktiv.`);
+      } else {
+        alert(result.message || 'Synchronisierung abgeschlossen.');
+      }
+
+    } catch (error: unknown) {
+      console.error('Error syncing images:', error)
+      alert(`Ein Fehler ist aufgetreten: ${error instanceof Error ? error.message : 'Unbekannter Fehler'}`);
+    } finally {
+      setIsSyncing(false)
+    }
+  }
+
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -268,13 +329,14 @@ export default function HajilaBauAdminPage() {
         {/* Render the AdminDashboard component */}
         <AdminDashboard
           images={carouselImages}
-          isLoading={isLoading}
+          isLoading={isLoading || isSyncing} // Kombinierter Ladezustand
           hasError={hasError}
           onRetry={fetchCarouselImages}
           onImageUpload={handleImageUpload}
           onImageDelete={handleImageDelete}
           onImageUpdate={handleImageUpdate}
           onImageReorder={handleImageReorder}
+          onImageSync={handleImageSync} // Sync-Handler übergeben
         />
       </div>
     </div>

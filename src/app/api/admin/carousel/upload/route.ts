@@ -3,7 +3,7 @@ import { supabaseAdmin } from "@/lib/supabase/client";
 import {
   saveFileLocally,
   deleteFileLocally,
-} from "@/lib/local-storage"; // Geändert für lokale Speicherung
+} from "@/lib/local-storage.server"; // Korrigierter Import für Server-Datei
 import sizeOf from "image-size";
 
 // Dependency: npm install image-size @types/image-size

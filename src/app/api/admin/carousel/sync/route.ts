@@ -56,8 +56,21 @@ export async function POST() {
 
     let nextOrder = orderErr || !orderRows || orderRows.length === 0 ? 1 : (orderRows[0].display_order ?? 0) + 1
 
+    // Definiere einen Typ für die einzufügenden Bilddaten
+    interface NewImageDbRecord {
+      file_name: string;
+      storage_path: string;
+      alt_text: string;
+      title: string;
+      is_active: boolean;
+      display_order: number;
+      size_kb: number;
+      width?: number;
+      height?: number;
+    }
+
     // 5. Metadaten für neue Bilder vorbereiten
-    const imagesToInsert: Record<string, any>[] = [] // Array explizit typisieren
+    const imagesToInsert: NewImageDbRecord[] = []
     for (const fileName of newFiles) {
       const filePath = path.join(UPLOADS_DIR, fileName)
       // Erstellt einen Pfad, der im Web zugänglich ist (z.B. /uploads/carousel/bild.jpg)

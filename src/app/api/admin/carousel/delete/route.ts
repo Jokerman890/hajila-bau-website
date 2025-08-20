@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase/client'
-import { deleteFileLocally } from '@/lib/local-storage' // Geändert für lokale Speicherung
+import { deleteFileLocally } from '@/lib/local-storage.server' // Korrigierter Import für Server-Datei
 
 export async function DELETE(request: NextRequest) {
   if (!supabaseAdmin) {

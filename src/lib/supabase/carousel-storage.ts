@@ -4,10 +4,7 @@
 import { supabase, supabaseAdmin } from './client' // beide Clients aus einer Datei
 import { v4 as uuidv4 } from 'uuid'
 import { imageSize } from 'image-size'
-import { promisify } from 'util'
-import { Readable } from 'stream'
-
-const imageSizeFromStream = promisify(imageSize)
+// Readable and stream-based helpers removed as currently unused
 
 export const CAROUSEL_BUCKET_NAME = 'carousel-gallery'
 
@@ -161,7 +158,7 @@ export async function uploadCarouselImage(
 
   try {
     // Speichere Metadaten in der Datenbank
-    const { data: dbData, error: dbError } = await supabaseAdmin
+  const { error: dbError } = await supabaseAdmin
       .from('carousel_images')
       .insert({
         storage_path: data.path,

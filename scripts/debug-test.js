@@ -14,7 +14,7 @@ console.log('Aktuelles Verzeichnis:', process.cwd());
 try {
   const testFile = path.join(__dirname, 'debug-test-file.txt');
   fs.writeFileSync(testFile, 'Test');
-  const fileContent = fs.readFileSync(testFile, 'utf8');
+  void fs.readFileSync(testFile, 'utf8');
   fs.unlinkSync(testFile);
   console.log('Dateisystemzugriff: ✅ Funktioniert');
 } catch (error) {

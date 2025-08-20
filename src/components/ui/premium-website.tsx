@@ -398,6 +398,7 @@ const PremiumWebsite: React.FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               {/* Direktes Bild statt Logo3D-Komponente */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="https://hajila-bau.de/logo_2d.png" alt="Hajila Bau Logo" width="48" height="48" style={{borderRadius: '8px'}} />
             </div>
 
@@ -645,8 +646,9 @@ const PremiumWebsite: React.FC = () => {
       {/* Footer */}
 <footer className="relative z-10 py-12 px-6 border-t border-border/50 bg-background/80 backdrop-blur-md dynamic-gradient-text">
   <div className="mx-auto max-w-7xl text-center text-sm text-muted-foreground font-['Open_Sans']">
-    <div className="flex justify-center items-center mb-4">
-      <img src="https://hajila-bau.de/logo_2d.png" alt="Hajila Bau Logo" width="48" height="48" className="mr-2" style={{borderRadius: '8px'}} />
+  <div className="flex justify-center items-center mb-4">
+  {/* eslint-disable-next-line @next/next/no-img-element */}
+  <img src="https://hajila-bau.de/logo_2d.png" alt="Hajila Bau Logo" width="48" height="48" className="mr-2" style={{borderRadius: '8px'}} />
       <span className="text-xl font-bold bg-gradient-to-r from-[var(--blue-start)] to-[var(--blue-end)] bg-clip-text text-transparent font-['Merriweather']">
         Hajila Bau GmbH
       </span>

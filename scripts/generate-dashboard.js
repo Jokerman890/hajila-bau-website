@@ -119,7 +119,7 @@ async function readCsvIf(filePath) {
   try {
     const t = await fsp.readFile(filePath, 'utf8');
     return t;
-  } catch (e) {
+  } catch {
     return null;
   }
 }

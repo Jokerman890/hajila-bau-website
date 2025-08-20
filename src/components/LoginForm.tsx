@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import supabaseDefault, { supabase as supabaseMaybe, isSupabaseConfigured } from "@/lib/supabase/client";
+import supabaseDefault, { supabase as supabaseMaybe } from "@/lib/supabase/client";
 const supabase = supabaseMaybe ?? supabaseDefault;
 
 export default function LoginForm() {

@@ -88,7 +88,7 @@ function escapeHtml(s) {
 
 async function findLatestStatusCsv() {
 	var files = [];
-	try { files = await fsp.readdir(STATUS_DIR); } catch (e) { files = []; }
+	try { files = await fsp.readdir(STATUS_DIR); } catch { files = []; }
 	var candidates = files.filter(function(f) { return /^status-\d{6}\.csv$/.test(f); }).sort().reverse();
 	if (candidates.length) return path.join(STATUS_DIR, candidates[0]);
 	var file = path.join(STATUS_DIR, 'status-' + yyyymm() + '.csv');
@@ -96,7 +96,7 @@ async function findLatestStatusCsv() {
 }
 
 async function readCsvIf(filePath) {
-	try { return await fsp.readFile(filePath, 'utf8'); } catch (e) { return null; }
+	try { return await fsp.readFile(filePath, 'utf8'); } catch { return null; }
 }
 
 async function main() {
@@ -183,6 +183,7 @@ async function main() {
 }
 
 main().catch(function(err) {
-	console.error('Fehler beim Dashboard-Generator:', err);
+	void err;
+	console.error('Fehler beim Dashboard-Generator; siehe Log');
 	process.exit(1);
 });

@@ -10,10 +10,9 @@
  *   node scripts/status-report.js
  */
 
-const fs = require('fs');
 const fsp = require('fs/promises');
 const path = require('path');
-
+// const fs = require('fs'); // unused
 const ROOT = process.cwd();
 const ASSETS_DIR = path.join(ROOT, 'docs', 'assets');
 const STATUS_DIR = path.join(ROOT, 'docs', 'status');
@@ -188,7 +187,7 @@ async function main() {
     '### Top 10 große Bilder',
     '',
     topLarge.length
-      ? topLarge.map((it, idx) => `1. ${it.rel} – ${(it.sizeKB).toFixed(1)} KB`).join('\n')
+  ? topLarge.map(it => `1. ${it.rel} – ${(it.sizeKB).toFixed(1)} KB`).join('\n')
       : '_Keine Daten verfügbar_',
     '',
     '### Quellen',

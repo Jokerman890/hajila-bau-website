@@ -42,9 +42,7 @@ const REPO_SCAN_EXCLUDE_ABS = new Set([
 /**
  * Utils
  */
-function isDirectoryEntryDir(entry) {
-  return entry.isDirectory();
-}
+// legacy helper removed — kept in git history if needed
 
 function isTextFile(filePath) {
   const ext = path.extname(filePath).toLowerCase();
@@ -154,7 +152,7 @@ async function collectRepoReferences() {
         }
       }
     } catch (err) {
-      // Ignore read errors
+      void err; // ignore read errors
     }
   }
 

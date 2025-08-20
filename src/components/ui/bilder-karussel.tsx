@@ -160,6 +160,8 @@ export function ImageCarousel({
               className="absolute inset-0 cursor-grab active:cursor-grabbing"
             >
               <div className="relative h-full w-full">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={loadedImages[currentIndex].src}
                   alt={loadedImages[currentIndex].alt}
@@ -250,6 +252,7 @@ export function ImageCarousel({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={image.src}
               alt={image.alt}

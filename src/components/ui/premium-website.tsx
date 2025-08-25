@@ -31,7 +31,7 @@ import {
   supabase,
   isSupabaseClientConfigured,
 } from '@/lib/supabase/client'
-import { getLocalPublicUrl } from '@/lib/local-storage' // Korrektur für lokale Bilder
+// import { getLocalPublicUrl } from '@/lib/local-storage' // Nicht mehr benötigt
 import { HeroSplineBackground } from './construction-hero-section'
 import { GlassCard } from './glass-card'
 import GlowingServiceGrid from './glowing-service-grid'
@@ -248,16 +248,16 @@ const PremiumWebsite: React.FC = () => {
       try {
         const { data, error } = await supabase
           .from('carousel_images_metadata')
-          .select('id, storage_path, alt_text, title, description') // Wähle storage_path
+          .select('id, file_name, alt_text, title, description') // Wähle file_name
           .eq('is_active', true)
-          .order('display_order', { ascending: true }) // Korrigiert auf display_order
+          .order('order', { ascending: true })
 
         if (error) throw error
 
-        // Generiere public_url direkt mit getLocalPublicUrl
+        // Generiere public_url für lokale Bilder
         const imagesWithPublicUrls = (data ?? []).map((image) => ({
           ...image,
-          public_url: getLocalPublicUrl(image.storage_path), // Benutze die neue lokale Funktion
+          public_url: `/uploads/carousel/${image.file_name}`, // Konstruiere den lokalen Pfad
         }))
 
         setCarouselImages(imagesWithPublicUrls as CarouselSlideImage[])

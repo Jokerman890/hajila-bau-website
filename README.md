@@ -162,6 +162,10 @@ Die Website ist vollständig responsive und optimiert für:
 
 ## 📜 Changelog
 
+### Version 0.5.2 (2025-08-25)
+
+- **Fix**: Die CI-Build-Pipeline wurde endgültig repariert, indem die `package-lock.json` wiederhergestellt und der `eslint.yml`-Workflow auf eine robuste Konfiguration mit `npm ci` und Caching umgestellt wurde.
+
 ### Version 0.5.1 (2025-08-25)
 
 - **Fix**: Korrektur der `.github/workflows/eslint.yml`-Datei, die aufgrund von ungültiger Syntax (Diff-Marker) zu Build-Fehlern führte.

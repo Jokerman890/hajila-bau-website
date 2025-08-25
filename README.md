@@ -162,6 +162,10 @@ Die Website ist vollständig responsive und optimiert für:
 
 ## 📜 Changelog
 
+### Version 0.5.1 (2025-08-25)
+
+- **Fix**: Korrektur der `.github/workflows/eslint.yml`-Datei, die aufgrund von ungültiger Syntax (Diff-Marker) zu Build-Fehlern führte.
+
 ### Version 0.4.6 (2025-07-18)
 
 - Erstellung der fehlenden Memory-Bank-Dateien (`projectbrief.md`, `systemPatterns.md`, `techContext.md`, `progress.md`).

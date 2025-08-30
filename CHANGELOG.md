@@ -213,3 +213,20 @@ SUPABASE_SERVICE_ROLE_KEY=...
 
 - Build & Tests grün
 - Routen: Upload/Update/Delete/Reorder aktiv
+
+## [0.5.3] - 2025-08-30
+
+### Geändert
+
+- Startseite: Abfrage auf `display_order` korrigiert, BasePath-sichere Bildpfade via `getAssetPath` verwendet
+- Karussell: Fehler-Logging für Bildladefehler (großes Bild + Thumbnails)
+
+### Hinzugefügt
+
+- Dokumentation: Hostinger-VPS Setup-Guide unter `docs/hostinger_vps_setup.md`
+- README: Hinweise zu lokaler Dateispeicherung vs. Supabase Storage und Test-/Build-Abschnitt aktualisiert
+- SECURITY.md: Unterstützte Versionen und Prozess zur Schwachstellenmeldung ergänzt
+
+### Build
+
+- Dependencies installiert, Build erfolgreich, Tests grün (`image-carousel`)

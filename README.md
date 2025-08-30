@@ -73,7 +73,7 @@ Die Website ist dann unter `http://localhost:3000` erreichbar.
 npm run build
 ```
 
-Der statische Ordner `/out` wird dank `output: 'export'` automatisch erzeugt
+Der statische Ordner `/out` wird nur erzeugt, wenn `NEXT_PUBLIC_GITHUB_PAGES=true` gesetzt ist (GitHub Pages Modus). Für Server-Deployments (z. B. Hostinger VPS) wird regulär mit `next start` gestartet.
 
 ```bash
 # Production Server starten
@@ -82,10 +82,18 @@ npm start
 
 ### Tests
 
-Aktuell sind keine Unit-Tests im Repository vorhanden. Das Kommando
-`npm test` verwendet `jest --runInBand --passWithNoTests` und meldet
-erfolgreich, auch wenn keine Tests vorhanden sind. Sobald Tests
-hinzugefügt werden, können sie damit ausgeführt werden.
+Basis-Unit-Tests für das Karussell sind vorhanden.
+
+```bash
+npm test
+```
+
+Weitere Varianten:
+
+```bash
+npm run test:watch
+npm run test:coverage
+```
 
 ## 📁 Projektstruktur
 

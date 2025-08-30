@@ -2,20 +2,20 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
-
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+| Version  | Supported          |
+| -------- | ------------------ |
+| 0.5.x    | :white_check_mark: |
+| 0.4.x    | :white_check_mark: |
+| < 0.4.0  | :x:                |
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+Bitte melden Sie Sicherheitslücken vertraulich per E-Mail an `security@hajila-bau.de`.
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+Erwarteter Ablauf:
+
+- Wir bestätigen den Eingang innerhalb von 3 Werktagen.
+- Wir bewerten die Meldung und priorisieren die Behebung.
+- Wir halten Sie über den Status auf dem Laufenden und koordinieren eine verantwortungsvolle Offenlegung.
+
+Bitte veröffentlichen Sie keine Details, bevor ein Fix bereitgestellt wurde.

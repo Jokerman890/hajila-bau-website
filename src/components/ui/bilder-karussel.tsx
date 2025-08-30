@@ -51,6 +51,21 @@ export function ImageCarousel({
   const [isPlaying, setIsPlaying] = useState(autoPlay)
   const [direction, setDirection] = useState(0)
 
+  // Debug: Logge Änderungen an Bildern und Index
+  useEffect(() => {
+    if (loadedImages.length > 0) {
+      // eslint-disable-next-line no-console
+      console.debug('Carousel images loaded:', loadedImages.map(i => ({ id: i.id, url: i.public_url })))
+    }
+  }, [loadedImages])
+
+  useEffect(() => {
+    if (loadedImages[currentIndex]) {
+      // eslint-disable-next-line no-console
+      console.debug('Carousel current index:', currentIndex, 'image:', loadedImages[currentIndex])
+    }
+  }, [currentIndex, loadedImages])
+
   const nextSlide = useCallback(() => {
     setDirection(1)
     setCurrentIndex((prevIndex) => (prevIndex + 1) % loadedImages.length)
@@ -167,6 +182,13 @@ export function ImageCarousel({
                   alt={loadedImages[currentIndex].alt_text}
                   fill
                   className="object-cover transition-opacity duration-300 rounded-2xl"
+                  onError={(e) => {
+                    // eslint-disable-next-line no-console
+                    console.error('Image load error:', {
+                      id: loadedImages[currentIndex]?.id,
+                      url: loadedImages[currentIndex]?.public_url,
+                    })
+                  }}
                 />
 
                 {/* Gradient Overlay */}
@@ -261,6 +283,10 @@ export function ImageCarousel({
               alt={image.alt_text}
               fill
               className="object-cover transition-opacity duration-300 rounded-lg"
+              onError={() => {
+                // eslint-disable-next-line no-console
+                console.error('Thumbnail image load error:', { id: image.id, url: image.public_url })
+              }}
             />
             {index === currentIndex && (
               <motion.div

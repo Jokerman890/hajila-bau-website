@@ -54,15 +54,21 @@ export function ImageCarousel({
   // Debug: Logge Änderungen an Bildern und Index
   useEffect(() => {
     if (loadedImages.length > 0) {
-      // eslint-disable-next-line no-console
-      console.debug('Carousel images loaded:', loadedImages.map(i => ({ id: i.id, url: i.public_url })))
+      console.debug(
+        'Carousel images loaded:',
+        loadedImages.map((i) => ({ id: i.id, url: i.public_url })),
+      )
     }
   }, [loadedImages])
 
   useEffect(() => {
     if (loadedImages[currentIndex]) {
-      // eslint-disable-next-line no-console
-      console.debug('Carousel current index:', currentIndex, 'image:', loadedImages[currentIndex])
+      console.debug(
+        'Carousel current index:',
+        currentIndex,
+        'image:',
+        loadedImages[currentIndex],
+      )
     }
   }, [currentIndex, loadedImages])
 
@@ -165,7 +171,7 @@ export function ImageCarousel({
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={1}
-              onDragEnd={(e, { offset, velocity }) => {
+              onDragEnd={(_e, { offset, velocity }) => {
                 const swipe = swipePower(offset.x, velocity.x)
 
                 if (swipe < -swipeConfidenceThreshold) {
@@ -182,8 +188,7 @@ export function ImageCarousel({
                   alt={loadedImages[currentIndex].alt_text}
                   fill
                   className="object-cover transition-opacity duration-300 rounded-2xl"
-                  onError={(e) => {
-                    // eslint-disable-next-line no-console
+                  onError={() => {
                     console.error('Image load error:', {
                       id: loadedImages[currentIndex]?.id,
                       url: loadedImages[currentIndex]?.public_url,
@@ -284,8 +289,10 @@ export function ImageCarousel({
               fill
               className="object-cover transition-opacity duration-300 rounded-lg"
               onError={() => {
-                // eslint-disable-next-line no-console
-                console.error('Thumbnail image load error:', { id: image.id, url: image.public_url })
+                console.error('Thumbnail image load error:', {
+                  id: image.id,
+                  url: image.public_url,
+                })
               }}
             />
             {index === currentIndex && (
@@ -304,4 +311,3 @@ export function ImageCarousel({
 
 // Exportiere das Karussell direkt als Default-Export
 export default ImageCarousel
-

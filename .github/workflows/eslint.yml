@@ -1,4 +1,5 @@
 name: ESLint
+
 on:
   push:
     branches: [ "main" ]
@@ -15,6 +16,7 @@ jobs:
       contents: read
       security-events: write
       actions: read
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -26,21 +28,38 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm ci --omit=optional
+      run: npm ci --omit=optional
 
+      # Problem-Matcher registrieren → PR-Annotations im Files-Tab/Diff
+      - name: Add ESLint problem matcher
+        uses: xt0rted/eslint-problem-matcher@v3
+
+      # 1) Lauf für PR-Annotations (Formatter: stylish im Log)
+      - name: Run ESLint (for PR annotations)
+        id: eslint_annot
+        run: |
+          npx eslint . --format stylish
+        continue-on-error: true
+
+      # 2) Lauf für SARIF (Security → Code scanning alerts)
       - name: Install SARIF formatter
         run: npm install --no-save -D @microsoft/eslint-formatter-sarif@latest
 
-      - name: Run ESLint
+      - name: Run ESLint (SARIF)
         env:
           SARIF_ESLINT_IGNORE_SUPPRESSED: "true"
-        run: >
-          npx eslint . --format @microsoft/eslint-formatter-sarif
-          --output-file eslint-results.sarif
+        run: npx eslint . --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif
         continue-on-error: true
 
-      - name: Upload ESLint results
+      - name: Upload ESLint results to Security tab
         if: always()
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: eslint-results.sarif
+
+      - name: Upload SARIF artifact (optional)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eslint-results
+          path: eslint-results.sarif

@@ -255,13 +255,23 @@ const PremiumWebsite: React.FC = () => {
           }
         }
 
-        // Fallback: lokale Dateien aus public/uploads/carousel lesen
-        const resp = await fetch('/api/public-carousel/list')
+        // Fallback 1: lokale aktive Metadaten aus JSON
+        let resp = await fetch('/api/public-carousel/active')
         const json = await resp.json()
         if (resp.ok && json.success) {
           const fallback = (json.images as Array<{ id: string; url: string; alt: string; title: string }>).
             map((img) => ({ id: img.id, public_url: getAssetPath(img.url), alt_text: img.alt, title: img.title }))
           setCarouselImages(fallback)
+          return
+        }
+
+        // Fallback 2: liste Dateien direkt
+        resp = await fetch('/api/public-carousel/list')
+        const json2 = await resp.json()
+        if (resp.ok && json2.success) {
+          const fallback2 = (json2.images as Array<{ id: string; url: string; alt: string; title: string }>).
+            map((img) => ({ id: img.id, public_url: getAssetPath(img.url), alt_text: img.alt, title: img.title }))
+          setCarouselImages(fallback2)
         } else {
           setCarouselImages([])
         }

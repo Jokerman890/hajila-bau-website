@@ -5,7 +5,7 @@ import LoginForm from '@/components/LoginForm'
 import LogoutButton from '@/components/LogoutButton'
 import AdminDashboard from '@/components/ui/admin-dashboard' // Import AdminDashboard
 import { useAuth } from '@/components/AuthProvider'
-import { supabase } from '@/lib/supabase/client' // Import public supabase client statt supabaseAdmin
+import { supabase, isSupabaseClientConfigured } from '@/lib/supabase/client' // Import public supabase client statt supabaseAdmin
 import { getLocalPublicUrl } from '@/lib/local-storage' // Geändert für lokale Speicherung
 import { CarouselDisplayImage } from '@/components/ui/admin-dashboard' // Import the type
 
@@ -24,28 +24,52 @@ export default function HajilaBauAdminPage() {
 
   // Fetch initial carousel images
   const fetchCarouselImages = useCallback(async () => {
-    if (!supabase) {
-      console.error('Supabase Client not initialized.')
-      setHasError(true)
-      setIsLoading(false)
-      return
-    }
-
     setIsLoading(true)
     setHasError(false)
     try {
-      const { data, error } = await supabase
-        .from('carousel_images_metadata')
-        .select('*') // Select all columns
-        .order('display_order', { ascending: true }) // Order by display order
-
-      if (error) {
-        console.error('Error fetching carousel images:', error)
-        setHasError(true)
-        setCarouselImages([])
+      // Prefer local JSON API when Supabase is not configured
+      if (!isSupabaseClientConfigured || !supabase) {
+        const resp = await fetch('/api/admin/images')
+        const json = await resp.json()
+        if (!resp.ok || !json.success) throw new Error(json.error || 'Load failed')
+        type LocalImage = {
+          id: string
+          url: string
+          title: string
+          description?: string
+          alt: string
+          order: number
+          isActive: boolean
+          uploadedAt: string
+          size: number
+          dimensions?: { width: number; height: number }
+          filename: string
+        }
+        const processed = (json.images as Array<LocalImage>).sort((a, b) => a.order - b.order).map((img) => ({
+          id: img.id,
+          public_url: img.url,
+          title: img.title,
+          description: img.description,
+          alt_text: img.alt,
+          order: img.order,
+          is_active: img.isActive,
+          uploaded_at: img.uploadedAt,
+          size_kb: Math.round((img.size || 0) / 1024),
+          width: img.dimensions?.width,
+          height: img.dimensions?.height,
+          file_name: img.filename,
+          storage_path: img.url,
+        }))
+        setCarouselImages(processed)
         return
       }
 
+      // Supabase path (if configured)
+      const { data, error } = await supabase
+        .from('carousel_images_metadata')
+        .select('*')
+        .order('display_order', { ascending: true })
+      if (error) throw error
       if (data) {
         interface CarouselImageRow {
           id: string
@@ -61,14 +85,13 @@ export default function HajilaBauAdminPage() {
           height: number | null
           file_name: string | null
         }
-
         const processedImages = data.map((img: CarouselImageRow) => ({
           id: img.id,
-          public_url: getLocalPublicUrl(img.storage_path), // Use helper to get public URL
+          public_url: getLocalPublicUrl(img.storage_path),
           title: img.title,
           description: img.description,
           alt_text: img.alt_text,
-          order: img.display_order, // Map to 'order' prop
+          order: img.display_order,
           is_active: img.is_active,
           uploaded_at: img.uploaded_at,
           size_kb: img.size_kb,
@@ -308,9 +331,8 @@ export default function HajilaBauAdminPage() {
     )
   }
 
-  if (!user) {
-    return <LoginForm />
-  }
+  // Allow dashboard even without Supabase auth in pure-local mode
+  if (!user && isSupabaseClientConfigured) return <LoginForm />
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">

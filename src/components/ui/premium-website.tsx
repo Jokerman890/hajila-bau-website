@@ -27,10 +27,7 @@ import {
 } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
-import {
-  supabase,
-  isSupabaseClientConfigured,
-} from '@/lib/supabase/client'
+import { supabase, isSupabaseClientConfigured } from '@/lib/supabase/client'
 // import { getLocalPublicUrl } from '@/lib/local-storage' // Nicht mehr benötigt
 import { HeroSplineBackground } from './construction-hero-section'
 import { GlassCard } from './glass-card'
@@ -240,27 +237,34 @@ const PremiumWebsite: React.FC = () => {
   useEffect(() => {
     const fetchCarouselImages = async () => {
       setIsLoadingCarousel(true)
-      if (!isSupabaseClientConfigured || !supabase) {
-        console.error('Supabase ist nicht konfiguriert.')
-        setIsLoadingCarousel(false)
-        return
-      }
       try {
-        const { data, error } = await supabase
-          .from('carousel_images_metadata')
-          .select('id, file_name, alt_text, title, description, display_order') // Wähle file_name
-          .eq('is_active', true)
-          .order('display_order', { ascending: true })
+        if (isSupabaseClientConfigured && supabase) {
+          const { data, error } = await supabase
+            .from('carousel_images_metadata')
+            .select('id, file_name, alt_text, title, description, display_order')
+            .eq('is_active', true)
+            .order('display_order', { ascending: true })
 
-        if (error) throw error
+          if (!error && data && data.length > 0) {
+            const imagesWithPublicUrls = (data ?? []).map((image) => ({
+              ...image,
+              public_url: getAssetPath(`/uploads/carousel/${image.file_name}`),
+            }))
+            setCarouselImages(imagesWithPublicUrls as CarouselSlideImage[])
+            return
+          }
+        }
 
-        // Generiere public_url für lokale Bilder
-        const imagesWithPublicUrls = (data ?? []).map((image) => ({
-          ...image,
-          public_url: getAssetPath(`/uploads/carousel/${image.file_name}`), // BasePath-sicherer Pfad
-        }))
-
-        setCarouselImages(imagesWithPublicUrls as CarouselSlideImage[])
+        // Fallback: lokale Dateien aus public/uploads/carousel lesen
+        const resp = await fetch('/api/public-carousel/list')
+        const json = await resp.json()
+        if (resp.ok && json.success) {
+          const fallback = (json.images as Array<{ id: string; url: string; alt: string; title: string }>).
+            map((img) => ({ id: img.id, public_url: getAssetPath(img.url), alt_text: img.alt, title: img.title }))
+          setCarouselImages(fallback)
+        } else {
+          setCarouselImages([])
+        }
       } catch (err) {
         console.error('Fehler beim Laden der Bilder:', err)
         setCarouselImages([])

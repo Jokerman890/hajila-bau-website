@@ -167,6 +167,7 @@ Die Website ist vollständig responsive und optimiert für:
 ### Branching-Strategie
 
 - Für jede neue Funktion, die für die Seite generiert wird, soll ein extra Branch erstellt werden. Dies ermöglicht eine isolierte Entwicklung und Überprüfung neuer Features vor der Integration in den Haupt-Branch.
+- Bei Entwicklung hinter einem Proxy setze `npm_config_proxy` und `npm_config_https_proxy` (statt `npm_config_http_proxy`), um Warnungen wie `Unknown env config "http-proxy"` zu vermeiden.
 
 ## 📜 Changelog
 

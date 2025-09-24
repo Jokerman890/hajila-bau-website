@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.6.0] - 2025-09-24
+
+### Geändert
+
+- **Supabase-Abhängigkeiten entfernt**: Karussell-APIs, Admin-Dashboard und Premium-Website greifen jetzt ausschließlich auf die lokale Dateispeicherung zu.
+- **Lokale Assets vereinheitlicht**: Alle Bildpfade nutzen `getAssetPath`/`getLocalPublicUrl`, damit Deployments ohne externe Services funktionieren.
+
+### Hinzugefügt
+
+- **Persistente JSON-Datenquelle**: `public/data/carousel-images.json` dient als Versionierte Single-Source-of-Truth für die Karussell-Metadaten.
+
+### Build
+
+- Version auf 0.6.0 erhöht.
+
 ## [0.4.9] - 2025-07-25
 
 ### Hinzugefügt

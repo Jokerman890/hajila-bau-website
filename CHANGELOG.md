@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.6.0] - 2025-09-24
+
+### Geändert
+
+- **Supabase-Abhängigkeiten entfernt**: Karussell-APIs, Admin-Dashboard und Premium-Website greifen jetzt ausschließlich auf die lokale Dateispeicherung zu.
+- **Lokale Assets vereinheitlicht**: Alle Bildpfade nutzen `getAssetPath`/`getLocalPublicUrl`, damit Deployments ohne externe Services funktionieren.
+- **Admin-Dashboard vereinfacht**: Supabase-Authentifizierung und Login-Oberfläche entfernt; die lokale Verwaltung ist sofort nutzbar.
+- **Veraltete Supabase-Dokumente bereinigt**: Setup-Guides, Skripte und Test-Hilfen aus dem Repository entfernt.
+
+### Hinzugefügt
+
+- **Persistente JSON-Datenquelle**: `public/data/carousel-images.json` dient als Versionierte Single-Source-of-Truth für die Karussell-Metadaten.
+
+### Build
+
+- Version auf 0.6.0 erhöht.
+
+## [0.5.2] - 2025-08-25
+
+### Behoben
+
+- CI-Build-Pipeline endgültig repariert, indem die `package-lock.json` wiederhergestellt und der Workflow `eslint.yml` auf eine robuste Konfiguration mit `npm ci` und Caching umgestellt wurde.
+
+## [0.5.1] - 2025-08-25
+
+### Behoben
+
+- Korrektur der `.github/workflows/eslint.yml`, die aufgrund von Diff-Markern und ungültiger Syntax zu Build-Fehlern geführt hatte.
+
 ## [0.4.9] - 2025-07-25
 
 ### Hinzugefügt

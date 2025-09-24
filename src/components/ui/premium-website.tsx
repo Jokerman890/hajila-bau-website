@@ -27,11 +27,6 @@ import {
 } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
-import {
-  supabase,
-  isSupabaseClientConfigured,
-} from '@/lib/supabase/client'
-// import { getLocalPublicUrl } from '@/lib/local-storage' // Nicht mehr benötigt
 import { HeroSplineBackground } from './construction-hero-section'
 import { GlassCard } from './glass-card'
 import GlowingServiceGrid from './glowing-service-grid'
@@ -236,31 +231,40 @@ const PremiumWebsite: React.FC = () => {
   const [carouselImages, setCarouselImages] = useState<CarouselSlideImage[]>([])
   const [isLoadingCarousel, setIsLoadingCarousel] = useState(true)
 
+  interface CarouselImageFileEntry {
+    id: string
+    url: string
+    title: string
+    description: string
+    alt: string
+    order: number
+    isActive: boolean
+  }
+
   /* Bilder laden */
   useEffect(() => {
     const fetchCarouselImages = async () => {
       setIsLoadingCarousel(true)
-      if (!isSupabaseClientConfigured || !supabase) {
-        console.error('Supabase ist nicht konfiguriert.')
-        setIsLoadingCarousel(false)
-        return
-      }
       try {
-        const { data, error } = await supabase
-          .from('carousel_images_metadata')
-          .select('id, file_name, alt_text, title, description, display_order') // Wähle file_name
-          .eq('is_active', true)
-          .order('display_order', { ascending: true })
+        const response = await fetch(getAssetPath('/data/carousel-images.json'))
+        if (!response.ok) {
+          throw new Error(`Fehler beim Laden der Karussell-Bilder: ${response.statusText}`)
+        }
 
-        if (error) throw error
+        const images = (await response.json()) as CarouselImageFileEntry[]
 
-        // Generiere public_url für lokale Bilder
-        const imagesWithPublicUrls = (data ?? []).map((image) => ({
-          ...image,
-          public_url: getAssetPath(`/uploads/carousel/${image.file_name}`), // BasePath-sicherer Pfad
-        }))
+        const imagesWithPublicUrls = (images ?? [])
+          .filter((image) => image.isActive !== false)
+          .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+          .map((image) => ({
+            id: image.id,
+            public_url: getAssetPath(image.url),
+            alt_text: image.alt || image.title || 'Karussellbild',
+            title: image.title ?? null,
+            description: image.description ?? null,
+          }))
 
-        setCarouselImages(imagesWithPublicUrls as CarouselSlideImage[])
+        setCarouselImages(imagesWithPublicUrls)
       } catch (err) {
         console.error('Fehler beim Laden der Bilder:', err)
         setCarouselImages([])
@@ -268,7 +272,7 @@ const PremiumWebsite: React.FC = () => {
         setIsLoadingCarousel(false)
       }
     }
-    fetchCarouselImages()
+    void fetchCarouselImages()
   }, [])
 
   /* Theme toggeln */

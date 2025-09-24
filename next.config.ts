@@ -29,12 +29,6 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: '**.supabase.co',
-        port: '',
-        pathname: '/storage/v1/object/public/**',
-      },
-      {
-        protocol: 'https',
         hostname: '**.hostinger.com',
         port: '',
         pathname: '/**',
@@ -52,19 +46,6 @@ const nextConfig: NextConfig = {
     'http://localhost',
     'http://127.0.0.1',
   ],
-  webpack(config, { webpack }) {
-    config.cache = { type: 'filesystem' }
-    config.resolve.fallback = {
-      ...config.resolve.fallback,
-      buffer: require.resolve('buffer'),
-    }
-    config.plugins.push(
-      new webpack.ProvidePlugin({
-        Buffer: ['buffer', 'Buffer'],
-      }),
-    )
-    return config
-  },
 }
 
 export default nextConfig

@@ -41,7 +41,12 @@ interface CarouselImageResponse {
 }
 
 const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads', 'carousel')
-const IMAGES_JSON_PATH = path.join(process.cwd(), 'data', 'carousel-images.json')
+const IMAGES_JSON_PATH = path.join(
+  process.cwd(),
+  'public',
+  'data',
+  'carousel-images.json',
+)
 const BYTES_PER_KB = 1024
 
 async function ensureDirectoryExists(dirPath: string) {

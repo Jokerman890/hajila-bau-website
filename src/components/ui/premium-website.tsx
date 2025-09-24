@@ -231,15 +231,14 @@ const PremiumWebsite: React.FC = () => {
   const [carouselImages, setCarouselImages] = useState<CarouselSlideImage[]>([])
   const [isLoadingCarousel, setIsLoadingCarousel] = useState(true)
 
-  interface CarouselImageApiResponse {
+  interface CarouselImageFileEntry {
     id: string
-    public_url: string
-    storage_path: string
+    url: string
     title: string
     description: string
-    alt_text: string
+    alt: string
     order: number
-    is_active: boolean
+    isActive: boolean
   }
 
   /* Bilder laden */
@@ -247,22 +246,20 @@ const PremiumWebsite: React.FC = () => {
     const fetchCarouselImages = async () => {
       setIsLoadingCarousel(true)
       try {
-        const response = await fetch('/api/admin/images')
+        const response = await fetch(getAssetPath('/data/carousel-images.json'))
         if (!response.ok) {
           throw new Error(`Fehler beim Laden der Karussell-Bilder: ${response.statusText}`)
         }
 
-        const result = (await response.json()) as {
-          images?: CarouselImageApiResponse[]
-        }
+        const images = (await response.json()) as CarouselImageFileEntry[]
 
-        const imagesWithPublicUrls = (result.images ?? [])
-          .filter((image) => image.is_active !== false)
+        const imagesWithPublicUrls = (images ?? [])
+          .filter((image) => image.isActive !== false)
           .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
           .map((image) => ({
             id: image.id,
-            public_url: getAssetPath(image.public_url || image.storage_path),
-            alt_text: image.alt_text || image.title || 'Karussellbild',
+            public_url: getAssetPath(image.url),
+            alt_text: image.alt || image.title || 'Karussellbild',
             title: image.title ?? null,
             description: image.description ?? null,
           }))

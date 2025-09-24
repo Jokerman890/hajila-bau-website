@@ -6,6 +6,7 @@ import LogoutButton from '@/components/LogoutButton'
 import AdminDashboard from '@/components/ui/admin-dashboard'
 import { useAuth } from '@/components/AuthProvider'
 import { getLocalPublicUrl } from '@/lib/local-storage'
+import { getAssetPath } from '@/lib/utils'
 import { CarouselDisplayImage } from '@/components/ui/admin-dashboard'
 
 interface CarouselImageApiResponse {
@@ -56,7 +57,7 @@ export default function HajilaBauAdminPage() {
     setIsLoading(true)
     setHasError(false)
     try {
-      const response = await fetch('/api/admin/images', {
+      const response = await fetch(getAssetPath('/api/admin/images'), {
         cache: 'no-store',
       })
 
@@ -108,7 +109,7 @@ export default function HajilaBauAdminPage() {
     })
 
     try {
-      const response = await fetch('/api/admin/images', {
+      const response = await fetch(getAssetPath('/api/admin/images'), {
         method: 'POST',
         body: formData,
       })
@@ -138,7 +139,7 @@ export default function HajilaBauAdminPage() {
 
   const handleImageDelete = async (id: string) => {
     try {
-      const response = await fetch(`/api/admin/images?id=${id}`, {
+      const response = await fetch(`${getAssetPath('/api/admin/images')}?id=${id}`, {
         method: 'DELETE',
       })
 
@@ -160,7 +161,7 @@ export default function HajilaBauAdminPage() {
     updates: Partial<CarouselDisplayImage>,
   ) => {
     try {
-      const response = await fetch('/api/admin/images', {
+      const response = await fetch(getAssetPath('/api/admin/images'), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -195,7 +196,7 @@ export default function HajilaBauAdminPage() {
 
   async function handleImageReorder(orderedIds: string[]) {
     try {
-      const response = await fetch('/api/admin/images', {
+      const response = await fetch(getAssetPath('/api/admin/images'), {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ orderedIds }),

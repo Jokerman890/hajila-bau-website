@@ -3,83 +3,78 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import LoginForm from '@/components/LoginForm'
 import LogoutButton from '@/components/LogoutButton'
-import AdminDashboard from '@/components/ui/admin-dashboard' // Import AdminDashboard
+import AdminDashboard from '@/components/ui/admin-dashboard'
 import { useAuth } from '@/components/AuthProvider'
-import { supabase } from '@/lib/supabase/client' // Import public supabase client statt supabaseAdmin
-import { getLocalPublicUrl } from '@/lib/local-storage' // Geändert für lokale Speicherung
-import { CarouselDisplayImage } from '@/components/ui/admin-dashboard' // Import the type
+import { getLocalPublicUrl } from '@/lib/local-storage'
+import { CarouselDisplayImage } from '@/components/ui/admin-dashboard'
 
-// Define the AdminPage component
+interface CarouselImageApiResponse {
+  id: string
+  public_url: string
+  title: string
+  description: string
+  alt_text: string
+  order: number
+  is_active: boolean
+  uploaded_at: string
+  size_kb: number
+  width: number
+  height: number
+  file_name: string
+  storage_path: string
+}
+
+function mapApiImageToDisplay(image: CarouselImageApiResponse): CarouselDisplayImage {
+  return {
+    id: image.id,
+    public_url: getLocalPublicUrl(image.public_url || image.storage_path),
+    title: image.title || '',
+    description: image.description || '',
+    alt_text: image.alt_text || image.title || '',
+    order: image.order ?? 0,
+    is_active: image.is_active ?? false,
+    uploaded_at: image.uploaded_at,
+    size_kb: image.size_kb ?? 0,
+    width: image.width ?? undefined,
+    height: image.height ?? undefined,
+    file_name: image.file_name ?? null,
+    storage_path: image.storage_path || image.public_url,
+  }
+}
+
 export default function HajilaBauAdminPage() {
   const auth = useAuth()
   const user = auth?.user ?? null
   const authLoading = auth?.loading ?? true
 
-  const [carouselImages, setCarouselImages] = useState<CarouselDisplayImage[]>(
-    [],
-  )
+  const [carouselImages, setCarouselImages] = useState<CarouselDisplayImage[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [isSyncing, setIsSyncing] = useState(false) // Zustand für den Sync-Vorgang
+  const [isSyncing, setIsSyncing] = useState(false)
   const [hasError, setHasError] = useState(false)
 
-  // Fetch initial carousel images
   const fetchCarouselImages = useCallback(async () => {
-    if (!supabase) {
-      console.error('Supabase Client not initialized.')
-      setHasError(true)
-      setIsLoading(false)
-      return
-    }
-
     setIsLoading(true)
     setHasError(false)
     try {
-      const { data, error } = await supabase
-        .from('carousel_images_metadata')
-        .select('*') // Select all columns
-        .order('display_order', { ascending: true }) // Order by display order
+      const response = await fetch('/api/admin/images', {
+        cache: 'no-store',
+      })
 
-      if (error) {
-        console.error('Error fetching carousel images:', error)
-        setHasError(true)
-        setCarouselImages([])
-        return
+      if (!response.ok) {
+        throw new Error(`Fehler beim Laden der Karussell-Bilder: ${response.statusText}`)
       }
 
-      if (data) {
-        interface CarouselImageRow {
-          id: string
-          storage_path: string
-          title: string | null
-          description: string | null
-          alt_text: string
-          display_order: number
-          is_active: boolean
-          uploaded_at: string
-          size_kb: number | null
-          width: number | null
-          height: number | null
-          file_name: string | null
-        }
-
-        const processedImages = data.map((img: CarouselImageRow) => ({
-          id: img.id,
-          public_url: getLocalPublicUrl(img.storage_path), // Use helper to get public URL
-          title: img.title,
-          description: img.description,
-          alt_text: img.alt_text,
-          order: img.display_order, // Map to 'order' prop
-          is_active: img.is_active,
-          uploaded_at: img.uploaded_at,
-          size_kb: img.size_kb,
-          width: img.width,
-          height: img.height,
-          file_name: img.file_name,
-          storage_path: img.storage_path,
-        }))
-        setCarouselImages(processedImages)
+      const result = (await response.json()) as {
+        images?: CarouselImageApiResponse[]
+        success?: boolean
       }
-    } catch (error: unknown) {
+
+      const processedImages = (result.images ?? [])
+        .map((img) => mapApiImageToDisplay(img))
+        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+
+      setCarouselImages(processedImages)
+    } catch (error) {
       console.error('Unexpected error fetching carousel images:', error)
       setHasError(true)
       setCarouselImages([])
@@ -90,12 +85,10 @@ export default function HajilaBauAdminPage() {
 
   useEffect(() => {
     if (user) {
-      // Fetch only if user is authenticated
-      fetchCarouselImages()
+      void fetchCarouselImages()
     }
-  }, [user, fetchCarouselImages]) // Re-fetch if user changes
+  }, [user, fetchCarouselImages])
 
-  // Handler for image upload
   const handleImageUpload = async (
     files: FileList,
     metadata: Array<{
@@ -107,56 +100,45 @@ export default function HajilaBauAdminPage() {
     }>,
   ) => {
     void metadata
+    if (files.length === 0) return
 
-    // Upload via API-Route, kein supabaseAdmin-Check im Client nötig
-    for (const file of Array.from(files)) {
-      const formData = new FormData()
-      formData.append('file', file)
+    const formData = new FormData()
+    Array.from(files).forEach((file) => {
+      formData.append('files', file)
+    })
 
-      try {
-        const response = await fetch('/api/admin/carousel/upload', {
-          method: 'POST',
-          body: formData,
-        })
+    try {
+      const response = await fetch('/api/admin/images', {
+        method: 'POST',
+        body: formData,
+      })
 
-        if (!response.ok) {
-          const errorData = await response.json()
-          throw new Error(errorData.error || `Upload failed for ${file.name}`)
-        }
-
-        const result = await response.json()
-        if (result.success && result.image) {
-          const newImage: CarouselDisplayImage = {
-            id: result.image.id,
-            public_url: getLocalPublicUrl(result.image.storage_path),
-            title: result.image.title,
-            description: result.image.description,
-            alt_text: result.image.alt_text,
-            order: result.image.display_order, // Korrektur
-            is_active: result.image.is_active,
-            uploaded_at: result.image.uploaded_at,
-            size_kb: result.image.size_kb,
-            width: result.image.width,
-            height: result.image.height,
-            file_name: result.image.file_name,
-            storage_path: result.image.storage_path,
-          }
-          setCarouselImages((prevImages) => [...prevImages, newImage])
-        } else {
-          throw new Error(
-            `Upload failed for ${file.name}: ${result.error || 'Unknown error'}`,
-          )
-        }
-      } catch (error: unknown) {
-        console.error(`Error uploading ${file.name}:`, error)
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || response.statusText)
       }
+
+      const result = (await response.json()) as {
+        images?: CarouselImageApiResponse[]
+        success?: boolean
+      }
+
+      if (!result.success || !result.images) {
+        throw new Error('Upload fehlgeschlagen: Keine gültige Antwort erhalten')
+      }
+
+      const mappedImages = result.images.map((img) => mapApiImageToDisplay(img))
+      setCarouselImages((prevImages) =>
+        [...prevImages, ...mappedImages].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
+      )
+    } catch (error) {
+      console.error('Error uploading images:', error)
     }
   }
 
-  // Handler for image deletion
   const handleImageDelete = async (id: string) => {
     try {
-      const response = await fetch(`/api/admin/carousel/delete?id=${id}`, {
+      const response = await fetch(`/api/admin/images?id=${id}`, {
         method: 'DELETE',
       })
 
@@ -168,30 +150,22 @@ export default function HajilaBauAdminPage() {
       setCarouselImages((prevImages) =>
         prevImages.filter((img) => img.id !== id),
       )
-    } catch (error: unknown) {
+    } catch (error) {
       console.error(`Error deleting image ${id}:`, error)
     }
   }
 
-  // Handler for image update (metadata, active status, order)
   const handleImageUpdate = async (
     id: string,
     updates: Partial<CarouselDisplayImage>,
   ) => {
     try {
-      // Mappe ggf. order -> display_order für die API
-      const payload = { ...updates } as Record<string, unknown>
-      if (typeof updates.order === 'number') {
-        payload.display_order = updates.order
-        delete payload.order
-      }
-
-      const response = await fetch('/api/admin/carousel/update', {
+      const response = await fetch('/api/admin/images', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id, ...payload }),
+        body: JSON.stringify({ id, updates }),
       })
 
       if (!response.ok) {
@@ -199,102 +173,57 @@ export default function HajilaBauAdminPage() {
         throw new Error(errorData.error || `Failed to update image ${id}`)
       }
 
-      const result = await response.json()
+      const result = (await response.json()) as {
+        image: CarouselImageApiResponse
+        success: boolean
+      }
+
+      if (!result.success || !result.image) {
+        throw new Error('Fehlerhafte Antwort beim Aktualisieren des Bildes')
+      }
+
+      const updatedImage = mapApiImageToDisplay(result.image)
       setCarouselImages((prevImages) =>
-        prevImages.map((img) =>
-          img.id === id
-            ? {
-                ...img,
-                ...result.image,
-                order: result.image.display_order, // sicherstellen, dass order aktualisiert wird
-              }
-            : img,
-        ),
+        prevImages
+          .map((img) => (img.id === id ? updatedImage : img))
+          .sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
       )
-    } catch (error: unknown) {
+    } catch (error) {
       console.error(`Error updating image ${id}:`, error)
     }
   }
 
-  // Hinweis: Reordering-Funktion optional aktivierbar
   async function handleImageReorder(orderedIds: string[]) {
     try {
-      const response = await fetch('/api/admin/carousel/reorder', {
-        method: 'POST',
+      const response = await fetch('/api/admin/images', {
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ imageIds: orderedIds }),
+        body: JSON.stringify({ orderedIds }),
       })
       if (!response.ok) {
         const err = await response.json()
         throw new Error(err.error || 'Reorder fehlgeschlagen')
       }
-      const result: { success: boolean; images: Array<{ id: string; display_order: number }> } = await response.json()
-      setCarouselImages((prev) => {
-        const map = new Map(result.images.map((img) => [img.id, img.display_order]))
-        return [...prev]
-          .map((img) => ({ ...img, order: map.get(img.id) ?? img.order }))
-          .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-      })
+      const result = (await response.json()) as {
+        success: boolean
+        images: CarouselImageApiResponse[]
+      }
+      if (!result.success || !result.images) {
+        throw new Error('Ungültige Antwort beim Neuordnen erhalten')
+      }
+      const mapped = result.images.map((img) => mapApiImageToDisplay(img))
+      setCarouselImages(mapped)
     } catch (e) {
       console.error('Reorder-Fehler:', e)
     }
   }
 
-  // Handler for image sync
   const handleImageSync = async () => {
     setIsSyncing(true)
     try {
-      const response = await fetch('/api/admin/carousel/sync', {
-        method: 'POST',
-      })
-      const result = await response.json()
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to sync images.')
-      }
-
-      if (result.success && result.added > 0 && result.newImages) {
-        // Definiere einen Typ für die neuen Bilder von der API
-        interface SyncedImage {
-          id: string;
-          storage_path: string;
-          title: string | null;
-          description: string | null;
-          alt_text: string;
-          display_order: number;
-          is_active: boolean;
-          uploaded_at: string;
-          size_kb: number | null;
-          width: number | null;
-          height: number | null;
-          file_name: string | null;
-        }
-
-        // Neue Bilder zur Anzeige aufbereiten
-        const newImagesProcessed = result.newImages.map((img: SyncedImage) => ({
-          id: img.id,
-          public_url: getLocalPublicUrl(img.storage_path),
-          title: img.title,
-          description: img.description,
-          alt_text: img.alt_text,
-          order: img.display_order,
-          is_active: img.is_active,
-          uploaded_at: img.uploaded_at,
-          size_kb: img.size_kb,
-          width: img.width,
-          height: img.height,
-          file_name: img.file_name,
-          storage_path: img.storage_path,
-        }))
-
-        setCarouselImages((prevImages) => [...prevImages, ...newImagesProcessed]);
-        alert(`${result.added} neue Bilder wurden hinzugefügt. Sie sind zunächst inaktiv.`);
-      } else {
-        alert(result.message || 'Synchronisierung abgeschlossen.');
-      }
-
-    } catch (error: unknown) {
+      await fetchCarouselImages()
+    } catch (error) {
       console.error('Error syncing images:', error)
-      alert(`Ein Fehler ist aufgetreten: ${error instanceof Error ? error.message : 'Unbekannter Fehler'}`);
     } finally {
       setIsSyncing(false)
     }
@@ -323,20 +252,18 @@ export default function HajilaBauAdminPage() {
             <span className="brand-gradient-text">Hajila Bau GmbH</span>
             <span className="text-slate-900 dark:text-slate-100"> – Admin Dashboard</span>
           </h1>
-          {/* Removed "Debug Mode" and "Weitere Debugging-Schritte erforderlich." */}
         </div>
 
-        {/* Render the AdminDashboard component */}
         <AdminDashboard
           images={carouselImages}
-          isLoading={isLoading || isSyncing} // Kombinierter Ladezustand
+          isLoading={isLoading || isSyncing}
           hasError={hasError}
           onRetry={fetchCarouselImages}
           onImageUpload={handleImageUpload}
           onImageDelete={handleImageDelete}
           onImageUpdate={handleImageUpdate}
           onImageReorder={handleImageReorder}
-          onImageSync={handleImageSync} // Sync-Handler übergeben
+          onImageSync={handleImageSync}
         />
       </div>
     </div>

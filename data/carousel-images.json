@@ -1,0 +1,98 @@
+[
+  {
+    "id": "img-1171",
+    "url": "/uploads/carousel/IMG_1171.jpg",
+    "title": "Klinkerfassade im Abendlicht",
+    "description": "Detailreiche Fassadenarbeit aus rotem Klinker",
+    "alt": "Fassade eines Hauses mit rotem Klinker",
+    "order": 1,
+    "isActive": true,
+    "uploadedAt": "2024-01-01T10:00:00.000Z",
+    "size": 0,
+    "dimensions": {
+      "width": 0,
+      "height": 0
+    },
+    "filename": "IMG_1171.jpg"
+  },
+  {
+    "id": "img-1740",
+    "url": "/uploads/carousel/IMG_1740.jpg",
+    "title": "Moderne Wohnanlage",
+    "description": "Mehrfamilienhaus mit strukturierter Klinkerfassade",
+    "alt": "Mehrfamilienhaus mit Klinkerfassade",
+    "order": 2,
+    "isActive": true,
+    "uploadedAt": "2024-01-02T10:00:00.000Z",
+    "size": 0,
+    "dimensions": {
+      "width": 0,
+      "height": 0
+    },
+    "filename": "IMG_1740.jpg"
+  },
+  {
+    "id": "img-3145",
+    "url": "/uploads/carousel/IMG_3145.jpg",
+    "title": "Klinkerarbeiten im Detail",
+    "description": "Handwerkliche Präzision bei Klinkerarbeiten",
+    "alt": "Detailaufnahme einer Klinkerwand",
+    "order": 3,
+    "isActive": true,
+    "uploadedAt": "2024-01-03T10:00:00.000Z",
+    "size": 0,
+    "dimensions": {
+      "width": 0,
+      "height": 0
+    },
+    "filename": "IMG_3145.jpg"
+  },
+  {
+    "id": "img-5810",
+    "url": "/uploads/carousel/IMG_5810.jpg",
+    "title": "Ziegelmauer mit Ornament",
+    "description": "Ziermauerwerk mit versetzten Steinen",
+    "alt": "Ziegelmauer mit Ornament",
+    "order": 4,
+    "isActive": true,
+    "uploadedAt": "2024-01-04T10:00:00.000Z",
+    "size": 0,
+    "dimensions": {
+      "width": 0,
+      "height": 0
+    },
+    "filename": "IMG_5810.jpg"
+  },
+  {
+    "id": "img-1174",
+    "url": "/uploads/carousel/IMG_1174.jpg",
+    "title": "Sanierungsprojekt",
+    "description": "Klinkerarbeiten an einem historischen Gebäude",
+    "alt": "Sanierung eines historischen Gebäudes",
+    "order": 5,
+    "isActive": false,
+    "uploadedAt": "2024-01-05T10:00:00.000Z",
+    "size": 0,
+    "dimensions": {
+      "width": 0,
+      "height": 0
+    },
+    "filename": "IMG_1174.jpg"
+  },
+  {
+    "id": "img-7876",
+    "url": "/uploads/carousel/IMG_7876.jpg",
+    "title": "Fassade in Arbeit",
+    "description": "Baugerüst vor einem Verblendmauerwerk",
+    "alt": "Gerüst vor einer Klinkerfassade",
+    "order": 6,
+    "isActive": false,
+    "uploadedAt": "2024-01-06T10:00:00.000Z",
+    "size": 0,
+    "dimensions": {
+      "width": 0,
+      "height": 0
+    },
+    "filename": "IMG_7876.jpg"
+  }
+]

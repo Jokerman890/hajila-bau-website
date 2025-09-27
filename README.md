@@ -33,6 +33,7 @@ Seit 2016 steht die Hajila Bau GmbH für zuverlässige Bauleistungen im Raum Osn
 - **Tailwind CSS** für modernes Styling
 - **Framer Motion** für flüssige Animationen
 - **Three.js** für 3D-Effekte
+- **Lokale Dateispeicherung** für das Karussell (JSON + `public/uploads`)
 - **SEO-optimiert** mit Meta-Tags
 - **DSGVO-konform** mit rechtlichen Seiten
 
@@ -229,15 +230,12 @@ Die Website ist vollständig responsive und optimiert für:
 - **Rechtliche Compliance** - DSGVO-konforme Seiten (Impressum, Datenschutz, Cookies)
 - **3D-Animationen** - Three.js Integration mit interaktiven Elementen
 
-## 🔐 Supabase Authentifizierung (feature/supabase-auth)
+## 💾 Lokale Bildverwaltung
 
-- Admin-Bereich und API sind mit Supabase Auth geschützt.
-- .env.local benötigt:
-  - NEXT_PUBLIC_SUPABASE_URL=...
-  - NEXT_PUBLIC_SUPABASE_ANON_KEY=...
-- E-Mail/Passwort-Login und Google Login im Admin-Bereich
-- Logout-Button oben rechts im Admin
-- API-Requests müssen den Bearer-Token mitsenden (siehe Beispiel in src/app/api/admin/images/route.ts)
+- **Ohne externe Dienste**: Das Karussell speichert Metadaten in `public/data/carousel-images.json` und legt Bilder direkt unter `public/uploads/carousel` ab.
+- **Admin-Dashboard**: Bild-Uploads, Bearbeitungen, Löschungen und Sortierung laufen über die lokale API `/api/admin/images`.
+- **Sofort verfügbar**: Für lokale Tests und statische Deployments ist kein Login oder Supabase-Setup mehr nötig.
+- **Nachvollziehbar**: JSON-Daten und Assets werden versioniert, wodurch Änderungen transparent bleiben.
 
 ## 📞 Kontakt
 

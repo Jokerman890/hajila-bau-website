@@ -39,10 +39,6 @@ jobs:
       - name: Install dependencies
         run: npm ci --omit=optional --no-audit --no-fund
 
-      # Problem-Matcher → PR-Annotations im Files-Tab/Diff
-      - name: Add ESLint problem matcher
-        uses: xt0rted/eslint-problem-matcher@v3
-
       # 1) Lauf für PR-Annotations (Formatter: stylish im Log)
       - name: Run ESLint (for PR annotations)
         id: eslint_annot

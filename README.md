@@ -170,65 +170,27 @@ Die Website ist vollständig responsive und optimiert für:
 - Für jede neue Funktion, die für die Seite generiert wird, soll ein extra Branch erstellt werden. Dies ermöglicht eine isolierte Entwicklung und Überprüfung neuer Features vor der Integration in den Haupt-Branch.
 - Bei Entwicklung hinter einem Proxy setze `npm_config_proxy` und `npm_config_https_proxy` (statt `npm_config_http_proxy`), um Warnungen wie `Unknown env config "http-proxy"` zu vermeiden.
 
-## 📜 Changelog
+## 📜 Release Timeline
 
-### Version 0.5.2 (2025-08-25)
+Aktuelle Version: **0.6.0** (2025-09-24). Ausführliche Änderungen findest du in der [CHANGELOG.md](CHANGELOG.md).
 
-- **Fix**: Die CI-Build-Pipeline wurde endgültig repariert, indem die `package-lock.json` wiederhergestellt und der `eslint.yml`-Workflow auf eine robuste Konfiguration mit `npm ci` und Caching umgestellt wurde.
-
-### Version 0.5.1 (2025-08-25)
-
-- **Fix**: Korrektur der `.github/workflows/eslint.yml`-Datei, die aufgrund von ungültiger Syntax (Diff-Marker) zu Build-Fehlern führte.
-
-### Version 0.4.6 (2025-07-18)
-
-- Erstellung der fehlenden Memory-Bank-Dateien (`projectbrief.md`, `systemPatterns.md`, `techContext.md`, `progress.md`).
-- Behebung von Markdown-Linting-Fehlern (MD022, MD032, MD036, MD034) in allen Memory-Bank-Dateien und der `README.md`.
-- Aktualisierung der Memory-Bank-Dateien mit aktuellen Informationen zu ungelösten Problemen (Supabase-Autorisierung, Submodul-Commits).
-
-### Version 0.4.5 (2025-07-16)
-
-- Behebung des "null.from" Fehlers in `premium-website.tsx` durch robustere API-Abfrage.
-- Behebung des "Cannot read properties of null (reading 'auth')" Fehlers in `AuthProvider.tsx` durch Prüfung auf `supabase`.
-- Hinzufügung eines Buffer-Polyfills in `polyfills.ts` und Import in `AuthProvider.tsx`.
-- Behebung des ESLint-Fehlers "A `require()` style import is forbidden." durch Migration der Next.js-Konfiguration von `next.config.js` nach `next.config.ts` und Korrektur des `ProvidePlugin`-Imports.
-- Behebung des Fehlers "Doppelter Objektschlüssel" in `package.json` durch Entfernen des doppelten "buffer"-Eintrags.
-
-### Version 0.4.2 (2025-07-05)
-
-- Logo und Favicon auf transparentes logo_2d.png gesetzt
-- Memorybank und Changelog gepflegt
-
-### Version 0.4.1 (2025-07-05)
-
-- Statischer Export für GitHub Pages, basePath/assetPrefix überall korrekt
-- AnimatedButton und Logo3D überall integriert
-- Karussell zeigt alle Bilder aus Upload-Ordner automatisch
-- MCP-Memorybank und Changelog gepflegt
-
-### Version 0.3.0 (03.07.2025) - Aktuelle Version
-
-- **Supabase Photo Storage System** - Vollständiges Foto-Management mit API-Endpunkten
-- **Mock Storage System** - Demo-Funktionalität ohne externe Abhängigkeiten
-- **Jest Testing Framework** - 16 Unit-Tests und E2E-Workflows
-- **Admin Dashboard Erweiterungen** - Erweiterte Content-Management-Funktionen
-- **TypeScript Optimierungen** - 100% Typierung und Strict Mode
-- **API-Struktur** - RESTful Endpunkte für Photos, Admin und Memory-Bank
-- **Dokumentation** - Vollständige API-Docs und Supabase-Integration-Guide
-
-### Version 0.2.0 (15.01.2025)
-
-- **Content Management System** - Bilder-Karussell und Admin-Dashboard
-- **Firebase Integration** - Storage und Admin SDK für Bildverwaltung
-- **Drag & Drop Upload** - Intuitive Bildverwaltung mit Sortierung
-
-### Version 0.1.0 (02.01.2025)
-
-- **Initiale Website-Erstellung** - Next.js 15 mit TypeScript und Tailwind CSS
-- **Premium Glassmorphism-Design** - 3D-Effekte und moderne Optik
-- **Responsive Design** - Optimiert für alle Bildschirmgrößen
-- **Rechtliche Compliance** - DSGVO-konforme Seiten (Impressum, Datenschutz, Cookies)
-- **3D-Animationen** - Three.js Integration mit interaktiven Elementen
+| Version | Datum | Höhepunkte |
+| --- | --- | --- |
+| 0.6.0 | 2025-09-24 | Supabase entfernt, lokale JSON-Datenquelle als Single-Source-of-Truth, vereinheitlichte Asset-Pfade |
+| 0.5.3 | 2025-08-30 | `display_order`-Fix im Karussell, BasePath-sichere Assets, neue Dokumentation (Hostinger, SECURITY, README) |
+| 0.5.2 | 2025-08-25 | CI-Pipeline mit `npm ci` stabilisiert, `package-lock.json` wiederhergestellt |
+| 0.5.1 | 2025-08-25 | Fehlerhafte `eslint.yml` behoben und Workflow validiert |
+| 0.4.10 | 2025-08-10 | Persistentes Reordering, Upload-Härtung und Next/Image-Anpassungen |
+| 0.4.9 | 2025-07-25 | Stats-Section ergänzt, Rainbow-Glow-Effekte eingeführt |
+| 0.4.8 | 2025-07-20 | SEO-Features, MetadataBase, umfangreiche Produktiv- und Troubleshooting-Dokus |
+| 0.4.7 | 2025-07-19 | Hybrid-Deployment, Storage-Bucket-Fixes, vollständige API-Wiederherstellung |
+| 0.4.6 | 2025-07-18 | Admin-Dashboard für Karussell-Verwaltung, Memory-Bank-Dateien erstellt |
+| 0.4.5 | 2025-07-16 | Supabase-/Buffer-Bugfixes, Migration auf `next.config.ts` |
+| 0.4.2 | 2025-07-05 | Transparente Logos, Memory-Bank- und Changelog-Pflege |
+| 0.4.1 | 2025-07-05 | GitHub-Pages-Export aktiviert, 3D-Logo & AnimatedButton integriert |
+| 0.3.0 | 2025-07-03 | Supabase Photo Storage, Mock Storage und erweitertes Admin-Dashboard |
+| 0.2.0 | 2025-01-15 | CMS mit Drag & Drop Upload, Firebase Storage-Integration |
+| 0.1.0 | 2025-01-02 | Initialer Launch mit Premium-Design, Responsive Setup und Rechtstexten |
 
 ## 💾 Lokale Bildverwaltung
 

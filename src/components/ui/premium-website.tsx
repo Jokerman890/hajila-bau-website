@@ -322,6 +322,16 @@ const PremiumWebsite: React.FC = () => {
     isActive: boolean
   }
 
+  interface CarouselImageFileEntry {
+    id: string
+    url: string
+    title: string
+    description: string
+    alt: string
+    order: number
+    isActive: boolean
+  }
+
   /* Bilder laden */
   useEffect(() => {
     const fetchCarouselImages = async () => {

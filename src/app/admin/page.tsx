@@ -139,9 +139,7 @@ export default function HajilaBauAdminPage() {
         throw new Error(errorData.error || `Failed to delete image ${id}`)
       }
 
-      setCarouselImages((prevImages) =>
-        prevImages.filter((img) => img.id !== id),
-      )
+      setCarouselImages((prevImages) => prevImages.filter((img) => img.id !== id))
     } catch (error) {
       console.error(`Error deleting image ${id}:`, error)
     }

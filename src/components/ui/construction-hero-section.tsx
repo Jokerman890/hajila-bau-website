@@ -305,6 +305,7 @@ function HeroContent() {
           size="lg"
           primaryColor="#00C3E3"
           secondaryColor="#005B9F"
+          altText="Hajila Bau 3D Logo"
         />
       </div>
       <motion.div 
@@ -405,6 +406,7 @@ function Navbar() {
               size="md"
               primaryColor="#00C3E3"
               secondaryColor="#005B9F"
+              altText="Hajila Bau 3D Logo"
             />
           </motion.div>
 

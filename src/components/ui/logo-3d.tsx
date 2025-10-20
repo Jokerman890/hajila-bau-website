@@ -10,6 +10,7 @@ interface Logo3DProps {
   primaryColor?: string;
   secondaryColor?: string;
   className?: string;
+  altText?: string;
 }
 
 const Logo3D: React.FC<Logo3DProps> = ({
@@ -18,7 +19,8 @@ const Logo3D: React.FC<Logo3DProps> = ({
   size = 'md',
   primaryColor = '#00C3E3',
   secondaryColor = '#005B9F',
-  className = ''
+  className = '',
+  altText = 'Firmenlogo',
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -67,9 +69,9 @@ const Logo3D: React.FC<Logo3DProps> = ({
           }}
         >
           {imageUrl ? (
-            <Image 
-              src={imageUrl} 
-              alt="Logo" 
+            <Image
+              src={imageUrl}
+              alt={altText}
               className="w-full h-full object-contain"
               style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}
               fill
@@ -90,9 +92,9 @@ const Logo3D: React.FC<Logo3DProps> = ({
           }}
         >
           {imageUrl ? (
-            <Image 
-              src={imageUrl} 
-              alt="Logo" 
+            <Image
+              src={imageUrl}
+              alt={altText}
               className="w-full h-full object-contain"
               style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}
               fill

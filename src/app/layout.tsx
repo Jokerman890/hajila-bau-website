@@ -1,9 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Merriweather, Open_Sans } from "next/font/google";
 import "./globals.css";
-// import { TwentyFirstToolbar } from "@21st-extension/toolbar-next"; // Commented out for debugging
-// import { ReactPlugin } from "@21st-extension/react"; // Commented out for debugging
-import { AuthProvider } from "@/components/AuthProvider";
 
 const merriweather = Merriweather({
   variable: "--font-merriweather",
@@ -77,6 +74,13 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover",
+};
+
 // Schema.org JSON-LD für lokales Geschäft
 const jsonLd = {
   "@context": "https://schema.org",
@@ -144,9 +148,7 @@ export default function RootLayout({
         className={`${merriweather.variable} ${openSans.variable} antialiased`}
       >
         {/* <TwentyFirstToolbar config={{ plugins: [ReactPlugin] }} /> */}
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        {children}
       </body>
     </html>
   );

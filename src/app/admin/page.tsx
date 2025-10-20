@@ -1,10 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useCallback } from 'react'
-import LoginForm from '@/components/LoginForm'
-import LogoutButton from '@/components/LogoutButton'
 import AdminDashboard from '@/components/ui/admin-dashboard'
-import { useAuth } from '@/components/AuthProvider'
 import { getLocalPublicUrl } from '@/lib/local-storage'
 import { getAssetPath } from '@/lib/utils'
 import { CarouselDisplayImage } from '@/components/ui/admin-dashboard'
@@ -44,10 +41,6 @@ function mapApiImageToDisplay(image: CarouselImageApiResponse): CarouselDisplayI
 }
 
 export default function HajilaBauAdminPage() {
-  const auth = useAuth()
-  const user = auth?.user ?? null
-  const authLoading = auth?.loading ?? true
-
   const [carouselImages, setCarouselImages] = useState<CarouselDisplayImage[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isSyncing, setIsSyncing] = useState(false)
@@ -85,14 +78,12 @@ export default function HajilaBauAdminPage() {
   }, [])
 
   useEffect(() => {
-    if (user) {
-      void fetchCarouselImages()
-    }
-  }, [user, fetchCarouselImages])
+    void fetchCarouselImages()
+  }, [fetchCarouselImages])
 
   const handleImageUpload = async (
     files: FileList,
-    metadata: Array<{
+    _metadata: Array<{
       width?: number
       height?: number
       size_kb: number
@@ -100,7 +91,7 @@ export default function HajilaBauAdminPage() {
       type: string
     }>,
   ) => {
-    void metadata
+    void _metadata
     if (files.length === 0) return
 
     const formData = new FormData()
@@ -148,9 +139,7 @@ export default function HajilaBauAdminPage() {
         throw new Error(errorData.error || `Failed to delete image ${id}`)
       }
 
-      setCarouselImages((prevImages) =>
-        prevImages.filter((img) => img.id !== id),
-      )
+      setCarouselImages((prevImages) => prevImages.filter((img) => img.id !== id))
     } catch (error) {
       console.error(`Error deleting image ${id}:`, error)
     }
@@ -230,24 +219,9 @@ export default function HajilaBauAdminPage() {
     }
   }
 
-  if (authLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div>Authentifizierung wird geladen…</div>
-      </div>
-    )
-  }
-
-  if (!user) {
-    return <LoginForm />
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       <div className="container mx-auto px-4 py-8">
-        <div className="flex justify-end mb-4">
-          <LogoutButton />
-        </div>
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-4">
             <span className="brand-gradient-text">Hajila Bau GmbH</span>

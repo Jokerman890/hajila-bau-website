@@ -24,6 +24,8 @@ import {
   User,
   FileText,
   Lock,
+  Menu,
+  X,
 } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
@@ -162,6 +164,7 @@ const Typewriter: React.FC<TypewriterProps> = ({
 /* ------------------------------------------------------------------ */
 interface NavItem {
   text: string
+  to?: string
   items?: {
     icon?: React.ReactNode
     text: string
@@ -170,56 +173,133 @@ interface NavItem {
   }[]
 }
 
-const Navigation: React.FC<{ items: NavItem[] }> = ({ items }) => (
-  <nav className="hidden lg:block">
-    <ul className="flex gap-x-8 list-none">
-      {items.map(({ text, items }, index) => (
-        <li
-          key={index}
-          className={cn(
-            'relative [perspective:2000px]',
-            items?.length && 'group',
-          )}
-        >
-          <button className="flex items-center gap-2 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors font-['Open_Sans']">
-            {text}
-            {items?.length ? <ChevronDown className="h-3 w-3" /> : null}
-          </button>
+const Navigation: React.FC<{ items: NavItem[] }> = ({ items }) => {
+  const baseTriggerClasses =
+    "flex items-center gap-2 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors font-['Open_Sans']"
 
-          {items?.length && (
-            <div className="absolute -left-5 top-full w-[280px] pt-4 pointer-events-none opacity-0 origin-top-left transition-[opacity,transform] duration-200 [transform:rotateX(-12deg)_scale(0.9)] group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100 group-hover:[transform:none]">
-              <ul className="relative flex flex-col gap-y-1 rounded-xl border border-border bg-background/95 backdrop-blur-sm py-2 px-4 shadow-lg">
-                {items.map(({ icon, text, description, to }, itemIndex) => (
-                  <li key={itemIndex}>
-                    <a
-                      href={to}
-                      className="group/link relative flex items-center overflow-hidden rounded-lg p-3 hover:bg-muted/50 transition-colors"
-                    >
-                      {icon && (
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-muted mr-3">
-                          {icon}
-                        </div>
-                      )}
-                      <div>
-                        <span className="block text-sm font-medium text-foreground font-['Open_Sans']">
-                          {text}
-                        </span>
-                        {description && (
-                          <span className="mt-0.5 block text-xs text-muted-foreground font-['Open_Sans']">
-                            {description}
-                          </span>
+  return (
+    <nav className="hidden lg:block" aria-label="Hauptnavigation">
+      <ul className="flex gap-x-8 list-none">
+        {items.map(({ text, items: subItems, to }, index) => (
+          <li
+            key={index}
+            className={cn(
+              'relative [perspective:2000px]',
+              subItems?.length && 'group',
+            )}
+          >
+            {subItems?.length ? (
+              <button
+                type="button"
+                className={baseTriggerClasses}
+                aria-haspopup="true"
+              >
+                {text}
+                <ChevronDown className="h-3 w-3" />
+              </button>
+            ) : to ? (
+              <a href={to} className={baseTriggerClasses}>
+                {text}
+              </a>
+            ) : (
+              <span className={baseTriggerClasses}>{text}</span>
+            )}
+
+            {subItems?.length ? (
+              <div className="absolute -left-5 top-full w-[280px] pt-4 pointer-events-none opacity-0 origin-top-left transition-[opacity,transform] duration-200 [transform:rotateX(-12deg)_scale(0.9)] group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100 group-hover:[transform:none]">
+                <ul className="relative flex flex-col gap-y-1 rounded-xl border border-border bg-background/95 backdrop-blur-sm py-2 px-4 shadow-lg">
+                  {subItems.map(({ icon, text, description, to }, itemIndex) => (
+                    <li key={itemIndex}>
+                      <a
+                        href={to}
+                        className="group/link relative flex items-center overflow-hidden rounded-lg p-3 hover:bg-muted/50 transition-colors"
+                      >
+                        {icon && (
+                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-muted mr-3">
+                            {icon}
+                          </div>
                         )}
-                      </div>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </li>
-      ))}
-    </ul>
-  </nav>
+                        <div>
+                          <span className="block text-sm font-medium text-foreground font-['Open_Sans']">
+                            {text}
+                          </span>
+                          {description && (
+                            <span className="mt-0.5 block text-xs text-muted-foreground font-['Open_Sans']">
+                              {description}
+                            </span>
+                          )}
+                        </div>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+const MobileNavigation: React.FC<{
+  items: NavItem[]
+  isOpen: boolean
+  onNavigate: () => void
+}> = ({ items, isOpen, onNavigate }) => (
+  <AnimatePresence initial={false}>
+    {isOpen ? (
+      <motion.nav
+        id="mobile-navigation"
+        key="mobile-navigation"
+        initial={{ opacity: 0, height: 0 }}
+        animate={{ opacity: 1, height: 'auto' }}
+        exit={{ opacity: 0, height: 0 }}
+        transition={{ duration: 0.2 }}
+        className="lg:hidden border-b border-border/50 bg-background/95 backdrop-blur-sm shadow-lg"
+        aria-label="Mobile Navigation"
+      >
+        <ul className="space-y-2 px-6 py-4">
+          {items.map(({ text, items: subItems, to }, index) => (
+            <li key={`mobile-nav-item-${index}`}>
+              {subItems?.length ? (
+                <details className="group">
+                  <summary className="flex w-full cursor-pointer items-center justify-between rounded-lg bg-muted/60 px-4 py-2 text-left text-sm font-medium text-foreground">
+                    <span>{text}</span>
+                    <ChevronDown className="h-4 w-4 transition-transform group-open:rotate-180" />
+                  </summary>
+                  <ul className="mt-2 space-y-1 rounded-lg bg-background/80 px-4 py-2 text-sm text-muted-foreground">
+                    {subItems.map(({ text: subText, to: subTo, description }, subIndex) => (
+                      <li key={`mobile-sub-item-${index}-${subIndex}`}>
+                        <a
+                          href={subTo}
+                          className="block rounded-md px-3 py-2 hover:bg-muted/60 hover:text-foreground"
+                          onClick={onNavigate}
+                        >
+                          <span className="block font-medium text-foreground">{subText}</span>
+                          {description ? (
+                            <span className="text-xs text-muted-foreground">{description}</span>
+                          ) : null}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              ) : (
+                <a
+                  href={to ?? '#'}
+                  className="block rounded-lg px-4 py-2 text-sm font-medium text-foreground hover:bg-muted/60"
+                  onClick={onNavigate}
+                >
+                  {text}
+                </a>
+              )}
+            </li>
+          ))}
+        </ul>
+      </motion.nav>
+    ) : null}
+  </AnimatePresence>
 )
 
 /* ------------------------------------------------------------------ */
@@ -230,6 +310,17 @@ const PremiumWebsite: React.FC = () => {
   const [cookieAccepted, setCookieAccepted] = useState(false)
   const [carouselImages, setCarouselImages] = useState<CarouselSlideImage[]>([])
   const [isLoadingCarousel, setIsLoadingCarousel] = useState(true)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+  interface CarouselImageFileEntry {
+    id: string
+    url: string
+    title: string
+    description: string
+    alt: string
+    order: number
+    isActive: boolean
+  }
 
   interface CarouselImageFileEntry {
     id: string
@@ -283,12 +374,19 @@ const PremiumWebsite: React.FC = () => {
   }
 
   const handleAcceptCookies = () => setCookieAccepted(true)
+  const handleMobileNavigation = () => setIsMobileMenuOpen(false)
 
   /* Menü-Konfiguration */
   const menuItems: NavItem[] = [
     {
       text: 'Leistungen',
       items: [
+        {
+          icon: <Sparkles className="h-4 w-4" />,
+          text: 'Alle Leistungen',
+          description: 'Überblick über unser Portfolio',
+          to: '#services',
+        },
         {
           icon: <Building2 className="h-4 w-4" />,
           text: 'Klinkerarbeiten & Verblendmauerwerk',
@@ -333,8 +431,8 @@ const PremiumWebsite: React.FC = () => {
         },
       ],
     },
-    { text: 'Über uns' },
-    { text: 'Kontakt' },
+    { text: 'Über uns', to: '#about-us' },
+    { text: 'Kontakt', to: '#contact' },
   ]
 
   /* ------------------------------------------------------------------ */
@@ -342,7 +440,8 @@ const PremiumWebsite: React.FC = () => {
   /* ------------------------------------------------------------------ */
   return (
     <div
-      className={`min-h-screen overflow-hidden relative font-['Open_Sans'] ${
+      id="top"
+      className={`relative min-h-screen overflow-hidden font-['Open_Sans'] ${
         currentTheme === 'dark' ? 'dark' : 'light'
       }`}
       style={{
@@ -388,31 +487,59 @@ const PremiumWebsite: React.FC = () => {
       </AnimatePresence>
 
       {/* Header / Navigation */}
-      <header className="relative z-50 w-full border-b border-border/50">
-        <div className="mx-auto max-w-7xl px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Image
-                src={getAssetPath('/uploads/logo_2d.png')}
-                alt="Hajila Bau Logo"
-                width={48}
-                height={48}
-              />
-            </div>
+      <header className="relative z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-sm">
+        <div className="mx-auto flex w-full flex-wrap items-center justify-between gap-4 px-6 py-4 max-w-7xl">
+          <a
+            href="#top"
+            className="flex items-center gap-2"
+            aria-label="Zur Startseite"
+          >
+            <Image
+              src={getAssetPath('/uploads/logo_2d.png')}
+              alt="Hajila Bau Logo"
+              width={48}
+              height={48}
+            />
+            <span className="hidden text-lg font-semibold tracking-tight text-foreground/90 sm:inline font-['Merriweather']">
+              Hajila Bau
+            </span>
+          </a>
 
+          <div className="flex flex-1 flex-wrap items-center justify-end gap-3 lg:gap-6">
             <Navigation items={menuItems} />
 
-            <div className="flex items-center gap-4">
+            <button
+              type="button"
+              className="inline-flex items-center justify-center rounded-lg border border-border/60 bg-background/90 p-2 text-sm font-medium text-foreground shadow-sm transition hover:bg-muted/80 lg:hidden"
+              onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+              aria-label={
+                isMobileMenuOpen ? 'Hauptmenü schließen' : 'Hauptmenü öffnen'
+              }
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-navigation"
+            >
+              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+
+            <div className="flex w-full flex-wrap items-center justify-end gap-3 sm:w-auto sm:flex-nowrap">
               <button
+                type="button"
                 onClick={toggleTheme}
-                className="p-2 rounded-lg bg-muted hover:bg-muted/80 transition-colors"
+                className="rounded-lg bg-muted p-2 transition-colors hover:bg-muted/80"
+                aria-label={
+                  currentTheme === 'dark'
+                    ? 'Hellmodus aktivieren'
+                    : 'Dunkelmodus aktivieren'
+                }
               >
                 {currentTheme === 'dark' ? '🌞' : '🌙'}
               </button>
               <AnimatedButton
                 onClick={() => {
                   window.location.hash = 'contact'
+                  handleMobileNavigation()
                 }}
+                className="w-full sm:w-auto"
               >
                 Jetzt Angebot anfragen
               </AnimatedButton>
@@ -420,6 +547,14 @@ const PremiumWebsite: React.FC = () => {
           </div>
         </div>
       </header>
+
+      <MobileNavigation
+        items={menuItems}
+        isOpen={isMobileMenuOpen}
+        onNavigate={handleMobileNavigation}
+      />
+
+      <main id="main-content" className="relative z-10 flex flex-col">
 
       {/* Hero Section */}
       <section className="relative z-10 pt-32 pb-20 px-6">
@@ -470,6 +605,7 @@ const PremiumWebsite: React.FC = () => {
                   }}
                   variant="primary"
                   size="md"
+                  className="w-full sm:w-auto"
                 >
                   Jetzt Angebot anfragen
                 </AnimatedButton>
@@ -479,6 +615,7 @@ const PremiumWebsite: React.FC = () => {
                   }}
                   variant="ghost"
                   size="md"
+                  className="w-full sm:w-auto"
                 >
                   Unsere Leistungen
                 </AnimatedButton>
@@ -700,6 +837,7 @@ const PremiumWebsite: React.FC = () => {
                 }}
                 variant="primary"
                 size="md"
+                className="w-full sm:w-auto"
               >
                 E-Mail senden
               </AnimatedButton>
@@ -709,6 +847,7 @@ const PremiumWebsite: React.FC = () => {
                 }}
                 variant="ghost"
                 size="md"
+                className="w-full sm:w-auto"
               >
                 Jetzt anrufen
               </AnimatedButton>
@@ -716,6 +855,8 @@ const PremiumWebsite: React.FC = () => {
           </motion.div>
         </div>
       </section>
+
+      </main>
 
       {/* Footer */}
       <footer className="relative z-10 py-12 px-6 border-t border-border/50">

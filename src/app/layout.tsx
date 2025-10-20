@@ -147,6 +147,9 @@ export default function RootLayout({
       <body
         className={`${merriweather.variable} ${openSans.variable} antialiased`}
       >
+        <a className="skip-link" href="#main-content">
+          Zum Inhalt springen
+        </a>
         {/* <TwentyFirstToolbar config={{ plugins: [ReactPlugin] }} /> */}
         {children}
       </body>

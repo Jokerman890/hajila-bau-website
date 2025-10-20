@@ -174,69 +174,124 @@ interface NavItem {
 }
 
 const Navigation: React.FC<{ items: NavItem[] }> = ({ items }) => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null)
   const baseTriggerClasses =
     "flex items-center gap-2 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors font-['Open_Sans']"
 
   return (
     <nav className="hidden lg:block" aria-label="Hauptnavigation">
       <ul className="flex gap-x-8 list-none">
-        {items.map(({ text, items: subItems, to }, index) => (
-          <li
-            key={index}
-            className={cn(
-              'relative [perspective:2000px]',
-              subItems?.length && 'group',
-            )}
-          >
-            {subItems?.length ? (
-              <button
-                type="button"
-                className={baseTriggerClasses}
-                aria-haspopup="true"
-              >
-                {text}
-                <ChevronDown className="h-3 w-3" />
-              </button>
-            ) : to ? (
-              <a href={to} className={baseTriggerClasses}>
-                {text}
-              </a>
-            ) : (
-              <span className={baseTriggerClasses}>{text}</span>
-            )}
+        {items.map(({ text, items: subItems, to }, index) => {
+          const hasSubItems = Array.isArray(subItems) && subItems.length > 0
+          const isOpen = hasSubItems && openIndex === index
+          const triggerId = hasSubItems ? `desktop-nav-trigger-${index}` : undefined
+          const dropdownId = hasSubItems ? `desktop-nav-submenu-${index}` : undefined
 
-            {subItems?.length ? (
-              <div className="absolute -left-5 top-full w-[280px] pt-4 pointer-events-none opacity-0 origin-top-left transition-[opacity,transform] duration-200 [transform:rotateX(-12deg)_scale(0.9)] group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100 group-hover:[transform:none]">
-                <ul className="relative flex flex-col gap-y-1 rounded-xl border border-border bg-background/95 backdrop-blur-sm py-2 px-4 shadow-lg">
-                  {subItems.map(({ icon, text, description, to }, itemIndex) => (
-                    <li key={itemIndex}>
-                      <a
-                        href={to}
-                        className="group/link relative flex items-center overflow-hidden rounded-lg p-3 hover:bg-muted/50 transition-colors"
-                      >
-                        {icon && (
-                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-muted mr-3">
-                            {icon}
-                          </div>
-                        )}
-                        <div>
-                          <span className="block text-sm font-medium text-foreground font-['Open_Sans']">
-                            {text}
-                          </span>
-                          {description && (
-                            <span className="mt-0.5 block text-xs text-muted-foreground font-['Open_Sans']">
-                              {description}
-                            </span>
+          const handleBlur = (event: React.FocusEvent<HTMLLIElement>) => {
+            const nextFocus = event.relatedTarget as Node | null
+            if (!event.currentTarget.contains(nextFocus)) {
+              setOpenIndex((prev) => (prev === index ? null : prev))
+            }
+          }
+
+          const handleMouseLeave = (event: React.MouseEvent<HTMLLIElement>) => {
+            const nextTarget = event.relatedTarget as Node | null
+            if (nextTarget && event.currentTarget.contains(nextTarget)) {
+              return
+            }
+            setOpenIndex((prev) => (prev === index ? null : prev))
+          }
+
+          return (
+            <li
+              key={index}
+              className={cn(
+                'relative [perspective:2000px]',
+                hasSubItems && 'group',
+              )}
+              onMouseEnter={hasSubItems ? () => setOpenIndex(index) : undefined}
+              onMouseLeave={hasSubItems ? handleMouseLeave : undefined}
+              onFocus={hasSubItems ? () => setOpenIndex(index) : undefined}
+              onBlur={hasSubItems ? handleBlur : undefined}
+              onKeyDown={
+                hasSubItems
+                  ? (event) => {
+                      if (event.key === 'Escape') {
+                        setOpenIndex(null)
+                        const trigger = event.currentTarget.querySelector<HTMLButtonElement>(
+                          'button',
+                        )
+                        trigger?.focus()
+                      }
+                    }
+                  : undefined
+              }
+            >
+              {hasSubItems ? (
+                <button
+                  id={triggerId}
+                  type="button"
+                  className={baseTriggerClasses}
+                  aria-haspopup="true"
+                  aria-expanded={isOpen}
+                  aria-controls={dropdownId}
+                  onClick={() =>
+                    setOpenIndex((prev) => (prev === index ? null : index))
+                  }
+                >
+                  {text}
+                  <ChevronDown className="h-3 w-3" aria-hidden="true" />
+                </button>
+              ) : to ? (
+                <a href={to} className={baseTriggerClasses}>
+                  {text}
+                </a>
+              ) : (
+                <span className={baseTriggerClasses}>{text}</span>
+              )}
+
+              {hasSubItems ? (
+                <div
+                  data-open={isOpen ? 'true' : 'false'}
+                  className="absolute -left-5 top-full w-[280px] pt-4 pointer-events-none opacity-0 origin-top-left transition-[opacity,transform] duration-200 [transform:rotateX(-12deg)_scale(0.9)] group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100 group-hover:[transform:none] group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:opacity-100 group-focus-within:[transform:none] data-[open=true]:pointer-events-auto data-[open=true]:visible data-[open=true]:opacity-100 data-[open=true]:[transform:none]"
+                >
+                  <ul
+                    id={dropdownId}
+                    role="menu"
+                    aria-labelledby={triggerId}
+                    className="relative flex flex-col gap-y-1 rounded-xl border border-border bg-background/95 backdrop-blur-sm py-2 px-4 shadow-lg"
+                  >
+                    {subItems.map(({ icon, text, description, to }, itemIndex) => (
+                      <li key={itemIndex} role="none">
+                        <a
+                          href={to}
+                          role="menuitem"
+                          className="group/link relative flex items-center overflow-hidden rounded-lg p-3 hover:bg-muted/50 transition-colors"
+                        >
+                          {icon && (
+                            <div className="mr-3 flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-muted">
+                              {icon}
+                            </div>
                           )}
-                        </div>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
-          </li>
-        ))}
+                          <div>
+                            <span className="block text-sm font-medium text-foreground font-['Open_Sans']">
+                              {text}
+                            </span>
+                            {description && (
+                              <span className="mt-0.5 block text-xs text-muted-foreground font-['Open_Sans']">
+                                {description}
+                              </span>
+                            )}
+                          </div>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+            </li>
+          )
+        })}
       </ul>
     </nav>
   )
@@ -311,16 +366,6 @@ const PremiumWebsite: React.FC = () => {
   const [carouselImages, setCarouselImages] = useState<CarouselSlideImage[]>([])
   const [isLoadingCarousel, setIsLoadingCarousel] = useState(true)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-
-  interface CarouselImageFileEntry {
-    id: string
-    url: string
-    title: string
-    description: string
-    alt: string
-    order: number
-    isActive: boolean
-  }
 
   interface CarouselImageFileEntry {
     id: string

@@ -14,12 +14,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: `${baseUrl}/admin`,
-      lastModified: lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.1, // Niedrige Priorität für Admin-Bereich
-    },
-    {
       url: `${baseUrl}/impressum`,
       lastModified: lastModified,
       changeFrequency: 'yearly',
